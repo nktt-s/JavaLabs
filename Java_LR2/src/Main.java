@@ -34,10 +34,18 @@ public class Main {
                 int choiceCase = sc.nextInt();
                 switch (choiceCase) {
                 case 1:
+                    if (array.isEmpty()) {
+                        System.out.println("Список объектов пуст!");
+                        break;
+                    }
                     showObjects(array);
                     break;
 
                 case 2:
+                    if (array.isEmpty()) {
+                        System.out.println("Отсутствуют объекты для изменения!");
+                        break;
+                    }
                     showObjects(array);
                     System.out.print("Выберите объект для изменения: ");
                     Scanner sc_modify = new Scanner(System.in);
@@ -60,11 +68,13 @@ public class Main {
                             if (array.get(choice) instanceof LightVehicle) {
                                 System.out.print("Введите тип кузова: ");
                                 ((LightVehicle) array.get(choice)).setBodyType(sc_modify.next());
+                                System.out.println("Объект успешно изменён!");
                             } else if (array.get(choice) instanceof Airplane) {
                                 System.out.print("Введите дальность полёта: ");
                                 while (true) {
                                     if (sc_modify.hasNextInt()) {
                                         ((Airplane) array.get(choice)).setFlightDistance(sc_modify.nextInt());
+                                        System.out.println("Объект успешно изменён!");
                                         break;
                                     } else {
                                         System.out.println("Введено неверное значение!");
@@ -83,6 +93,10 @@ public class Main {
                     break;
 
                 case 3:
+                    if (array.isEmpty()) {
+                        System.out.println("Отсутствуют объекты для вычисления параметра!");
+                        break;
+                    }
                     int newestYear = 0, newestVehicle = 0;
                     for (int i = 0; i < array.size(); ++i) {
                         if (array.get(i).getProductionYear() < newestYear) {
@@ -153,6 +167,10 @@ public class Main {
                     break;
 
                 case 5:
+                    if (array.isEmpty()) {
+                        System.out.println("Отсутствуют объекты для удаления!");
+                        break;
+                    }
                     showObjects(array);
                     System.out.print("Выберите объект для удаления: ");
                     Scanner sc_del = new Scanner(System.in);
