@@ -1,7 +1,4 @@
-import java.io.File;
-import java.io.FileReader;
-import java.io.BufferedReader;
-import java.io.IOException;
+import java.io.*;
 
 public class Main {
     public static void main(String[] args) {
@@ -13,20 +10,24 @@ public class Main {
                 boolean created = false;
                 if (!destinationFile.exists()) {
                     created = destinationFile.createNewFile();
-                }
-                if (created) {
                     System.out.println("Файл создан!");
-                    // Читаем исходный файл
+                }
+                if (destinationFile.exists() || created) {
                     try {
-                        FileReader fileReader = new FileReader("Source.txt");
-                        BufferedReader bufferedReader = new BufferedReader(fileReader);
+                        BufferedReader buffReader = new BufferedReader(new FileReader("Source.txt"));
+                        BufferedWriter buffWriter = new BufferedWriter(new FileWriter("Destination.txt"));
                         String line;
-                        while ((line = bufferedReader.readLine()) != null) {
-                            System.out.println(line);
+                        while ((line = buffReader.readLine()) != null) {
+                            int number = Integer.parseInt(line);
+                            if (number % 3 == 0 && number % 7 != 0) {
+                                buffWriter.write(number + "\n");
+                            }
                         }
-                        bufferedReader.close();
-                    } catch (IOException ex) {
-                        System.out.println("Ошибка при чтении файла!");
+                        buffReader.close();
+                        buffWriter.close();
+                        System.out.println("Работа программы успешно завершена!");
+                    } catch (FileNotFoundException ex) {
+                        System.out.println("Ошибка! Файла назначения не существует.");
                         ex.printStackTrace();
                     }
                 }
