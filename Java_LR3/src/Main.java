@@ -1,4 +1,5 @@
 import java.io.*;
+import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
@@ -13,22 +14,43 @@ public class Main {
                     System.out.println("Файл создан!");
                 }
                 if (destinationFile.exists() || created) {
-                    try {
-                        BufferedReader buffReader = new BufferedReader(new FileReader("Source.txt"));
-                        BufferedWriter buffWriter = new BufferedWriter(new FileWriter("Destination.txt"));
-                        String line;
-                        while ((line = buffReader.readLine()) != null) {
-                            int number = Integer.parseInt(line);
-                            if (number % 3 == 0 && number % 7 != 0) {
-                                buffWriter.write(number + "\n");
+                    while (true) {
+                        Scanner sc = new Scanner(System.in);
+                        System.out.println("Выберите действие:\n\t1. Построчный вывод содержимого исходного файла\n\t   и запись результатов в файл назначения.\n\t2. Выход из программы.");
+                        if (sc.hasNextInt()) {
+                            int choice = sc.nextInt();
+                            switch (choice) {
+                                case 1:
+                                    try {
+                                        BufferedReader buffReader = new BufferedReader(new FileReader("Source.txt"));
+                                        BufferedWriter buffWriter = new BufferedWriter(new FileWriter("Destination.txt"));
+                                        String line;
+                                        while ((line = buffReader.readLine()) != null) {
+                                            System.out.println(line);
+//                                            sc.next();
+                                            int number = Integer.parseInt(line);
+                                            if (number % 3 == 0 && number % 7 != 0) {
+                                                buffWriter.write(number + "\n");
+                                            }
+                                        }
+                                        buffReader.close();
+                                        buffWriter.close();
+                                        System.out.println("Результаты успешно сохранены!");
+                                    } catch (FileNotFoundException ex) {
+                                        System.out.println("Ошибка! Файла назначения не существует.");
+                                        ex.printStackTrace();
+                                    }
+                                    break;
+                                case 2:
+                                    System.out.println("Завершение работы...");
+                                    return;
+                                default:
+                                    System.out.println("Введено неверное значение, попробуйте ещё раз!");
                             }
+                        } else {
+                            System.out.println("Введено неверное значение, попробуйте ещё раз!");
+                            sc.next();
                         }
-                        buffReader.close();
-                        buffWriter.close();
-                        System.out.println("Работа программы успешно завершена!");
-                    } catch (FileNotFoundException ex) {
-                        System.out.println("Ошибка! Файла назначения не существует.");
-                        ex.printStackTrace();
                     }
                 }
             } catch (IOException ex) {
