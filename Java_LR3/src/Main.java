@@ -2,60 +2,6 @@ import java.io.*;
 import java.util.Scanner;
 
 public class Main {
-    public static void createWorkersFile(String fileName) {
-        try (FileOutputStream fileOutputStream = new FileOutputStream(fileName);
-             DataOutputStream dataOutputStream = new DataOutputStream(fileOutputStream)) {
-            writeWorkersData(dataOutputStream, "Alexeeva", "operator", "female", 1975);
-            writeWorkersData(dataOutputStream, "Ivanov", "electrician", "male", 1958); // пора на пенсию
-            writeWorkersData(dataOutputStream, "Petrov", "locksmith", "male", 1959); // пора на пенсию
-            writeWorkersData(dataOutputStream, "Alexandrova", "operator", "female", 1963); // пора на пенсию
-            writeWorkersData(dataOutputStream, "Mihaylov", "mechanic", "male", 1967);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public static void writeWorkersData(DataOutputStream dataOutputStream, String lastName, String position, String gender, int birthYear) throws IOException {
-        dataOutputStream.writeUTF(lastName);
-        dataOutputStream.writeUTF(position);
-        dataOutputStream.writeUTF(gender);
-        dataOutputStream.writeInt(birthYear);
-    }
-
-    public static void printRetirementEligibleWorkers(String fileName, String genderFilter) {
-        try (FileInputStream fileInputStream = new FileInputStream(fileName);
-             DataInputStream dataInputStream = new DataInputStream(fileInputStream)) {
-            int currentYear = 2023;
-
-            // Построчное чтение данных о работниках из бинарного файла
-            while (dataInputStream.available() > 0) {
-                String lastName = dataInputStream.readUTF();
-                String position = dataInputStream.readUTF();
-                String gender = dataInputStream.readUTF();
-                int birthYear = dataInputStream.readInt();
-
-                // Проверка фильтра по полу и условия достижения пенсионного возраста
-                // 60 лет для мужчин, 55 лет для женщин
-                if (gender.equalsIgnoreCase(genderFilter) && (currentYear - birthYear) >= getRetirementAge(gender)) {
-                    System.out.println("Фамилия: " + lastName);
-                    System.out.println("Должность: " + position);
-                    System.out.println("Пол: " + gender);
-                    System.out.println("Год рождения: " + birthYear);
-                    System.out.println();
-                }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public static int getRetirementAge(String gender) {
-        if (gender.equalsIgnoreCase("male")) {
-            return 60;
-        } else {
-            return 55;
-        }
-    }
 
     public static void main(String[] args) {
         File sourceFile = new File("C://Users/nktt/IdeaProjects/Java_LR3", "Source.txt");
@@ -126,6 +72,61 @@ public class Main {
             }
         } else {
             System.out.println("Исходный файл не найден!");
+        }
+    }
+
+    public static void createWorkersFile(String fileName) {
+        try (FileOutputStream fileOutputStream = new FileOutputStream(fileName);
+             DataOutputStream dataOutputStream = new DataOutputStream(fileOutputStream)) {
+            writeWorkersData(dataOutputStream, "Alexeeva", "operator", "female", 1975);
+            writeWorkersData(dataOutputStream, "Ivanov", "electrician", "male", 1958); // пора на пенсию
+            writeWorkersData(dataOutputStream, "Petrov", "locksmith", "male", 1959); // пора на пенсию
+            writeWorkersData(dataOutputStream, "Alexandrova", "operator", "female", 1963); // пора на пенсию
+            writeWorkersData(dataOutputStream, "Mihaylov", "mechanic", "male", 1967);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void writeWorkersData(DataOutputStream dataOutputStream, String lastName, String position, String gender, int birthYear) throws IOException {
+        dataOutputStream.writeUTF(lastName);
+        dataOutputStream.writeUTF(position);
+        dataOutputStream.writeUTF(gender);
+        dataOutputStream.writeInt(birthYear);
+    }
+
+    public static void printRetirementEligibleWorkers(String fileName, String genderFilter) {
+        try (FileInputStream fileInputStream = new FileInputStream(fileName);
+             DataInputStream dataInputStream = new DataInputStream(fileInputStream)) {
+            int currentYear = 2023;
+
+            // Построчное чтение данных о работниках из бинарного файла
+            while (dataInputStream.available() > 0) {
+                String lastName = dataInputStream.readUTF();
+                String position = dataInputStream.readUTF();
+                String gender = dataInputStream.readUTF();
+                int birthYear = dataInputStream.readInt();
+
+                // Проверка фильтра по полу и условия достижения пенсионного возраста
+                // 60 лет для мужчин, 55 лет для женщин
+                if (gender.equalsIgnoreCase(genderFilter) && (currentYear - birthYear) >= getRetirementAge(gender)) {
+                    System.out.println("Фамилия: " + lastName);
+                    System.out.println("Должность: " + position);
+                    System.out.println("Пол: " + gender);
+                    System.out.println("Год рождения: " + birthYear);
+                    System.out.println();
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static int getRetirementAge(String gender) {
+        if (gender.equalsIgnoreCase("male")) {
+            return 60;
+        } else {
+            return 55;
         }
     }
 }
