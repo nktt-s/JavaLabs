@@ -1,5 +1,0 @@
-Alexeeva operator female 1975
-Ivanov electrician male 1958
-Petrov locksmith male 1959
-Alexandrova operator female 1963
-Mihaylov mechanic male 1957
