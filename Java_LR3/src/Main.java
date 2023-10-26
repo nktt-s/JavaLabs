@@ -21,7 +21,8 @@ public class Main {
                 if (destinationFile.exists() || created) {
                     while (true) {
                         Scanner sc = new Scanner(System.in);
-                        System.out.println("Выберите действие:\n\t1. Часть 1. Построчный вывод содержимого исходного файла\n\t   и запись результатов в файл назначения.\n\t2. Часть 2. Вывод данных в соответствии с условием задачи.\n\t3. Выход из программы.");
+                        System.out.println("Выберите действие:\n\t1. Часть 1. Построчный вывод содержимого исходного файла");
+                        System.out.println("\t   и запись результатов в файл назначения.\n\t2. Часть 2. Вывод данных в соответствии с условием задачи.\n\t3. Выход из программы.");
                         if (sc.hasNextInt()) {
                             int choice = sc.nextInt();
                             switch (choice) {
@@ -31,15 +32,20 @@ public class Main {
                                         BufferedWriter buffWriter = new BufferedWriter(new FileWriter("Destination.txt"));
                                         String line;
                                         while ((line = buffReader.readLine()) != null) {
-                                            System.out.println(line);
-                                            int number = Integer.parseInt(line);
-                                            if (number % 3 == 0 && number % 7 != 0) {
-                                                buffWriter.write(number + "\n");
+                                            if (line.contains("0123456789")) {
+                                                System.out.println(line);
+                                                int number = Integer.parseInt(line);
+                                                if (number % 3 == 0 && number % 7 != 0) {
+                                                    buffWriter.write(number + "\n");
+                                                }
+                                                System.out.println("Результаты успешно сохранены!");
+                                            } else {
+                                                System.out.println("Ошибка! Исходный файл содержит недопустимые символы.");
+                                                break;
                                             }
                                         }
                                         buffReader.close();
                                         buffWriter.close();
-                                        System.out.println("Результаты успешно сохранены!");
                                     } catch (FileNotFoundException ex) {
                                         System.out.println("Ошибка! Файла назначения не существует.");
                                         ex.printStackTrace();
