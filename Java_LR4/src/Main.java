@@ -1,86 +1,87 @@
+import javax.sql.rowset.spi.SyncResolver;
 import java.io.*;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
-        if (args.length != 1) {
-            System.out.println("Использование: java WordFrequencyAnalyzer <имя_текстового_файла>");
-            return;
+//        while (true) {
+//            System.out.println("Lab.Work #4");
+//            if (args[0].equals("-h") || args[0].equals("--help")) {
+//                System.out.println("Использование: java Main <имя_текстового_файла>");
+//            } else {
+//                System.out.println("Справка: java Main -h или java Main --help");
+//            }
+//        }
+        for (String fileName : args) {
+            Map<String, Integer> wordFrequencyMap = createWordFrequencyMap(fileName);
         }
-
         String inputFileName = args[0];
-        File inputFile = new File("C:/Users/nktt/IdeaProjects/Java_LR4/src", "text.txt");
-        String outputFileName = "word_frequency.csv";
+        Map<String, Integer> wordFrequencyMap = createWordFrequencyMap(inputFileName);
+        if (wordFrequencyMap != null) {
+            writeWordFrequencyToCSV(wordFrequencyMap);
+        }
+    }
 
-        try {
-            if (!inputFile.exists()) {
-                System.out.println("Ошибка! Исходного файла не существует.");
-                System.out.println("Работа программы будет завершена.");
-                return;
-            }
-            BufferedReader reader = new BufferedReader(new FileReader(inputFileName));
-            Map<String, Integer> wordFrequencyMap = new TreeMap<>();
+    public static Map<String, Integer> createWordFrequencyMap(String inputFileName) {
+        Map<String, Integer> wordFrequencyMap = new HashMap<>();
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(inputFileName))){
             String line;
-
             while ((line = reader.readLine()) != null) {
-                StringBuilder wordBuilder = new StringBuilder();
-                for (int i = 0; i < line.length(); ++i) {
-                    char c = line.charAt(i);
+                StringBuilder stringBuilder = new StringBuilder();
+                for (char c : line.toCharArray()) {
                     if (Character.isLetterOrDigit(c)) {
-                        wordBuilder.append(c);
-                    } else {
-                        if (!wordBuilder.isEmpty()) {
-                            String word = wordBuilder.toString().toLowerCase();
-                            wordFrequencyMap.put(word, wordFrequencyMap.getOrDefault(word, 0) + 1);
-                            wordBuilder.setLength(0); // Очищаем StringBuilder для следующего слова
-                        }
+                        stringBuilder.append(c);
+                    } else if (!stringBuilder.isEmpty()) {
+                        String word = stringBuilder.toString().toLowerCase();
+                        wordFrequencyMap.put(word, wordFrequencyMap.getOrDefault(word, 0) + 1);
+                        stringBuilder.setLength(0);
                     }
                 }
-                if (!wordBuilder.isEmpty()) {
-                    String word = wordBuilder.toString().toLowerCase();
+                if (!stringBuilder.isEmpty()) {
+                    String word = stringBuilder.toString().toLowerCase();
                     wordFrequencyMap.put(word, wordFrequencyMap.getOrDefault(word, 0) + 1);
                 }
             }
-            reader.close();
+        } catch (IOException e) {
+            System.err.println("Ошибка при чтении файла: " + e.getMessage());
+            return null;
+        }
+        return wordFrequencyMap;
+    }
 
-            // Определяем самое частое и самое редкое слово
-            String mostCommonWord = null;
-            int mostCommonWordCount = 0;
-            String leastCommonWord = null;
-            int leastCommonWordCount = Integer.MAX_VALUE;
+    public static void writeWordFrequencyToCSV(Map<String, Integer> wordFrequencyMap) {
+        List<Map.Entry<String, Integer>> sortedWordFrequencyList = new ArrayList<>(wordFrequencyMap.entrySet());
+//        sortedWordFrequencyList.sort(Comparator.comparingInt(entry -> -entry.getValue()));
+        sortedWordFrequencyList.sort((entry1, entry2) -> entry2.getValue().compareTo(entry1.getValue()));
 
-            for (Map.Entry<String, Integer> entry : wordFrequencyMap.entrySet()) {
-                String word = entry.getKey();
-                int count = entry.getValue();
+        String mostCommonWord = sortedWordFrequencyList.get(0).getKey();
+        int mostCommonWordCount = sortedWordFrequencyList.get(0).getValue();
+        String rarestWord = sortedWordFrequencyList.get(sortedWordFrequencyList.size() - 1).getKey();
+        int rarestWordCount = sortedWordFrequencyList.get(sortedWordFrequencyList.size() - 1).getValue();
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("word_frequency.csv"))){
 
-                if (count > mostCommonWordCount) {
-                    mostCommonWord = word;
-                    mostCommonWordCount = count;
-                }
-
-                if (count < leastCommonWordCount) {
-                    leastCommonWord = word;
-                    leastCommonWordCount = count;
-                }
-            }
-
-            BufferedWriter writer = new BufferedWriter(new FileWriter(outputFileName));
-            writer.write("Word,Frequency,Frequency in %,Most frequently word,Count most frequently word,Less frequently word,Count less frequently word");
+            writer.write("Word,Frequency,Frequency in %,Most common word,Count of most common word,Rarest word,Count of rarest word");
             writer.newLine();
-            System.out.println("Size of map: " + wordFrequencyMap.size());
-            for (Map.Entry<String, Integer> entry : wordFrequencyMap.entrySet()) {
+
+            for (Map.Entry<String, Integer> entry : sortedWordFrequencyList) {
                 String word = entry.getKey();
                 int count = entry.getValue();
-                double frequencyPercent = (double) count / wordFrequencyMap.size();
-                writer.write(String.format("%s, %d, %.4f, %s, %d, %s, %d", word, count, frequencyPercent, mostCommonWord, mostCommonWordCount, leastCommonWord, leastCommonWordCount));
+                // Округляем число до целого, затем умножаем на 100 и делим на 100, чтобы получить число с точностью до 2 знаков после запятой
+                double frequencyPercent = Math.round((double) count * 100 / wordFrequencyMap.size() * 100.0) / 100.0;
+                String percentWithPoint = String.valueOf(frequencyPercent).replace(',', '.') + "%";
+                if (word.equals(mostCommonWord)) {
+                    writer.write(String.format("%s, %d, %s, %s, %d, %s, %d", word, count, percentWithPoint, mostCommonWord, mostCommonWordCount, rarestWord, rarestWordCount));
+                } else {
+                    writer.write(String.format("%s, %d, %s", word, count, percentWithPoint));
+                }
                 writer.newLine();
             }
-
             writer.close();
-            System.out.println("CSV-файл создан: " + outputFileName);
-        } catch (IOException e) {
-            e.printStackTrace();
+
+        } catch (IOException ex) {
+            System.err.println("Ошибка при записи в CSV-файл: " + ex);
         }
+        System.out.println("CSV-файл успешно создан: word_frequency.csv");
     }
 }
