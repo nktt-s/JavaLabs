@@ -15,25 +15,27 @@ public class Main {
             else {
                 switch (args[0]) {
                     case "--csv":
-                        if (args[1].isEmpty()) {
-                            System.out.println("Отсутствует имя исходного файла.");
-                            System.out.println("Введите его после ключа '--csv' и повторите попытку.");
+                        if (args.length == 1) {
+                            System.out.println("\tОтсутствует имя исходного файла.");
+                            System.out.println("\tВведите его после ключа '--csv' и повторите попытку.\n");
                             return;
                         } else {
                             writeWordFrequencyToCSV(Objects.requireNonNull(createWordFrequencyMap(args[1])), args[1]);
                             // Objects.requireNonNull Позволяет гарантированно получить Not null объект на выходе
+                            System.out.println();
                         }
                         return;
 
                     case "--csv-few":
                         if (args.length == 1) {
-                            System.out.println("Отсутствуют имена исходных файлов.");
-                            System.out.println("Введите их после ключа '--csv-few' и повторите попытку.\n");
+                            System.out.println("\tОтсутствуют имена исходных файлов.");
+                            System.out.println("\tВведите их после ключа '--csv-few' и повторите попытку.\n");
                             return;
                         } else {
                             for (int i = 1; i < args.length; ++i) {
                                 writeWordFrequencyToCSV(Objects.requireNonNull(createWordFrequencyMap(args[i])), args[i]);
                             }
+                            System.out.println();
                         }
                         return;
 
@@ -126,7 +128,7 @@ public class Main {
         } catch (IOException ex) {
             System.err.println("Ошибка при записи в CSV-файл: " + ex + "\n");
         }
-        System.out.println("CSV-файл успешно создан: " + inputFileName + "_frequency_analysis.csv\n");
+        System.out.println("CSV-файл успешно создан: " + inputFileName + "_frequency_analysis.csv");
 
     }
 }
