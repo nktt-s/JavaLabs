@@ -1,3 +1,4 @@
+import javax.xml.stream.FactoryConfigurationError;
 import java.io.*;
 import java.util.*;
 
@@ -20,8 +21,8 @@ public class Main {
                             System.out.println("\tВведите его после ключа '--csv' и повторите попытку.\n");
                             return;
                         } else {
-                            writeWordFrequencyToCSV(Objects.requireNonNull(createWordFrequencyMap(args[1])), args[1]);
-                            // Objects.requireNonNull Позволяет гарантированно получить Not null объект на выходе
+                            //TODO РЕАЛИЗОВАТЬ ПРОВЕРКУ НА ОТСУТСТВИЕ ФАЙЛА С ТАКИМ ИМЕНЕМ
+                            writeWordFrequencyToCSV(createWordFrequencyMap(args[1]), args[1]);
                             System.out.println();
                         }
                         return;
@@ -32,6 +33,7 @@ public class Main {
                             System.out.println("\tВведите их после ключа '--csv-few' и повторите попытку.\n");
                             return;
                         } else {
+                            //TODO РЕАЛИЗОВАТЬ ПРОВЕРКУ НА ОТСУТСТВИЕ ФАЙЛА С ТАКИМ ИМЕНЕМ
                             for (int i = 1; i < args.length; ++i) {
                                 writeWordFrequencyToCSV(Objects.requireNonNull(createWordFrequencyMap(args[i])), args[i]);
                             }
@@ -40,6 +42,15 @@ public class Main {
                         return;
 
                     case "--json-write":
+                        if (args.length == 1) {
+                            System.out.println("\tОтсутствуют имена исходных файлов.");
+                            System.out.println("\tВведите их после ключа '--json-write' и повторите попытку.\n");
+                        } else {
+                            //TODO РЕАЛИЗОВАТЬ ПРОВЕРКУ НА ОТСУТСТВИЕ ФАЙЛА С ТАКИМ ИМЕНЕМ
+                            for (int i = 1; i < args.length; ++i) {
+                                writeCharAnalysisToJSON(createCharAnalysisMap(args[i]));
+                            }
+                        }
                         return;
 
                     case "--json-read":
@@ -129,6 +140,70 @@ public class Main {
             System.err.println("Ошибка при записи в CSV-файл: " + ex + "\n");
         }
         System.out.println("CSV-файл успешно создан: " + inputFileName + "_frequency_analysis.csv");
+    }
 
+    public static HashMap<String, String> createCharAnalysisMap(String fileName) {
+        HashMap<String, String> resultMap = new HashMap<>();
+        resultMap.put("Название файла", fileName);
+
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader(fileName));
+            String line;
+            StringBuilder text = new StringBuilder();
+            while ((line = reader.readLine()) != null) {
+                text.append(line);
+            }
+            resultMap.put("Общее количество символов", String.valueOf(text.length()));
+            HashMap<Character, Integer> charFrequencyMap = new HashMap<>();
+            for (char c : text.toString().toCharArray()) {
+                if (Character.isLetterOrDigit(c)) {
+                    charFrequencyMap.put(c, charFrequencyMap.getOrDefault(c, 0) + 1);
+                }
+            }
+            char mostCommonChar = 0;
+            int mostCommonCharCount = 0;
+            char rarestChar = 0;
+            int rarestCharCount = Integer.MAX_VALUE;
+            for (Map.Entry<Character, Integer> entry : charFrequencyMap.entrySet()) {
+                char c = entry.getKey();
+                int frequency = entry.getValue();
+
+                if (frequency > mostCommonCharCount) {
+                    mostCommonChar = c;
+                    mostCommonCharCount = frequency;
+                }
+                if (frequency < rarestCharCount) {
+                    rarestChar = c;
+                    rarestCharCount = frequency;
+                }
+            }
+
+            resultMap.put("Самый повторяющийся символ", String.valueOf(mostCommonChar));
+            resultMap.put("Количество повторений самого частого символа", String.valueOf(mostCommonCharCount));
+            resultMap.put("Самый редкий символ", String.valueOf(rarestChar));
+            resultMap.put("Количество повторений самого редкого символа", String.valueOf(rarestCharCount));
+        } catch (IOException ex) {
+            System.err.println(ex.getMessage());
+        }
+        return resultMap;
+    }
+
+    public static void writeCharAnalysisToJSON(HashMap<String, String> resultMap) {
+        try {
+            PrintWriter writer = new PrintWriter(resultMap.get("Название файла") + "_analysis.json");
+            writer.println("{");
+            boolean first = true;
+            for (Map.Entry<String, String> entry : resultMap.entrySet()) {
+                if (!first) {
+                    writer.println(",");
+                }
+                writer.print("\"" + entry.getKey() + "\": \"" + entry.getValue() + "\"");
+                first = false;
+            }
+            writer.println("\n}");
+        } catch (FileNotFoundException ex) {
+            System.err.println(ex.getMessage());
+        }
+        System.out.println("JSON-файл успешно создан для файла " + resultMap.get("Название файла") + ": " + resultMap.get("Название файла") + "_analysis.json");
     }
 }
