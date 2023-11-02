@@ -26,6 +26,15 @@ public class Main {
                         return;
 
                     case "--csv-few":
+                        if (args.length == 1) {
+                            System.out.println("Отсутствуют имена исходных файлов.");
+                            System.out.println("Введите их после ключа '--csv-few' и повторите попытку.\n");
+                            return;
+                        } else {
+                            for (int i = 1; i < args.length; ++i) {
+                                writeWordFrequencyToCSV(Objects.requireNonNull(createWordFrequencyMap(args[i])), args[i]);
+                            }
+                        }
                         return;
 
                     case "--json-write":
@@ -44,15 +53,6 @@ public class Main {
                 }
             }
         }
-
-//        for (String fileName : args) {
-//            Map<String, Integer> wordFrequencyMap = createWordFrequencyMap(fileName);
-//        }
-//        String inputFileName = args[0];
-//        Map<String, Integer> wordFrequencyMap = createWordFrequencyMap(inputFileName);
-//        if (wordFrequencyMap != null) {
-//            writeWordFrequencyToCSV(wordFrequencyMap);
-//        }
     }
 
     public static void showMenu() {
