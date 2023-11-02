@@ -146,6 +146,8 @@ public class Main {
         HashMap<String, String> resultMap = new HashMap<>();
         resultMap.put("Название файла", fileName);
 
+        //TODO РЕАЛИЗОВАТЬ МАССИВ ОБЪЕКТОВ В ФАЙЛЕ JSON (по требованиям)
+
         try {
             BufferedReader reader = new BufferedReader(new FileReader(fileName));
             String line;
