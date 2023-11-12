@@ -15,17 +15,17 @@ public class CSV {
             String line;
             while ((line = reader.readLine()) != null) {
                 StringBuilder strBuilder = new StringBuilder();
-                for (char c : line.toCharArray()) {
+                for (char c : line.toLowerCase().toCharArray()) {
                     if (Character.isLetterOrDigit(c)) {
                         strBuilder.append(c);
                     } else if (!strBuilder.isEmpty()) {
-                        String word = strBuilder.toString().toLowerCase();
+                        String word = strBuilder.toString();
                         wordFrequencyMap.put(word, wordFrequencyMap.getOrDefault(word, 0) + 1);
                         strBuilder.setLength(0);
                     }
                 }
                 if (!strBuilder.isEmpty()) {
-                    String word = strBuilder.toString().toLowerCase();
+                    String word = strBuilder.toString();
                     wordFrequencyMap.put(word, wordFrequencyMap.getOrDefault(word, 0) + 1);
                 }
             }

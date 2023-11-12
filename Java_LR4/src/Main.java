@@ -1,5 +1,4 @@
 import java.io.*;
-import java.util.*;
 
 public class Main {
     public static final String ANSI_RESET = "\u001B[0m";

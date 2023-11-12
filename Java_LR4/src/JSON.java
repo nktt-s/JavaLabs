@@ -16,34 +16,42 @@ public class JSON {
 
         try {
             BufferedReader reader = new BufferedReader(new FileReader(fileName));
-            HashMap<String, Integer> wordFrequencyMap = new HashMap<>();
-            String line;
-            StringBuilder text = new StringBuilder();
-            while ((line = reader.readLine()) != null) {
-                text.append(line);
-                StringBuilder stringBuilder = new StringBuilder();
-                for (char c : line.toCharArray()) {
-                    if (Character.isLetterOrDigit(c)) {
-                        stringBuilder.append(c);
-                    } else if (!stringBuilder.isEmpty()) {
-                        String word = stringBuilder.toString().toLowerCase();
-                        wordFrequencyMap.put(word, wordFrequencyMap.getOrDefault(word, 0) + 1);
-                        stringBuilder.setLength(0);
-                    }
+            HashMap<String, Integer> wordFrequencyMap = CSV.createWordFrequencyMap(fileName);
+
+            String mostCommonWord = "";
+            int mostCommonWordCount = 0;
+            String rarestWord = "";
+            int rarestWordCount = Integer.MAX_VALUE;
+
+            for (Map.Entry<String, Integer> entry : wordFrequencyMap.entrySet()) {
+                String str = entry.getKey();
+                int frequency = entry.getValue();
+
+                if (frequency > mostCommonWordCount) {
+                    mostCommonWord = str;
+                    mostCommonWordCount = frequency;
                 }
-                if (!stringBuilder.isEmpty()) {
-                    String word = stringBuilder.toString().toLowerCase();
-                    wordFrequencyMap.put(word, wordFrequencyMap.getOrDefault(word, 0) + 1);
+                if (frequency < rarestWordCount) {
+                    rarestWord = str;
+                    rarestWordCount = frequency;
                 }
             }
 
-            resultMap.put("Общее количество символов", String.valueOf(text.length()));
             HashMap<Character, Integer> charFrequencyMap = new HashMap<>();
-            for (char c : text.toString().toCharArray()) {
-                if (Character.isLetterOrDigit(c)) {
-                    charFrequencyMap.put(c, charFrequencyMap.getOrDefault(c, 0) + 1);
-                }
+            String line;
+            StringBuilder stringBuilder = new StringBuilder();
+            while((line = reader.readLine()) != null) {
+                stringBuilder.append(line.toLowerCase());
             }
+
+            for (char c : stringBuilder.toString().toCharArray()) {
+                    if (Character.isLetterOrDigit(c)) {
+                        charFrequencyMap.put(c, charFrequencyMap.getOrDefault(c, 0) + 1);
+                    }
+            }
+
+            resultMap.put("Общее количество символов", String.valueOf(stringBuilder.length()));
+
             char mostCommonChar = 0;
             int mostCommonCharCount = 0;
             char rarestChar = 0;
@@ -62,35 +70,7 @@ public class JSON {
                 }
             }
 
-            reader.close();
-            reader = new BufferedReader(new FileReader(fileName));
-            String line2;
-            while ((line2 = reader.readLine()) != null) {
-                StringBuilder stringBuilder = new StringBuilder();
-                for (char c : line2.toCharArray()) {
-                    if (Character.isLetterOrDigit(c)) {
-                        stringBuilder.append(c);
-                    } else if (!stringBuilder.isEmpty()) {
-                        String word = stringBuilder.toString().toLowerCase();
-                        wordFrequencyMap.put(word, wordFrequencyMap.getOrDefault(word, 0) + 1);
-                        stringBuilder.setLength(0);
-                    }
-                }
-                if (!stringBuilder.isEmpty()) {
-                    String word = stringBuilder.toString().toLowerCase();
-                    wordFrequencyMap.put(word, wordFrequencyMap.getOrDefault(word, 0) + 1);
-                }
-            }
-
-            ArrayList<Map.Entry<String, Integer>> sortedWordFrequencyList = new ArrayList<>(wordFrequencyMap.entrySet());
-            sortedWordFrequencyList.sort((entry1, entry2) -> entry2.getValue().compareTo(entry1.getValue()));
-
-            String mostCommonWord = sortedWordFrequencyList.get(0).getKey();
-            int mostCommonWordCount = sortedWordFrequencyList.get(0).getValue();
-            String rarestWord = sortedWordFrequencyList.get(sortedWordFrequencyList.size() - 1).getKey();
-            int rarestWordCount = sortedWordFrequencyList.get(sortedWordFrequencyList.size() - 1).getValue();
-
-            resultMap.put("Самый повторяющийся символ", String.valueOf(mostCommonChar));
+            resultMap.put("Самый частый символ", String.valueOf(mostCommonChar));
             resultMap.put("Количество повторений самого частого символа", String.valueOf(mostCommonCharCount));
             resultMap.put("Самый редкий символ", String.valueOf(rarestChar));
             resultMap.put("Количество повторений самого редкого символа", String.valueOf(rarestCharCount));
@@ -106,7 +86,6 @@ public class JSON {
 
     public static void writeCharAnalysisToJSON(HashMap<String, String> resultMap) {
         try (FileWriter writer = new FileWriter("frequency_analysis.json")) {
-//            PrintWriter writer = new PrintWriter(resultMap.get("Название файла") + "_analysis.json");
             StringBuilder jsonBuilder = new StringBuilder();
             jsonBuilder.append("{").append("\n");
             boolean first = true;
@@ -121,16 +100,7 @@ public class JSON {
             jsonBuilder.append("\n").append("}");
             System.out.println(jsonBuilder);
             writer.write(jsonBuilder.toString());
-//            writer.write("{");
-//            boolean first = true;
-//            for (Map.Entry<String, String> entry : resultMap.entrySet()) {
-//                if (!first) {
-//                    writer.write(",");
-//                }
-//                writer.write("\"" + entry.getKey() + "\": \"" + entry.getValue() + "\"");
-//                first = false;
-//            }
-//            writer.write("\n}");
+
         } catch (IOException ex) {
             System.err.println(ANSI_RED + "Ошибка при записи в JSON " + ex.getMessage() + ANSI_RESET);
         }
