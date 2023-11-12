@@ -107,14 +107,14 @@ public class JSON {
             jsonBuilder.append("    \"Количество повторений самого редкого слова\": ").append(resultMap.get("Количество повторений самого редкого слова"));
             jsonBuilder.append("\n}");
 
-//            boolean first = true;
+//            boolean isFirst = true;
 //            for (Map.Entry<String, String> entry : resultMap.entrySet()) {
-//                if (!first) {
+//                if (!isFirst) {
 //                    jsonBuilder.append(",").append("\n");
 //                }
 //                jsonBuilder.append("    \"").append(entry.getKey());
-//                jsonBuilder.append("\": \"").append(entry.getValue()).append("\"");
-//                first = false;
+//                jsonBuilder.append("\": ").append(entry.getValue());
+//                isFirst = false;
 //            }
 //            jsonBuilder.append("\n").append("}");
             System.out.println(jsonBuilder);
