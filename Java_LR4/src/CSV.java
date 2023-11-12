@@ -65,6 +65,7 @@ public class CSV {
                 }
                 writer.newLine();
             }
+
         } catch (IOException ex) {
             System.err.println(ANSI_RED + "Ошибка при записи в CSV-файл: " + ex + ANSI_RESET + "\n");
         }
