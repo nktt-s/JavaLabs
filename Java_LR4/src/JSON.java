@@ -80,7 +80,7 @@ public class JSON {
         return resultMap;
     }
 
-    public static void writeToJSON(HashMap<String, String> resultMap, boolean isFirst, boolean isLast) {
+    public static void writeCharAnalysisToJSON(HashMap<String, String> resultMap, boolean isFirst, boolean isLast) {
         try (FileWriter writer = new FileWriter("frequency_analysis.json", !isFirst)) {
             StringBuilder jsonBuilder = new StringBuilder();
             if (isFirst) {
