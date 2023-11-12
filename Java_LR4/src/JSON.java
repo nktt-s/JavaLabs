@@ -83,41 +83,38 @@ public class JSON {
         return resultMap;
     }
 
-    public static void writeCharAnalysisToJSON(HashMap<String, String> resultMap) {
-        try (FileWriter writer = new FileWriter("frequency_analysis.json")) {
+    public static void writeToJSON(HashMap<String, String> resultMap, int iteration, int filesCount) {
+        try (FileWriter writer = new FileWriter("frequency_analysis.json", iteration != 1)) {
             StringBuilder jsonBuilder = new StringBuilder();
-            jsonBuilder.append("{\n    \"Название файла\": \"").append(resultMap.get("Название файла"));
+            if (iteration == 1) {
+                jsonBuilder.append("{\n");
+            }
+            jsonBuilder.append("\t\"").append(resultMap.get("Название файла")).append("\": {\n");
+            jsonBuilder.append("\t\t\"Название файла\": \"").append(resultMap.get("Название файла"));
             jsonBuilder.append("\",\n");
-            jsonBuilder.append("    \"Общее количество символов\": ").append(resultMap.get("Общее количество символов"));
+            jsonBuilder.append("\t\t\"Общее количество символов\": ").append(resultMap.get("Общее количество символов"));
             jsonBuilder.append(",\n");
-            jsonBuilder.append("    \"Самый частый символ\": \"").append(resultMap.get("Самый частый символ"));
+            jsonBuilder.append("\t\t\"Самый частый символ\": \"").append(resultMap.get("Самый частый символ"));
             jsonBuilder.append("\",\n");
-            jsonBuilder.append("    \"Количество повторений самого частого символа\": ").append(resultMap.get("Количество повторений самого частого символа"));
+            jsonBuilder.append("\t\t\"Количество повторений самого частого символа\": ").append(resultMap.get("Количество повторений самого частого символа"));
             jsonBuilder.append(",\n");
-            jsonBuilder.append("    \"Самый редкий символ\": \"").append(resultMap.get("Самый редкий символ"));
+            jsonBuilder.append("\t\t\"Самый редкий символ\": \"").append(resultMap.get("Самый редкий символ"));
             jsonBuilder.append("\",\n");
-            jsonBuilder.append("    \"Количество повторений самого редкого символа\": ").append(resultMap.get("Количество повторений самого редкого символа"));
+            jsonBuilder.append("\t\t\"Количество повторений самого редкого символа\": ").append(resultMap.get("Количество повторений самого редкого символа"));
             jsonBuilder.append(",\n");
-            jsonBuilder.append("    \"Самое частое слово\": \"").append(resultMap.get("Самое частое слово"));
+            jsonBuilder.append("\t\t\"Самое частое слово\": \"").append(resultMap.get("Самое частое слово"));
             jsonBuilder.append("\",\n");
-            jsonBuilder.append("    \"Количество повторений самого частого слова\": ").append(resultMap.get("Количество повторений самого частого слова"));
+            jsonBuilder.append("\t\t\"Количество повторений самого частого слова\": ").append(resultMap.get("Количество повторений самого частого слова"));
             jsonBuilder.append(",\n");
-            jsonBuilder.append("    \"Самое редкое слово\": \"").append(resultMap.get("Самое редкое слово"));
+            jsonBuilder.append("\t\t\"Самое редкое слово\": \"").append(resultMap.get("Самое редкое слово"));
             jsonBuilder.append("\",\n");
-            jsonBuilder.append("    \"Количество повторений самого редкого слова\": ").append(resultMap.get("Количество повторений самого редкого слова"));
-            jsonBuilder.append("\n}");
-
-//            boolean isFirst = true;
-//            for (Map.Entry<String, String> entry : resultMap.entrySet()) {
-//                if (!isFirst) {
-//                    jsonBuilder.append(",").append("\n");
-//                }
-//                jsonBuilder.append("    \"").append(entry.getKey());
-//                jsonBuilder.append("\": ").append(entry.getValue());
-//                isFirst = false;
-//            }
-//            jsonBuilder.append("\n").append("}");
-            System.out.println(jsonBuilder);
+            jsonBuilder.append("\t\t\"Количество повторений самого редкого слова\": ").append(resultMap.get("Количество повторений самого редкого слова"));
+            if (iteration == filesCount) {
+                jsonBuilder.append("\n\t}\n}");
+            } else {
+                jsonBuilder.append("\n\t},\n");
+            }
+//            System.out.println(jsonBuilder);
             writer.write(jsonBuilder.toString());
 
         } catch (IOException ex) {
