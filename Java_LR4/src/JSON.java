@@ -83,10 +83,10 @@ public class JSON {
         return resultMap;
     }
 
-    public static void writeToJSON(HashMap<String, String> resultMap, int iteration, int filesCount) {
-        try (FileWriter writer = new FileWriter("frequency_analysis.json", iteration != 1)) {
+    public static void writeToJSON(HashMap<String, String> resultMap, boolean isFirst, boolean isLast) {
+        try (FileWriter writer = new FileWriter("frequency_analysis.json", !isFirst)) {
             StringBuilder jsonBuilder = new StringBuilder();
-            if (iteration == 1) {
+            if (isFirst) {
                 jsonBuilder.append("{\n");
             }
             jsonBuilder.append("\t\"").append(resultMap.get("Название файла")).append("\": {\n");
@@ -109,7 +109,7 @@ public class JSON {
             jsonBuilder.append("\t\t\"Самое редкое слово\": \"").append(resultMap.get("Самое редкое слово"));
             jsonBuilder.append("\",\n");
             jsonBuilder.append("\t\t\"Количество повторений самого редкого слова\": ").append(resultMap.get("Количество повторений самого редкого слова"));
-            if (iteration == filesCount) {
+            if (isLast) {
                 jsonBuilder.append("\n\t}\n}");
             } else {
                 jsonBuilder.append("\n\t},\n");

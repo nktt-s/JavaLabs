@@ -56,7 +56,7 @@ public class Main {
                         } else {
                             for (int i = 1; i < args.length; ++i) {
                                 if (new File(args[i]).exists()) {
-                                    JSON.writeToJSON(JSON.createCharAnalysisMap(args[i]), i, args.length - 1);
+                                    JSON.writeToJSON(JSON.createCharAnalysisMap(args[i]), i == 1, i == args.length - 1);
                                 } else {
                                     System.out.println(ANSI_RED + "\t\tОшибка! Файл с именем '" + args[i] + "' не найден." + ANSI_RESET);
                                 }
