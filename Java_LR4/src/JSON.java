@@ -1,7 +1,4 @@
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -114,12 +111,25 @@ public class JSON {
             } else {
                 jsonBuilder.append("\n\t},\n");
             }
-//            System.out.println(jsonBuilder);
             writer.write(jsonBuilder.toString());
 
         } catch (IOException ex) {
             System.err.println(ANSI_RED + "Ошибка при записи в JSON " + ex.getMessage() + ANSI_RESET);
         }
         System.out.println(ANSI_GREEN + "\tJSON-файл успешно создан для файла '" + resultMap.get("Название файла") + "': 'frequency_analysis.json'" + ANSI_RESET);
+    }
+
+    public static void readFromJSON(String fileName) {
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader(fileName));
+            String line;
+            while ((line = reader.readLine()) != null) {
+                System.out.println(line.replaceAll("[{},]", ""));
+            }
+        } catch (FileNotFoundException ex) {
+            System.err.println(ANSI_RED + "JSON-файл с таким именем не найден! " + ex.getMessage() + ANSI_RESET);
+        } catch (IOException ex) {
+            System.err.println(ANSI_RED + "Ошибка при чтении JSON-файла! " + ex.getMessage() + ANSI_RESET);
+        }
     }
 }

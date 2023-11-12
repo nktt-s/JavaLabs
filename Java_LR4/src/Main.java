@@ -3,17 +3,16 @@ import java.io.*;
 public class Main {
     public static final String ANSI_RESET = "\u001B[0m";
     public static final String ANSI_RED = "\u001B[31m";
-    public static final String ANSI_GREEN = "\u001B[32m";
+    public static final String ANSI_BLUE = "\u001B[34m";
     public static void main(String[] args) {
 
-        System.out.println("\n\t\t\t=== Лабораторная работа #4 ===\n\t\tВыполнил студент группы ИКПИ-14 Сергеев Н.В.\n");
+        System.out.println(ANSI_BLUE + "\n\t\t\t=== Лабораторная работа #4 ===\n\t\tВыполнил студент группы ИКПИ-14 Сергеев Н.В.\n" + ANSI_RESET);
         while (true) {
 
             if (args.length == 0) {
                 showIncorrectInputMessage();
                 break;
             }
-
             else {
                 switch (args[0]) {
                     case "--csv":
@@ -66,6 +65,12 @@ public class Main {
                         return;
 
                     case "--json-read":
+                        if (args.length == 1) {
+                            System.out.println(ANSI_RED + "\tОтсутствует имя JSON-файла.");
+                            System.out.println("\tВведите его после ключа '--json-read' и повторите попытку.\n" + ANSI_RESET);
+                        } else {
+                            JSON.readFromJSON(args[1]);
+                        }
                         return;
 
                     case "--help":
