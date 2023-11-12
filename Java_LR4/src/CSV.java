@@ -69,6 +69,6 @@ public class CSV {
         } catch (IOException ex) {
             System.err.println(ANSI_RED + "Ошибка при записи в CSV-файл: " + ex + ANSI_RESET + "\n");
         }
-        System.out.print(ANSI_GREEN + "\t\tCSV-файл успешно создан: '" + inputFileName.replaceAll("\\.[^.]+$", "") + "_analysis.csv'" + ANSI_RESET);
+        System.out.print(ANSI_GREEN + "\n\t\tCSV-файл успешно создан: '" + inputFileName.replaceAll("\\.[^.]+$", "") + "_analysis.csv'" + ANSI_RESET);
     }
 }
