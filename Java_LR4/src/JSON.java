@@ -1,4 +1,5 @@
 import java.io.*;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -6,9 +7,9 @@ public class JSON {
     public static final String ANSI_RESET = "\u001B[0m";
     public static final String ANSI_RED = "\u001B[31m";
     public static final String ANSI_GREEN = "\u001B[32m";
-    public static HashMap<String, String> createCharAnalysisMap(String fileName) {
-        HashMap<String, String> resultMap = new HashMap<>();
-        resultMap.put("Название файла", fileName);
+    public static ArrayList<Object> createCharAnalysisList(String fileName) {
+        ArrayList<Object> list = new ArrayList<>();
+        list.add(fileName); // Название файла
 
         try {
             BufferedReader reader = new BufferedReader(new FileReader(fileName));
@@ -46,7 +47,7 @@ public class JSON {
                     }
             }
 
-            resultMap.put("Общее количество символов", String.valueOf(stringBuilder.length()));
+            list.add(String.valueOf(stringBuilder.length())); // Общее количество символов
 
             char mostCommonChar = 0;
             int mostCommonCharCount = 0;
@@ -66,46 +67,47 @@ public class JSON {
                 }
             }
 
-            resultMap.put("Самый частый символ", String.valueOf(mostCommonChar));
-            resultMap.put("Количество повторений самого частого символа", String.valueOf(mostCommonCharCount));
-            resultMap.put("Самый редкий символ", String.valueOf(rarestChar));
-            resultMap.put("Количество повторений самого редкого символа", String.valueOf(rarestCharCount));
-            resultMap.put("Самое частое слово", mostCommonWord);
-            resultMap.put("Количество повторений самого частого слова", String.valueOf(mostCommonWordCount));
-            resultMap.put("Самое редкое слово", rarestWord);
-            resultMap.put("Количество повторений самого редкого слова", String.valueOf(rarestWordCount));
+            list.add(String.valueOf(mostCommonChar));       // Самый частый символ
+            list.add(String.valueOf(mostCommonCharCount));  // Количество повторений самого частого символа
+            list.add(String.valueOf(rarestChar));           // Самый редкий символ
+            list.add(String.valueOf(rarestCharCount));      // Количество повторений самого редкого символа
+            list.add(String.valueOf(mostCommonWord));       // Самое частое слово
+            list.add(String.valueOf(mostCommonWordCount));  // Количество повторений самого частого слова
+            list.add(String.valueOf(rarestWord));           // Самое редкое слово
+            list.add(String.valueOf(rarestWordCount));      // Количество повторений самого редкого слова
+
         } catch (IOException ex) {
             System.err.println(ANSI_RED + "Ошибка при чтении текстового файла " + ex.getMessage() + ANSI_RESET);
         }
-        return resultMap;
+        return list;
     }
 
-    public static void writeCharAnalysisToJSON(HashMap<String, String> resultMap, boolean isFirst, boolean isLast) {
+    public static void writeCharAnalysisToJSON(ArrayList<Object> list, boolean isFirst, boolean isLast) {
         try (FileWriter writer = new FileWriter("frequency_analysis.json", !isFirst)) {
             StringBuilder jsonBuilder = new StringBuilder();
             if (isFirst) {
                 jsonBuilder.append("{\n");
             }
-            jsonBuilder.append("\t\"").append(resultMap.get("Название файла")).append("\": {\n");
-            jsonBuilder.append("\t\t\"Название файла\": \"").append(resultMap.get("Название файла"));
+            jsonBuilder.append("\t\"").append(list.get(0)).append("\": {\n");
+            jsonBuilder.append("\t\t\"Название файла\": \"").append(list.get(0));
             jsonBuilder.append("\",\n");
-            jsonBuilder.append("\t\t\"Общее количество символов\": ").append(resultMap.get("Общее количество символов"));
+            jsonBuilder.append("\t\t\"Общее количество символов\": ").append(list.get(1));
             jsonBuilder.append(",\n");
-            jsonBuilder.append("\t\t\"Самый частый символ\": \"").append(resultMap.get("Самый частый символ"));
+            jsonBuilder.append("\t\t\"Самый частый символ\": \"").append(list.get(2));
             jsonBuilder.append("\",\n");
-            jsonBuilder.append("\t\t\"Количество повторений самого частого символа\": ").append(resultMap.get("Количество повторений самого частого символа"));
+            jsonBuilder.append("\t\t\"Количество повторений самого частого символа\": ").append(list.get(3));
             jsonBuilder.append(",\n");
-            jsonBuilder.append("\t\t\"Самый редкий символ\": \"").append(resultMap.get("Самый редкий символ"));
+            jsonBuilder.append("\t\t\"Самый редкий символ\": \"").append(list.get(4));
             jsonBuilder.append("\",\n");
-            jsonBuilder.append("\t\t\"Количество повторений самого редкого символа\": ").append(resultMap.get("Количество повторений самого редкого символа"));
+            jsonBuilder.append("\t\t\"Количество повторений самого редкого символа\": ").append(list.get(5));
             jsonBuilder.append(",\n");
-            jsonBuilder.append("\t\t\"Самое частое слово\": \"").append(resultMap.get("Самое частое слово"));
+            jsonBuilder.append("\t\t\"Самое частое слово\": \"").append(list.get(6));
             jsonBuilder.append("\",\n");
-            jsonBuilder.append("\t\t\"Количество повторений самого частого слова\": ").append(resultMap.get("Количество повторений самого частого слова"));
+            jsonBuilder.append("\t\t\"Количество повторений самого частого слова\": ").append(list.get(7));
             jsonBuilder.append(",\n");
-            jsonBuilder.append("\t\t\"Самое редкое слово\": \"").append(resultMap.get("Самое редкое слово"));
+            jsonBuilder.append("\t\t\"Самое редкое слово\": \"").append(list.get(8));
             jsonBuilder.append("\",\n");
-            jsonBuilder.append("\t\t\"Количество повторений самого редкого слова\": ").append(resultMap.get("Количество повторений самого редкого слова"));
+            jsonBuilder.append("\t\t\"Количество повторений самого редкого слова\": ").append(list.get(9));
             if (isLast) {
                 jsonBuilder.append("\n\t}\n}");
             } else {
@@ -116,7 +118,7 @@ public class JSON {
         } catch (IOException ex) {
             System.err.println(ANSI_RED + "Ошибка при записи в JSON " + ex.getMessage() + ANSI_RESET);
         }
-        System.out.println(ANSI_GREEN + "\tJSON-файл успешно создан для файла '" + resultMap.get("Название файла") + "': 'frequency_analysis.json'" + ANSI_RESET);
+        System.out.println(ANSI_GREEN + "\tJSON-файл успешно создан для файла '" + list.get(0) + "': 'frequency_analysis.json'" + ANSI_RESET);
     }
 
     public static void readFromJSON(String fileName) {
