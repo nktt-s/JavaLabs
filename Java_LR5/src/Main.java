@@ -73,8 +73,10 @@ public class Main {
 
     public static void addDevice(GardeningDeviceManager deviceManager) {
         System.out.println(ANSI_BLUE + "=== Добавление устройства ===" + ANSI_RESET);
-        System.out.println("Введите тип устройства:\n\t1 - Газонокосилка\n\t2 - Автополив\n\t" +
-                "3 - Термопривод для теплиц");
+        System.out.println("Выберите тип устройства: ");
+        System.out.println("\t1. Газонокосилка");
+        System.out.println("\t2. Автополив");
+        System.out.println("\t3. Термопривод для теплиц");
         Scanner sc = new Scanner(System.in);
         if (sc.hasNextInt()) {
             int deviceType = sc.nextInt();
