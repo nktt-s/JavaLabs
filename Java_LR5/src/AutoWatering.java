@@ -1,26 +1,24 @@
 public class AutoWatering extends GardeningDevice {
-    public AutoWatering(String manufacturer, String model, String powerSupply) {
-        super(manufacturer, model, powerSupply);
+    public AutoWatering(String manufacturer, String model, String powerSource) {
+        super(manufacturer, model, powerSource);
     }
 
     @Override
     public void turnOn() {
         System.out.println("AutoWatering is turned on.");
+        super.isOn = true;
     }
     @Override
     public void turnOff() {
         System.out.println("AutoWatering is turned off.");
+        super.isOn = false;
     }
     @Override
-    public void performAnAction() {
-        System.out.println("Automatic watering...");
+    public void performAction() {
+        System.out.println("Automatic watering is watering the plants...");
     }
     @Override
-    public void setIntensity() {
-        System.out.println("Setting the intensity of the AutoWatering.");
-    }
-    @Override
-    public void checkStatus() {
-        System.out.println("Checking the status of the AutoWatering.");
+    public void performMaintenance() {
+        System.out.println("Performing maintenance of Autowatering system...");
     }
 }

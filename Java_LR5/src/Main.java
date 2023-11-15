@@ -10,9 +10,9 @@ public class Main {
     public static void main(String[] args) {
         Lawnmower lawnmower = new Lawnmower("Karcher", "2019", "gasoline");
         AutoWatering autoWatering = new AutoWatering("Rain Bird", "2021", "solar panels");
-        ThermalActuator thermalActuator = new ThermalActuator("Thermovent", "2018", "mains power supply");
+        GreenhouseThermostat thermostat = new GreenhouseThermostat("Thermovent", "2018", "mains power supply");
 
-        ArrayList<GardeningDevice> gardeningDevices = new ArrayList<>(Arrays.asList(lawnmower, autoWatering, thermalActuator));
+        ArrayList<GardeningDevice> gardeningDevices = new ArrayList<>(Arrays.asList(lawnmower, autoWatering, thermostat));
         System.out.println(ANSI_BLUE + "\n\t\t\t=== Лабораторная работа #5 ===\n\t\tВыполнил студент группы ИКПИ-14 Сергеев Н.В.\n" + ANSI_RESET);
         Scanner sc = new Scanner(System.in);
         while (true) {
@@ -63,6 +63,24 @@ public class Main {
                         break;
 
                     case 5:
+                        Scanner sc_work = new Scanner(System.in);
+                        if (sc_work.hasNextInt()) {
+                            int choice_work = sc_work.nextInt();
+                            if (gardeningDevices.isEmpty()) {
+                                System.out.println(ANSI_RED + "Отсутствуют объекты для выбора действия для выполнения!" + ANSI_RESET);
+                            } else {
+                                System.out.println("Выберите устройство: ");
+                                showObjects(gardeningDevices);
+                                if (1 <= choice_work && choice_work <= gardeningDevices.size()) {
+                                    // TODO
+//                                    gardeningDevices.get(choice_work).
+                                } else {
+                                    System.out.println(ANSI_RED + "Введено неверное значение!" + ANSI_RESET);
+                                }
+                            }
+                        } else {
+                            System.out.println(ANSI_RED + "Введено неверное значение!" + ANSI_RESET);
+                        }
                         break;
 
                     case 6:
@@ -93,8 +111,8 @@ public class Main {
         if (gardeningDevices.isEmpty()) {
             System.out.println("------------------ NO OBJECTS -------------------");
         } else {
-            for (int i = 1; i <= gardeningDevices.size(); ++i) {
-                System.out.println(" " + i + " | " + gardeningDevices.get(i - 1).print());
+            for (int i = 0; i < gardeningDevices.size(); ++i) {
+                System.out.println(" " + i + " | " + gardeningDevices.get(i).print());
             }
         }
     }
