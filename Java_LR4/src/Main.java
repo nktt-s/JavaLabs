@@ -23,7 +23,6 @@ public class Main {
                         } else {
                             if (new File(args[1]).exists()) {
                                 CSV.writeWordFrequencyToCSV(CSV.createWordFrequencyMap(args[1]), args[1]);
-                                System.out.println();
                             } else {
                                 System.out.println(ANSI_RED + "\t\t   Ошибка! Файл с таким именем не найден." + ANSI_RESET);
                             }
