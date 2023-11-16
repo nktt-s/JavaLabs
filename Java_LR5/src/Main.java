@@ -6,13 +6,14 @@ public class Main {
     public static final String ANSI_RED = "\u001B[31m";
     public static final String ANSI_GREEN = "\u001B[32m";
     public static final String ANSI_BLUE = "\u001B[34m";
+    public static final int CURRENT_YEAR = 2023;
 
     public static void main(String[] args) {
         GardeningDeviceManager deviceManager = new GardeningDeviceManager();
 
-        Lawnmower lawnmower = new Lawnmower("Karcher", "2019", "gasoline");
-        AutoWatering autoWatering = new AutoWatering("Rain Bird", "2021", "solar panels");
-        ThermalDrive thermostat = new ThermalDrive("Thermovent", "2018", "mains power supply");
+        Lawnmower lawnmower = new Lawnmower("Karcher", "2019", "gasoline", 2010, 8);
+        AutoWatering autoWatering = new AutoWatering("Rain Bird", "2021", "solar panels", 2014, 10);
+        ThermalDrive thermostat = new ThermalDrive("Thermovent", "2018", "mains power supply", 2018, 6);
 
         deviceManager.addDevice(lawnmower);
         deviceManager.addDevice(autoWatering);
@@ -83,17 +84,36 @@ public class Main {
             String model = sc.nextLine();
             System.out.println("\tВведите источник питания: ");
             String powerSource = sc.nextLine();
+            System.out.println("\tВведите год производства (2000 - " + CURRENT_YEAR + "): ");
+            int productionYear = 2000;
+            if (sc.hasNextInt()) {
+                productionYear = sc.nextInt();
+            } else {
+                System.out.println(ANSI_RED + "Введено неверное значение! Установлен год производства по умолчанию (2000 год)." + ANSI_RESET);
+                // TODO
+            }
+            sc.nextLine();
+            System.out.println("\tВведите срок службы устройства (3 года - 20 лет): ");
+            int expectedLifetime = 3;
+            if (sc.hasNextInt()) {
+                expectedLifetime = sc.nextInt();
+            } else {
+                System.out.println(ANSI_RED + "Введено неверное значение! Установлен срок службы по умолчанию (5 лет)." + ANSI_RESET);
+                // TODO
+            }
+            sc.nextLine();
+
             GardeningDevice device;
 
             switch (deviceType) {
                 case 1:
-                    device = new Lawnmower(manufacturer, model, powerSource);
+                    device = new Lawnmower(manufacturer, model, powerSource, productionYear, expectedLifetime);
                     break;
                 case 2:
-                    device = new AutoWatering(manufacturer, model, powerSource);
+                    device = new AutoWatering(manufacturer, model, powerSource, productionYear, expectedLifetime);
                     break;
                 case 3:
-                    device = new ThermalDrive(manufacturer, model, powerSource);
+                    device = new ThermalDrive(manufacturer, model, powerSource, productionYear, expectedLifetime);
                     break;
                 default:
                     System.out.println(ANSI_RED + "\nВведено неверное значение!\n" + ANSI_RESET);
@@ -133,22 +153,44 @@ public class Main {
             } else {
                 GardeningDevice device = deviceManager.getDeviceByID(id);
 
-                System.out.println("Введите нового производителя (оставьте пустым, чтобы не изменять): ");
+                System.out.println("Введите нового производителя или оставьте поле пустым, чтобы не изменять: ");
                 String newManufacturer = sc.nextLine();
                 if (!newManufacturer.isEmpty()) {
                     device.setManufacturer(newManufacturer);
                 }
 
-                System.out.println("Введите новую модель (оставьте пустым, чтобы не изменять): ");
+                System.out.println("Введите новую модель или оставьте поле пустым, чтобы не изменять: ");
                 String newModel = sc.nextLine();
                 if (!newModel.isEmpty()) {
                     device.setModel(newModel);
                 }
 
-                System.out.println("Введите новый источник питания (оставьте пустым, чтобы не изменять): ");
+                System.out.println("Введите новый источник питания или оставьте поле пустым, чтобы не изменять: ");
                 String newPowerSource = sc.nextLine();
                 if (!newPowerSource.isEmpty()) {
                     device.setPowerSource(newPowerSource);
+                }
+
+                System.out.println("Введите новый год производства (2000 - " + CURRENT_YEAR + ") " + " или оставьте поле пустым, чтобы не изменять: ");
+                String expectedProductionYear = sc.nextLine();
+                if (expectedProductionYear.isEmpty()) {
+                    try {
+                        int newProductionYear = Integer.parseInt(expectedProductionYear);
+                        device.setProductionYear(newProductionYear);
+                    } catch (NumberFormatException ex) {
+                        System.out.println(ANSI_RED + "Введено неверное значение! Год производства остался без изменений." + ANSI_RESET);
+                    }
+                }
+
+                System.out.println("Введите новый срок службы (3 года - 20 лет) или оставьте поле пустым, чтобы не изменять: ");
+                String expectedLifetime = sc.nextLine();
+                if (expectedLifetime.isEmpty()) {
+                    try {
+                        int newLifetime = Integer.parseInt(expectedLifetime);
+                        device.setLifetime(newLifetime);
+                    } catch (NumberFormatException ex) {
+                        System.out.println(ANSI_RED + "Введено неверное значение! Срок службы остался без изменений." + ANSI_RESET);
+                    }
                 }
 
                 System.out.println(ANSI_GREEN + "\nУстройство успешно изменено!" + ANSI_RESET);

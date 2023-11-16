@@ -1,32 +1,33 @@
 public class Lawnmower extends GardeningDevice {
-    public Lawnmower(String manufacturer, String model, String powerSource) {
-        super(manufacturer, model, powerSource);
+    public Lawnmower(String manufacturer, String model, String powerSource, int productionYear, int expectedLifetime) {
+        super(manufacturer, model, powerSource, productionYear, expectedLifetime);
     }
 
     @Override
     public void turnOn() {
         if (super.isOn) {
-            // TODO КРАСИВЫЙ ВЫВОД В ANSI-ЦВЕТАХ (жёлтый - предупреждение, зелёный - ON, красный - OFF
-            System.out.println("Lawnmower is already turned on!");
+            System.out.println(ANSI_YELLOW + "Газонокосилка уже включена!" + ANSI_RESET);
         } else {
-            System.out.println("Lawnmower is turned on.");
+            System.out.println(ANSI_GREEN + "Газонокосилка включена." + ANSI_RESET);
             super.isOn = true;
         }
     }
     @Override
     public void turnOff() {
         if (!super.isOn) {
-            // TODO КРАСИВЫЙ ВЫВОД В ANSI-ЦВЕТАХ (жёлтый - предупреждение, зелёный - ON, красный - OFF
-            System.out.println("Lawnmower is already turned off!");
+            System.out.println(ANSI_YELLOW + "Газонокосилка уже выключена!" + ANSI_RESET);
         } else {
-            System.out.println("Lawnmower is turned off.");
+            System.out.println(ANSI_RED + "Газонокосилка выключена." + ANSI_RESET);
             super.isOn = false;
         }
     }
     @Override
     public void performAction() {
-        // TODO ПРОВЕРКА НА ТО, ЧТО УСТРОЙСТВО ВКЛЮЧЕНО
-        System.out.println("Lawnmower is cutting the grass...");
+        if (super.isOn) {
+            System.out.println(ANSI_GREEN + "Газонокосилка косит траву..." + ANSI_RESET);
+        } else {
+            System.out.println(ANSI_YELLOW + "Газонокосилка ещё не включена!" + ANSI_RESET);
+        }
     }
     @Override
     public void performMaintenance() {

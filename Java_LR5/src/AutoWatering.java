@@ -1,32 +1,33 @@
 public class AutoWatering extends GardeningDevice {
-    public AutoWatering(String manufacturer, String model, String powerSource) {
-        super(manufacturer, model, powerSource);
+    public AutoWatering(String manufacturer, String model, String powerSource, int productionYear, int expectedLifetime) {
+        super(manufacturer, model, powerSource, productionYear, expectedLifetime);
     }
 
     @Override
     public void turnOn() {
         if (super.isOn) {
-            // TODO КРАСИВЫЙ ВЫВОД В ANSI-ЦВЕТАХ (жёлтый - предупреждение, зелёный - ON, красный - OFF
-            System.out.println("AutoWatering is already turned on!");
+            System.out.println(ANSI_YELLOW + "Автополив уже включён!" + ANSI_RESET);
         } else {
-            System.out.println("AutoWatering is turned on.");
+            System.out.println(ANSI_GREEN + "Автополив включён." + ANSI_RESET);
             super.isOn = true;
         }
     }
     @Override
     public void turnOff() {
         if (!super.isOn) {
-            // TODO КРАСИВЫЙ ВЫВОД В ANSI-ЦВЕТАХ (жёлтый - предупреждение, зелёный - ON, красный - OFF
-            System.out.println("AutoWatering is already turned off!");
+            System.out.println(ANSI_YELLOW + "Автополив уже выключен!" + ANSI_RESET);
         } else {
-            System.out.println("AutoWatering is turned off.");
+            System.out.println(ANSI_RED + "Автополив выключен." + ANSI_RESET);
             super.isOn = false;
         }
     }
     @Override
     public void performAction() {
-        // TODO ПРОВЕРКА НА ТО, ЧТО УСТРОЙСТВО ВКЛЮЧЕНО
-        System.out.println("Automatic watering is watering the plants...");
+        if (super.isOn) {
+            System.out.println(ANSI_GREEN + "Полив растений..." + ANSI_RESET);
+        } else {
+            System.out.println(ANSI_YELLOW + "Автополив ещё не включён!" + ANSI_RESET);
+        }
     }
     @Override
     public void performMaintenance() {

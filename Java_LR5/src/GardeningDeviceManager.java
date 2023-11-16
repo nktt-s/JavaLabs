@@ -34,13 +34,14 @@ public class GardeningDeviceManager {
         }
     }
     public void showObjects() {
-        System.out.println("\nID\t\tType\t\t\tManufacturer\t\tModel\t\tPower Source");
-        System.out.println("======================================================================");
+        System.out.println("\nID\tТИП\t\t\t\tПРОИЗВОДИТЕЛЬ\t\tМОДЕЛЬ\t\tИСТОЧНИК ПИТАНИЯ\t\tГОД ПРОИЗВОДСТВА\tСРОК СЛУЖБЫ");
+        System.out.println("=================================================================================================================");
         if (this.devices.isEmpty()) {
             System.out.println("----------------------------- NO OBJECTS -----------------------------");
         } else {
-            for (int i = 0; i < devices.size(); ++i) {
-                System.out.printf("%-6d\t%-15s\t%-16s\t%-10s\t%-15s\n", devices.get(i).getId(), devices.get(i).getClass().toString().substring(6), devices.get(i).getManufacturer(), devices.get(i).getModel(), devices.get(i).getPowerSource());
+            for (GardeningDevice device : devices) {
+                System.out.printf("%-2d\t%-15s\t%-16s\t%-10s\t%-20s\t\t%-16s\t%-11s\n", device.getId(), device.getClass().toString().substring(6),
+                        device.getManufacturer(), device.getModel(), device.getPowerSource(), device.getProductionYear(), device.getLifetime());
             }
         }
         System.out.println();
