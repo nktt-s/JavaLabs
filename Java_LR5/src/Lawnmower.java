@@ -5,16 +5,27 @@ public class Lawnmower extends GardeningDevice {
 
     @Override
     public void turnOn() {
-        System.out.println("Lawnmower is turned on.");
-        super.isOn = true;
+        if (super.isOn) {
+            // TODO КРАСИВЫЙ ВЫВОД В ANSI-ЦВЕТАХ (жёлтый - предупреждение, зелёный - ON, красный - OFF
+            System.out.println("Lawnmower is already turned on!");
+        } else {
+            System.out.println("Lawnmower is turned on.");
+            super.isOn = true;
+        }
     }
     @Override
     public void turnOff() {
-        System.out.println("Lawnmower is turned off.");
-        super.isOn = false;
+        if (!super.isOn) {
+            // TODO КРАСИВЫЙ ВЫВОД В ANSI-ЦВЕТАХ (жёлтый - предупреждение, зелёный - ON, красный - OFF
+            System.out.println("Lawnmower is already turned off!");
+        } else {
+            System.out.println("Lawnmower is turned off.");
+            super.isOn = false;
+        }
     }
     @Override
     public void performAction() {
+        // TODO ПРОВЕРКА НА ТО, ЧТО УСТРОЙСТВО ВКЛЮЧЕНО
         System.out.println("Lawnmower is cutting the grass...");
     }
     @Override

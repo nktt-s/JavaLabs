@@ -5,12 +5,14 @@ public abstract class GardeningDevice {
     protected boolean isOn;
     private int intensity;
 
-//    private int id;
+    private int id;
+    private static int nextId = 1;
 
     private int noiseLevel;
     private int coverageAreaValue;
 
     public GardeningDevice(String manufacturer, String model, String powerSource) {
+        this.id = nextId++;
         this.manufacturer = manufacturer;
         this.model = model;
         this.powerSource = powerSource;
@@ -37,7 +39,9 @@ public abstract class GardeningDevice {
     }
 
     // Геттеры и сеттеры для свойств
-
+    public int getId() {
+        return id;
+    }
     public String getManufacturer() {
         return manufacturer;
     }
@@ -72,4 +76,8 @@ public abstract class GardeningDevice {
     public void setCoverageAreaValue(int coverageAreaValue) {
         this.coverageAreaValue = coverageAreaValue;
     }
+
+    public static final String ANSI_RESET = "\u001B[0m";
+    public static final String ANSI_RED = "\u001B[31m";
+    public static final String ANSI_GREEN = "\u001B[32m";
 }
