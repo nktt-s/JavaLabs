@@ -11,6 +11,9 @@ public class Lawnmower extends GardeningDevice {
         if (super.getPowerSource().equalsIgnoreCase("Аккумулятор")) {
             this.batteryLevel = 100;
         }
+        this.isGrassCollectionFull = false;
+        this.isMulchingEnabled = false;
+        setCuttingHeight(40);
     }
 
     @Override
@@ -18,7 +21,6 @@ public class Lawnmower extends GardeningDevice {
         if (super.isOn) {
             System.out.println(ANSI_YELLOW + "Газонокосилка уже включена!" + ANSI_RESET);
         } else {
-
             System.out.print("Включить мульчирование? (да/нет): ");
             scanner.nextLine();
             String mulchingInput = scanner.nextLine().toLowerCase();
@@ -110,11 +112,11 @@ public class Lawnmower extends GardeningDevice {
 
     public void adjustCuttingHeight(int height) {
         if (20 <= height && height <= 100) {
-            cuttingHeight = height;
-            System.out.println(ANSI_GREEN + "Высота среза установлена на " + height + " мм." + ANSI_RESET);
+            setCuttingHeight(height);
+            System.out.println(ANSI_GREEN + "Высота среза установлена на " + getCuttingHeight() + " мм." + ANSI_RESET);
         } else {
             System.out.println(ANSI_YELLOW + "Неверный ввод. Установлена высота среза по умолчанию (40 мм)." + ANSI_RESET);
-            cuttingHeight = 40;
+            setCuttingHeight(40);
         }
     }
 
@@ -151,5 +153,11 @@ public class Lawnmower extends GardeningDevice {
                 System.out.println(ANSI_RED + "Внимание! Низкий уровень заряда аккумулятора: " + batteryLevel + "%." + ANSI_RESET);
             }
         }
+    }
+    public int getCuttingHeight() {
+        return cuttingHeight;
+    }
+    public void setCuttingHeight(int cuttingHeight) {
+        this.cuttingHeight = cuttingHeight;
     }
 }

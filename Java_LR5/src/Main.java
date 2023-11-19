@@ -11,10 +11,10 @@ public class Main {
     public static void main(String[] args) {
         GardeningDeviceManager deviceManager = new GardeningDeviceManager();
 
-        Lawnmower lawnmower1 = new Lawnmower("Karcher", "MODEL_1", "бензин", 2010, 8);
-        AutoWatering autoWatering = new AutoWatering("Rain Bird", "2021", "солнечные панели", 2014, 10);
-        ThermalDrive thermostat = new ThermalDrive("Thermovent", "2018", "сетевое питание", 2018, 6);
-        Lawnmower lawnmower2 = new Lawnmower("Karcher", "MODEL_2", "аккумулятор", 2021, 8);
+        Lawnmower lawnmower1 = new Lawnmower("Karcher", "MODEL_12", "бензин", 2010, 8);
+        AutoWatering autoWatering = new AutoWatering("Rain Bird", "MODEL_81", "солнечные панели", 2014, 10);
+        ThermalDrive thermostat = new ThermalDrive("Thermovent", "MODEL_77", "сетевое питание", 2018, 6);
+        Lawnmower lawnmower2 = new Lawnmower("Karcher", "MODEL_36", "аккумулятор", 2021, 8);
 
         deviceManager.addDevice(lawnmower1);
         deviceManager.addDevice(autoWatering);
