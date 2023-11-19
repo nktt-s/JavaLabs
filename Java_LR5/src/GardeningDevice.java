@@ -1,3 +1,5 @@
+import java.util.Scanner;
+
 public abstract class GardeningDevice {
     private String manufacturer;
     private String model;
@@ -35,9 +37,9 @@ public abstract class GardeningDevice {
         return isOn;
     }
 
-    public abstract void turnOn();
+    public abstract void turnOn(Scanner scanner);
     public abstract void turnOff();
-    public abstract void performAction();
+    public abstract void performAction(Scanner scanner);
 
 
     public boolean isExpired(int productionYear, int expectedLifetime) {
@@ -53,7 +55,7 @@ public abstract class GardeningDevice {
 
 
 
-    public abstract void performMaintenance(); // Провести обслуживание
+//    public abstract void performMaintenance(); // Провести обслуживание
     public String showFeatures() {
         return "";
     }

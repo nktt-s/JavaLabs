@@ -11,13 +11,15 @@ public class Main {
     public static void main(String[] args) {
         GardeningDeviceManager deviceManager = new GardeningDeviceManager();
 
-        Lawnmower lawnmower = new Lawnmower("Karcher", "2019", "gasoline", 2010, 8);
-        AutoWatering autoWatering = new AutoWatering("Rain Bird", "2021", "solar panels", 2014, 10);
-        ThermalDrive thermostat = new ThermalDrive("Thermovent", "2018", "mains power supply", 2018, 6);
+        Lawnmower lawnmower1 = new Lawnmower("Karcher", "MODEL_1", "бензин", 2010, 8);
+        AutoWatering autoWatering = new AutoWatering("Rain Bird", "2021", "солнечные панели", 2014, 10);
+        ThermalDrive thermostat = new ThermalDrive("Thermovent", "2018", "сетевое питание", 2018, 6);
+        Lawnmower lawnmower2 = new Lawnmower("Karcher", "MODEL_2", "аккумулятор", 2021, 8);
 
-        deviceManager.addDevice(lawnmower);
+        deviceManager.addDevice(lawnmower1);
         deviceManager.addDevice(autoWatering);
         deviceManager.addDevice(thermostat);
+        deviceManager.addDevice(lawnmower2);
 
         System.out.println(ANSI_BLUE + "\n\t\t\t=== Лабораторная работа #5 ===\n\t\tВыполнил студент группы ИКПИ-14 Сергеев Н.В.\n" + ANSI_RESET);
         Scanner sc = new Scanner(System.in);
@@ -43,7 +45,7 @@ public class Main {
                         break;
 
                     case 5:
-                        operateDevices(deviceManager);
+                        operateDevices(deviceManager, sc);
                         break;
 
                     case 6:
@@ -85,23 +87,23 @@ public class Main {
             System.out.println("\tВведите источник питания: ");
             String powerSource = sc.nextLine();
             System.out.println("\tВведите год производства (2000 - " + CURRENT_YEAR + "): ");
-            int productionYear = 2000;
+            int productionYear;
             if (sc.hasNextInt()) {
                 productionYear = sc.nextInt();
             } else {
                 System.out.println(ANSI_RED + "Введено неверное значение! Установлен год производства по умолчанию (2000 год)." + ANSI_RESET);
-                // TODO
+                productionYear = 2000;
             }
-            sc.nextLine();
+
             System.out.println("\tВведите срок службы устройства (3 года - 20 лет): ");
-            int expectedLifetime = 3;
+            int expectedLifetime;
             if (sc.hasNextInt()) {
                 expectedLifetime = sc.nextInt();
             } else {
                 System.out.println(ANSI_RED + "Введено неверное значение! Установлен срок службы по умолчанию (5 лет)." + ANSI_RESET);
-                // TODO
+                expectedLifetime = 5;
             }
-            sc.nextLine();
+
 
             GardeningDevice device;
 
@@ -224,7 +226,7 @@ public class Main {
         }
     }
 
-    public static void operateDevices(GardeningDeviceManager deviceManager) {
+    public static void operateDevices(GardeningDeviceManager deviceManager, Scanner scanner) {
         System.out.println(ANSI_BLUE + "=== Функциональная работа с устройствами ===" + ANSI_RESET);
         if (deviceManager.getDevices().isEmpty()) {
             System.out.println(ANSI_RED + "\nОтсутствуют устройства для выполнения операций!\n" + ANSI_RESET);
@@ -251,9 +253,9 @@ public class Main {
                 GardeningDevice device = deviceManager.getDeviceByID(id);
 
                 System.out.println("Выберите операцию для выполнения: ");
-                System.out.println("1. Включение устройства");
-                System.out.println("2. Выключение устройства");
-                System.out.println("3. Выполнение действия");
+                System.out.println("\t1. Включение устройства");
+                System.out.println("\t2. Выключение устройства");
+                System.out.println("\t3. Выполнение действия");
 
                 int operation;
 
@@ -261,7 +263,7 @@ public class Main {
                     try {
                         System.out.print("Введите номер операции: ");
                         operation = sc.nextInt();
-                        sc.nextLine();
+//                        sc.nextLine();
 
                         if (operation >= 1 && operation <= 3) {
                             break;
@@ -276,13 +278,13 @@ public class Main {
 
                 switch (operation) {
                     case 1:
-                        device.turnOn();
+                        device.turnOn(scanner);
                         break;
                     case 2:
                         device.turnOff();
                         break;
                     case 3:
-                        device.performAction();
+                        device.performAction(scanner);
                         break;
                     default:
                         System.out.println(ANSI_RED + "\nВведено неверное значение. Операция не выполнена.\n" + ANSI_RESET);
