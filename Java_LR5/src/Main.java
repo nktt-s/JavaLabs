@@ -8,7 +8,7 @@ public class Main {
     public static final String ANSI_BLUE = "\u001B[34m";
     public static final int CURRENT_YEAR = 2023;
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         GardeningDeviceManager deviceManager = getGardeningDeviceManager();
 
         System.out.println(ANSI_BLUE + "\n\t\t\t=== Лабораторная работа #5 ===\n\t\tВыполнил студент группы ИКПИ-14 Сергеев Н.В.\n" + ANSI_RESET);
@@ -231,7 +231,7 @@ public class Main {
         }
     }
 
-    public static void operateDevices(GardeningDeviceManager deviceManager, Scanner scanner) {
+    public static void operateDevices(GardeningDeviceManager deviceManager, Scanner scanner) throws InterruptedException {
         System.out.println(ANSI_BLUE + "=== Функциональная работа с устройствами ===" + ANSI_RESET);
         if (deviceManager.getDevices().isEmpty()) {
             System.out.println(ANSI_RED + "\nОтсутствуют устройства для выполнения операций!\n" + ANSI_RESET);

@@ -17,9 +17,9 @@ public class Lawnmower extends GardeningDevice {
     }
 
     @Override
-    public void turnOn(Scanner scanner) {
+    public void turnOn(Scanner scanner) throws InterruptedException {
         if (super.isOn) {
-            System.out.println(ANSI_YELLOW + "Газонокосилка уже включена!" + ANSI_RESET);
+            System.out.println(ANSI_YELLOW + "Газонокосилка уже включена!\n" + ANSI_RESET);
         } else {
             System.out.print("Включить мульчирование? (да/нет): ");
             scanner.nextLine();
@@ -31,7 +31,7 @@ public class Lawnmower extends GardeningDevice {
                 isMulchingEnabled = false;
                 manageMulching();
             } else {
-                System.out.println(ANSI_YELLOW + "Неверный ввод. Мульчирование отключено!" + ANSI_RESET);
+                System.out.println(ANSI_RED + "Неверный ввод. Мульчирование отключено!" + ANSI_RESET);
             }
 
             System.out.print("Введите желаемую высоту среза (20 - 100 мм): ");
@@ -47,17 +47,17 @@ public class Lawnmower extends GardeningDevice {
             if (super.getPowerSource().equalsIgnoreCase("Аккумулятор")) {
                 if (batteryLevel < 10) {
                     System.out.println(ANSI_RED + "Низкий уровень заряда аккумулятора! Газонокосилка не может быть включена." + ANSI_RESET);
-                    System.out.println("Зарядить аккумулятор? (да/нет): ");
+                    System.out.print("Зарядить аккумулятор? (да/нет): ");
                     String chargeInput = scanner.nextLine().toLowerCase();
                     if (chargeInput.equals("да")) {
                         batteryCharge();
                     }
                 } else {
-                    System.out.println(ANSI_GREEN + "Газонокосилка включена." + ANSI_RESET);
+                    System.out.println(ANSI_GREEN + "Газонокосилка готова к работе!\n" + ANSI_RESET);
                     super.isOn = true;
                 }
             } else {
-                System.out.println(ANSI_GREEN + "Газонокосилка включена." + ANSI_RESET);
+                System.out.println(ANSI_GREEN + "Газонокосилка готова к работе!\n" + ANSI_RESET);
                 super.isOn = true;
             }
         }
@@ -65,14 +65,14 @@ public class Lawnmower extends GardeningDevice {
     @Override
     public void turnOff() {
         if (!super.isOn) {
-            System.out.println(ANSI_YELLOW + "Газонокосилка уже выключена!" + ANSI_RESET);
+            System.out.println(ANSI_YELLOW + "Газонокосилка уже выключена!\n" + ANSI_RESET);
         } else {
-            System.out.println(ANSI_RED + "Газонокосилка выключена." + ANSI_RESET);
+            System.out.println(ANSI_RED + "Газонокосилка выключена.\n" + ANSI_RESET);
             super.isOn = false;
         }
     }
     @Override
-    public void performAction(Scanner scanner) {
+    public void performAction(Scanner scanner) throws InterruptedException {
         if (super.isOn) {
             if (super.getPowerSource().equalsIgnoreCase("Аккумулятор")) {
                 if (batteryLevel < 10) {
@@ -82,31 +82,45 @@ public class Lawnmower extends GardeningDevice {
                     scanner.nextLine();
                     if (chargeInput.equals("да")) {
                         batteryCharge();
-                        System.out.println(ANSI_GREEN + "Газонокосилка косит траву..." + ANSI_RESET);
+                        cutTheGrass();
                     } else {
                         System.out.println(ANSI_RED + "Газонокосилка выключена." + ANSI_RESET);
                         super.isOn = false;
                     }
                 } else {
-                    System.out.println(ANSI_GREEN + "Газонокосилка косит траву..." + ANSI_RESET);
+                    cutTheGrass();
+                    isGrassCollectionFull = true;
+                    emptyGrassCollector();
                     batteryDischarge();
                     checkBatteryLevel();
                 }
             } else {
-                System.out.println(ANSI_GREEN + "Газонокосилка косит траву..." + ANSI_RESET);
+                cutTheGrass();
                 isGrassCollectionFull = true;
                 emptyGrassCollector();
             }
         } else {
-            System.out.println(ANSI_YELLOW + "Газонокосилка ещё не включена!" + ANSI_RESET);
+            System.out.println(ANSI_YELLOW + "Газонокосилка ещё не включена!\n" + ANSI_RESET);
         }
+    }
+
+    public void cutTheGrass() throws InterruptedException {
+        System.out.print(ANSI_GREEN + "Газонокосилка косит траву" + ANSI_RESET);
+        Thread.sleep(500);
+        System.out.print(ANSI_GREEN + "." + ANSI_RESET);
+        Thread.sleep(500);
+        System.out.print(ANSI_GREEN + "." + ANSI_RESET);
+        Thread.sleep(500);
+        System.out.print(ANSI_GREEN + "." + ANSI_RESET);
+        Thread.sleep(500);
+        System.out.println();
     }
 
     public void manageMulching() {
         if (isMulchingEnabled) {
             System.out.println(ANSI_GREEN + "Система мульчирования включена." + ANSI_RESET);
         } else {
-            System.out.println(ANSI_RED + "Система мульчирования отключена." + ANSI_RESET);
+            System.out.println(ANSI_YELLOW + "Система мульчирования отключена." + ANSI_RESET);
         }
     }
 
@@ -115,16 +129,24 @@ public class Lawnmower extends GardeningDevice {
             setCuttingHeight(height);
             System.out.println(ANSI_GREEN + "Высота среза установлена на " + getCuttingHeight() + " мм." + ANSI_RESET);
         } else {
-            System.out.println(ANSI_YELLOW + "Неверный ввод. Установлена высота среза по умолчанию (40 мм)." + ANSI_RESET);
+            System.out.println(ANSI_RED + "Неверный ввод. Установлена высота среза по умолчанию (40 мм)." + ANSI_RESET);
             setCuttingHeight(40);
         }
     }
 
-    public void emptyGrassCollector() {
+    public void emptyGrassCollector() throws InterruptedException {
         if (isGrassCollectionFull) {
-            System.out.println(ANSI_YELLOW + "Травосборник полон. Выполняется очистка..." + ANSI_RESET);
+            System.out.print(ANSI_YELLOW + "Травосборник полон. Выполняется очистка" + ANSI_RESET);
+            Thread.sleep(500);
+            System.out.print(ANSI_YELLOW + "." + ANSI_RESET);
+            Thread.sleep(500);
+            System.out.print(ANSI_YELLOW + "." + ANSI_RESET);
+            Thread.sleep(500);
+            System.out.print(ANSI_YELLOW + "." + ANSI_RESET);
+            Thread.sleep(500);
+            System.out.println();
             isGrassCollectionFull = false;
-            System.out.println(ANSI_GREEN + "Травосборник очищен!" + ANSI_RESET);
+            System.out.println(ANSI_GREEN + "Травосборник очищен!\n" + ANSI_RESET);
         } else {
             System.out.println(ANSI_GREEN + "Травосборник пуст. Очистка не требуется!" + ANSI_RESET);
         }
@@ -136,8 +158,17 @@ public class Lawnmower extends GardeningDevice {
         }
     }
 
-    public void batteryCharge() {
+    public void batteryCharge() throws InterruptedException {
         if (super.getPowerSource().equalsIgnoreCase("Аккумулятор")) {
+            System.out.println(ANSI_RED + "20%" + ANSI_RESET);
+            Thread.sleep(500);
+            System.out.println(ANSI_YELLOW + "40%" + ANSI_RESET);
+            Thread.sleep(500);
+            System.out.println(ANSI_YELLOW + "60%%" + ANSI_RESET);
+            Thread.sleep(500);
+            System.out.println(ANSI_GREEN + "80%" + ANSI_RESET);
+            Thread.sleep(500);
+            System.out.println(ANSI_GREEN + "100%" + ANSI_RESET);
             System.out.println(ANSI_GREEN + "Аккумулятор полностью заряжен." + ANSI_RESET);
             batteryLevel = 100;
         }
@@ -146,11 +177,11 @@ public class Lawnmower extends GardeningDevice {
     public void checkBatteryLevel() {
         if (super.getPowerSource().equalsIgnoreCase("Аккумулятор")) {
             if (70 <= batteryLevel && batteryLevel <= 100) {
-                System.out.println(ANSI_GREEN + "Уровень заряда аккумулятора: " + batteryLevel + "%." + ANSI_RESET);
+                System.out.println(ANSI_GREEN + "Уровень заряда аккумулятора: " + batteryLevel + "%.\n" + ANSI_RESET);
             } else if (40 <= batteryLevel && batteryLevel < 70) {
-                System.out.println(ANSI_YELLOW + "Уровень заряда аккумулятора: " + batteryLevel + "%." + ANSI_RESET);
+                System.out.println(ANSI_YELLOW + "Уровень заряда аккумулятора: " + batteryLevel + "%.\n" + ANSI_RESET);
             } else {
-                System.out.println(ANSI_RED + "Внимание! Низкий уровень заряда аккумулятора: " + batteryLevel + "%." + ANSI_RESET);
+                System.out.println(ANSI_RED + "Внимание! Низкий уровень заряда аккумулятора: " + batteryLevel + "%.\n" + ANSI_RESET);
             }
         }
     }

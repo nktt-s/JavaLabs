@@ -37,9 +37,9 @@ public abstract class GardeningDevice {
         return isOn;
     }
 
-    public abstract void turnOn(Scanner scanner);
+    public abstract void turnOn(Scanner scanner) throws InterruptedException;
     public abstract void turnOff();
-    public abstract void performAction(Scanner scanner);
+    public abstract void performAction(Scanner scanner) throws InterruptedException;
 
 
     public boolean isExpired(int productionYear, int expectedLifetime) {

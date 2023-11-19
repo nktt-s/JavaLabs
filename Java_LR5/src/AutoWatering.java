@@ -17,7 +17,7 @@ public class AutoWatering extends GardeningDevice {
     @Override
     public void turnOn(Scanner scanner) {
         if (super.isOn) {
-            System.out.println(ANSI_YELLOW + "Автополив уже включён!" + ANSI_RESET);
+            System.out.println(ANSI_YELLOW + "Автополив уже включён!\n" + ANSI_RESET);
         } else {
             System.out.print("Введите продолжительность полива в минутах (5 - 90): ");
             if (scanner.hasNextInt()) {
@@ -39,7 +39,7 @@ public class AutoWatering extends GardeningDevice {
                 int pressure = scanner.nextInt();
                 adjustWaterPressure(pressure);
             } else {
-                System.out.println(ANSI_YELLOW + "Неверный ввод. Установлено значение по умолчанию (40 psi)." + ANSI_RESET);
+                System.out.println(ANSI_RED + "Неверный ввод. Установлено значение по умолчанию (40 psi)." + ANSI_RESET);
                 setWaterPressure(40);
             }
             scanner.nextLine();
@@ -49,25 +49,35 @@ public class AutoWatering extends GardeningDevice {
             setWinterMode(winterModeInput.equals("да"));
             manageWinterMode();
 
-            System.out.println(ANSI_GREEN + "Автополив включён.\n" + ANSI_RESET);
+            System.out.println(ANSI_GREEN + "Система автополива готова к работе!\n" + ANSI_RESET);
             super.isOn = true;
         }
     }
     @Override
     public void turnOff() {
         if (!super.isOn) {
-            System.out.println(ANSI_YELLOW + "Автополив уже выключен!" + ANSI_RESET);
+            System.out.println(ANSI_YELLOW + "Автополив уже выключен!\n" + ANSI_RESET);
         } else {
-            System.out.println(ANSI_RED + "Автополив выключен. Время работы: " + getWorkingMinutes() + " мин.\n" + ANSI_RESET);
+            System.out.println(ANSI_GREEN + "Автополив выключен. Время работы: " + getWorkingMinutes() + " мин.\n" + ANSI_RESET);
             super.isOn = false;
         }
     }
     @Override
-    public void performAction(Scanner scanner) {
+    public void performAction(Scanner scanner) throws InterruptedException {
         if (super.isOn) {
-            System.out.println(ANSI_GREEN + "Полив растений...\n" + ANSI_RESET);
+            System.out.print(ANSI_GREEN + "Полив растений" + ANSI_RESET);
+            Thread.sleep(500);
+            System.out.print(ANSI_GREEN + "." + ANSI_RESET);
+            Thread.sleep(500);
+            System.out.print(ANSI_GREEN + "." + ANSI_RESET);
+            Thread.sleep(500);
+            System.out.print(ANSI_GREEN + "." + ANSI_RESET);
+            Thread.sleep(500);
+            System.out.println();
+            turnOff();
+
         } else {
-            System.out.println(ANSI_YELLOW + "Автополив ещё не включён!" + ANSI_RESET);
+            System.out.println(ANSI_YELLOW + "Автополив ещё не включён!\n" + ANSI_RESET);
         }
     }
 
@@ -77,15 +87,15 @@ public class AutoWatering extends GardeningDevice {
             System.out.println(ANSI_GREEN + "Продолжительность полива установлена на " + getWorkingMinutes() + " мин." + ANSI_RESET);
         } else {
             setWorkingMinutes(10);
-            System.out.println(ANSI_YELLOW + "Неверный ввод. Установлена продолжительность полива по умолчанию (10 мин)." + ANSI_RESET);
+            System.out.println(ANSI_RED + "Неверный ввод. Установлена продолжительность полива по умолчанию (10 мин)." + ANSI_RESET);
         }
     }
 
     public void manageSprinkler() {
        if (isSprinklerAttached) {
-            System.out.println(ANSI_GREEN + "Дождеватель успешно установлен!" + ANSI_RESET);
+            System.out.println(ANSI_GREEN + "Дождеватель установлен." + ANSI_RESET);
        } else {
-            System.out.println(ANSI_RED + "Дождеватель не установлен!" + ANSI_RESET);
+            System.out.println(ANSI_YELLOW + "Дождеватель не установлен." + ANSI_RESET);
        }
     }
 
@@ -95,7 +105,7 @@ public class AutoWatering extends GardeningDevice {
             System.out.println(ANSI_GREEN + "Давление воды установлено на " + getWaterPressure() + " psi." + ANSI_RESET);
         } else {
             setWaterPressure(40);
-            System.out.println(ANSI_YELLOW + "Неверный ввод. Установлено значение по умолчанию (40 psi)." + ANSI_RESET);
+            System.out.println(ANSI_RED + "Неверный ввод. Установлено значение по умолчанию (40 psi)." + ANSI_RESET);
         }
     }
 
@@ -103,7 +113,7 @@ public class AutoWatering extends GardeningDevice {
        if (isWinterMode) {
             System.out.println(ANSI_GREEN + "Зимний режим успешно включён!" + ANSI_RESET);
        } else {
-            System.out.println(ANSI_RED + "Зимний режим отключён!" + ANSI_RESET);
+            System.out.println(ANSI_YELLOW + "Зимний режим отключён!" + ANSI_RESET);
        }
     }
 
