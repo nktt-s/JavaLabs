@@ -9,17 +9,7 @@ public class Main {
     public static final int CURRENT_YEAR = 2023;
 
     public static void main(String[] args) {
-        GardeningDeviceManager deviceManager = new GardeningDeviceManager();
-
-        Lawnmower lawnmower1 = new Lawnmower("Karcher", "MODEL_12", "бензин", 2010, 8);
-        AutoWatering autoWatering = new AutoWatering("Rain Bird", "MODEL_81", "солнечные панели", 2014, 10);
-        ThermalDrive thermostat = new ThermalDrive("Thermovent", "MODEL_77", "сетевое питание", 2018, 6);
-        Lawnmower lawnmower2 = new Lawnmower("Karcher", "MODEL_36", "аккумулятор", 2021, 8);
-
-        deviceManager.addDevice(lawnmower1);
-        deviceManager.addDevice(autoWatering);
-        deviceManager.addDevice(thermostat);
-        deviceManager.addDevice(lawnmower2);
+        GardeningDeviceManager deviceManager = getGardeningDeviceManager();
 
         System.out.println(ANSI_BLUE + "\n\t\t\t=== Лабораторная работа #5 ===\n\t\tВыполнил студент группы ИКПИ-14 Сергеев Н.В.\n" + ANSI_RESET);
         Scanner sc = new Scanner(System.in);
@@ -58,6 +48,21 @@ public class Main {
                 }
             }
         }
+    }
+
+    private static GardeningDeviceManager getGardeningDeviceManager() {
+        GardeningDeviceManager deviceManager = new GardeningDeviceManager();
+
+        Lawnmower lawnmower1 = new Lawnmower("Karcher", "MODEL_12", "бензин", 2010, 8);
+        AutoWatering autoWatering = new AutoWatering("Rain Bird", "MODEL_81", "солнечные панели", 2014, 10);
+        ThermalDrive thermostat = new ThermalDrive("Thermovent", "MODEL_77", "сетевое питание", 2018, 6);
+        Lawnmower lawnmower2 = new Lawnmower("Karcher", "MODEL_36", "аккумулятор", 2021, 8);
+
+        deviceManager.addDevice(lawnmower1);
+        deviceManager.addDevice(autoWatering);
+        deviceManager.addDevice(thermostat);
+        deviceManager.addDevice(lawnmower2);
+        return deviceManager;
     }
 
     public static void showMenu() {
