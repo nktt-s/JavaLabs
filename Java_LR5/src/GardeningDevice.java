@@ -53,9 +53,6 @@ public abstract class GardeningDevice {
         return 3 <= expectedLifetime && expectedLifetime <= 20;
     }
 
-
-
-//    public abstract void performMaintenance(); // Провести обслуживание
     public String showFeatures() {
         return "";
     }
