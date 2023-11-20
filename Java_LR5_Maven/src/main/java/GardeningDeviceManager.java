@@ -30,6 +30,7 @@ public class GardeningDeviceManager {
             System.out.println(ANSI_GREEN + "\nУстройство успешно удалено!" + ANSI_RESET);
             showObjects();
         } else {
+            Main.logger.warn("Попытка ввода значения ID несуществующего устройства.");
             System.out.println(ANSI_RED + "\nУстройство с ID = " + id + " не найдено!\n" + ANSI_RESET);
         }
     }
@@ -37,7 +38,7 @@ public class GardeningDeviceManager {
         System.out.println("\nID\tТИП\t\t\t\tПРОИЗВОДИТЕЛЬ\t\tМОДЕЛЬ\t\tИСТОЧНИК ПИТАНИЯ\t\tГОД ПРОИЗВОДСТВА\tСРОК СЛУЖБЫ");
         System.out.println("=================================================================================================================");
         if (this.devices.isEmpty()) {
-            System.out.println("----------------------------- NO OBJECTS -----------------------------");
+            System.out.println("--------------------------------------------------- NO OBJECTS --------------------------------------------------");
         } else {
             for (GardeningDevice device : devices) {
                 System.out.printf("%-2d\t%-15s\t%-16s\t%-10s\t%-20s\t\t%-16s\t%-11s\n", device.getId(), device.getClass().toString().substring(6),

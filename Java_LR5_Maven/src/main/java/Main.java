@@ -10,7 +10,7 @@ public class Main {
     public static final String ANSI_BLUE = "\u001B[34m";
     public static final int CURRENT_YEAR = 2023;
 
-    private static final Logger logger = LogManager.getLogger(Main.class);
+    protected static final Logger logger = LogManager.getLogger(Main.class);
 
     public static void main(String[] args) throws InterruptedException {
         logger.info("Начало работы программы.");
@@ -24,6 +24,7 @@ public class Main {
                 int choice = sc.nextInt();
                 switch (choice) {
                     case 1:
+                        logger.info("Запуск действия - просмотр устройств.");
                         deviceManager.showObjects();
                         break;
 
@@ -44,6 +45,7 @@ public class Main {
                         break;
 
                     case 6:
+                        logger.info("Завершение работы программы.");
                         System.out.println("Завершение работы...");
                         return;
 
@@ -61,12 +63,12 @@ public class Main {
 
         Lawnmower lawnmower1 = new Lawnmower("Karcher", "MODEL_12", "бензин", 2010, 8);
         AutoWatering autoWatering = new AutoWatering("Rain Bird", "MODEL_81", "солнечные панели", 2014, 10);
-        ThermalDrive thermostat = new ThermalDrive("Thermovent", "MODEL_77", "сетевое питание", 2018, 6);
+        ThermalDrive thermalDrive = new ThermalDrive("Thermovent", "MODEL_77", "сетевое питание", 2018, 6);
         Lawnmower lawnmower2 = new Lawnmower("Karcher", "MODEL_36", "аккумулятор", 2021, 8);
 
         deviceManager.addDevice(lawnmower1);
         deviceManager.addDevice(autoWatering);
-        deviceManager.addDevice(thermostat);
+        deviceManager.addDevice(thermalDrive);
         deviceManager.addDevice(lawnmower2);
         return deviceManager;
     }
@@ -94,6 +96,7 @@ public class Main {
             int deviceType = sc.nextInt();
             sc.nextLine();
             System.out.println("\tВведите производителя: ");
+            // TODO ПРОВЕРКА НА НЕПУСТОЙ ВВОД
             String manufacturer = sc.nextLine();
             System.out.println("\tВведите модель: ");
             String model = sc.nextLine();
