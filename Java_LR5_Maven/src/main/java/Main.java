@@ -39,6 +39,15 @@ public class Main {
                         break;
 
                     case 6:
+                        deviceManager.showObjects();
+                        JSONFileHandler.saveDeviceToJSON(deviceManager, sc);
+                        break;
+
+                    case 7:
+                        JSONFileHandler.loadDeviceFromJSON(deviceManager, sc);
+                        break;
+
+                    case 0:
                         logger.info("Завершение работы программы.");
                         System.out.println("Завершение работы...");
                         return;
@@ -79,7 +88,9 @@ public class Main {
         System.out.println("\t3. Изменение устройства.");
         System.out.println("\t4. Удаление устройства.");
         System.out.println("\t5. Работа с устройствами.");
-        System.out.println("\t6. Выход из программы.");
+        System.out.println("\t6. Сохранение в JSON.");
+        System.out.println("\t7. Чтение из JSON.");
+        System.out.println("\t0. Выход из программы.");
     }
 
     public static void addDevice(GardeningDeviceManager deviceManager) {

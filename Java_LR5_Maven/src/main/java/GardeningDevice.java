@@ -9,7 +9,7 @@ public abstract class GardeningDevice {
     private int lifetime;
     private int productionYear;
 
-    private final int id;
+    private int id;
     private static int nextId = 1;
 
     public GardeningDevice(String manufacturer, String model, String powerSource, int productionYear, int lifetime) {
@@ -65,6 +65,9 @@ public abstract class GardeningDevice {
     // Геттеры и сеттеры для свойств
     public int getId() {
         return id;
+    }
+    public void setId() {
+        this.id = nextId++;
     }
     public String getManufacturer() {
         return manufacturer;
