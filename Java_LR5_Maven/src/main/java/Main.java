@@ -99,9 +99,7 @@ public class Main {
         if (sc.hasNextInt()) {
             int deviceType = sc.nextInt();
             sc.nextLine();
-            String manufacturer = "";
-            String model = "";
-            String powerSource = "";
+            String manufacturer, model, powerSource;
 
             while (true) {
                 System.out.print("\tВведите производителя: ");
@@ -318,6 +316,8 @@ public class Main {
                 System.out.println("\t1. Включение устройства");
                 System.out.println("\t2. Выключение устройства");
                 System.out.println("\t3. Выполнение действия");
+                System.out.println("\t4. Проверить статус устройства");
+                System.out.println("\t5. Проверить, истёк ли срок службы устройства\n");
 
                 int operation;
 
@@ -325,9 +325,8 @@ public class Main {
                     try {
                         System.out.print("Введите номер операции: ");
                         operation = sc.nextInt();
-//                        sc.nextLine();
 
-                        if (operation >= 1 && operation <= 3) {
+                        if (operation >= 1 && operation <= 5) {
                             break;
                         } else {
                             logger.warn("Попытка ввода неверного значения номера операции.");
@@ -342,25 +341,35 @@ public class Main {
 
                 switch (operation) {
                     case 1:
+                        logger.info("Запуск действия - включение устройства.");
                         device.turnOn(scanner);
                         break;
+
                     case 2:
+                        logger.info("Запуск действия - выключение устройства.");
                         device.turnOff();
                         break;
+
                     case 3:
+                        logger.info("Запуск действия - выполнение операции устройством.");
                         device.performAction(scanner);
                         break;
+
+                    case 4:
+                        logger.info("Запуск действия - проверка статуса устройства.");
+                        device.checkStatus();
+                        break;
+
+                    case 5:
+                        logger.info("Запуск действия - проверка истечения срока службы устройства.");
+                        device.isExpired();
+                        break;
+
                     default:
                         logger.warn("Попытка ввода недопустимого значения номера операции.");
                         System.out.println(ANSI_RED + "\nВведено неверное значение. Операция не выполнена.\n" + ANSI_RESET);
                 }
             }
-        }
-    }
-
-    public static void isEmptyString(String string) {
-        if (string.isEmpty()) {
-            System.out.println(ANSI_RED + "Неверный ввод - значение не может быть пустым. Попробуйте ещё раз." + ANSI_RESET);
         }
     }
 }

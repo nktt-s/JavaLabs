@@ -18,8 +18,19 @@ public class ThermalDrive extends GardeningDevice {
         if (super.isOn) {
             System.out.println(ANSI_YELLOW + "Термопривод уже включён!" + ANSI_RESET);
         } else {
-            scanner.nextLine();
+
+            System.out.print("Установите интенсивность работы устройства (10 - 100%): ");
+            if (scanner.hasNextInt()) {
+                int intensityInput = scanner.nextInt();
+                adjustIntensity(intensityInput);
+            } else {
+                System.out.println(ANSI_RED + "Неверный ввод. Установлена интенсивность работы устройства по умолчанию (75%)." + ANSI_RESET);
+                setIntensity(75);
+                scanner.nextLine();
+            }
+
             System.out.print("Включить систему авторегуляции температуры в необходимом диапазоне? (да/нет): ");
+            scanner.nextLine();
             String autoregulationInput = scanner.nextLine().toLowerCase();
             setAutoregulation(autoregulationInput.equals("да"));
             manageAutoregulation(scanner);

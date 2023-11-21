@@ -4,8 +4,8 @@ public abstract class GardeningDevice {
     private String manufacturer;
     private String model;
     private String powerSource;
-    protected boolean isOn;
     private int intensity;
+    protected boolean isOn;
     private int lifetime;
     private int productionYear;
 
@@ -33,8 +33,12 @@ public abstract class GardeningDevice {
         this.intensity = 0;
     }
 
-    public boolean checkStatus() {
-        return isOn;
+    public void checkStatus() {
+        if (isOn) {
+            System.out.println(ANSI_GREEN + "Устройство готово к работе!\n" + ANSI_RESET);
+        } else {
+            System.out.println(ANSI_RED + "Устройство выключено!\n" + ANSI_RESET);
+        }
     }
 
     public abstract void turnOn(Scanner scanner) throws InterruptedException;
@@ -42,9 +46,13 @@ public abstract class GardeningDevice {
     public abstract void performAction(Scanner scanner) throws InterruptedException;
 
 
-    public boolean isExpired(int productionYear, int expectedLifetime) {
-        int age = CURRENT_YEAR - productionYear;
-        return age >= expectedLifetime;
+    public void isExpired() {
+        int age = CURRENT_YEAR - this.productionYear;
+        if (age >= this.lifetime) {
+            System.out.println(ANSI_RED + "Срок службы устройства истёк!\n" + ANSI_RESET);
+        } else {
+            System.out.println(ANSI_GREEN + "Срок службы устройства ещё не истёк!\n" + ANSI_RESET);
+        }
     }
     public boolean isValidYear(int productionYear) {
         return 2000 < productionYear && productionYear < CURRENT_YEAR;
@@ -52,11 +60,6 @@ public abstract class GardeningDevice {
     public boolean isValidLifetime(int expectedLifetime) {
         return 3 <= expectedLifetime && expectedLifetime <= 20;
     }
-
-    public String showFeatures() {
-        return "";
-    }
-
 
 
     // Геттеры и сеттеры для свойств
@@ -108,6 +111,16 @@ public abstract class GardeningDevice {
     }
     public void setIntensity(int intensity) {
         this.intensity = intensity;
+    }
+
+    public void adjustIntensity(int intensity) {
+        if (10 <= intensity && intensity <= 100) {
+            setIntensity(intensity);
+            System.out.println(ANSI_GREEN + "Интенсивность работы устройства установлена на " + getIntensity() + "%." + ANSI_RESET);
+        } else {
+            System.out.println(ANSI_RED + "Неверный ввод. Установлена интенсивность работы устройства по умолчанию (75%)." + ANSI_RESET);
+            setIntensity(75);
+        }
     }
 
     public static final String ANSI_RESET = "\u001B[0m";

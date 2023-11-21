@@ -21,8 +21,19 @@ public class Lawnmower extends GardeningDevice {
         if (super.isOn) {
             System.out.println(ANSI_YELLOW + "Газонокосилка уже включена!\n" + ANSI_RESET);
         } else {
-            System.out.print("Включить мульчирование? (да/нет): ");
+
+            System.out.print("Установите интенсивность работы устройства (10 - 100%): ");
+            if (scanner.hasNextInt()) {
+                int intensityInput = scanner.nextInt();
+                adjustIntensity(intensityInput);
+            } else {
+                System.out.println(ANSI_RED + "Неверный ввод. Установлена интенсивность работы устройства по умолчанию (75%)." + ANSI_RESET);
+                setIntensity(75);
+                scanner.nextLine();
+            }
+
             scanner.nextLine();
+            System.out.print("Включить мульчирование? (да/нет): ");
             String mulchingInput = scanner.nextLine().toLowerCase();
             if (mulchingInput.equals("да")) {
                 isMulchingEnabled = true;
@@ -40,7 +51,8 @@ public class Lawnmower extends GardeningDevice {
                 adjustCuttingHeight(height);
             } else {
                 System.out.println(ANSI_RED + "Неверный ввод. Установлена высота среза по умолчанию (40 мм)." + ANSI_RESET);
-                adjustCuttingHeight(40);
+                setCuttingHeight(40);
+                scanner.nextLine();
             }
 
             checkBatteryLevel();

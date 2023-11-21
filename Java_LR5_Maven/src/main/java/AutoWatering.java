@@ -19,6 +19,17 @@ public class AutoWatering extends GardeningDevice {
         if (super.isOn) {
             System.out.println(ANSI_YELLOW + "Автополив уже включён!\n" + ANSI_RESET);
         } else {
+            System.out.print("Установите интенсивность работы устройства (10 - 100%): ");
+            if (scanner.hasNextInt()) {
+                int intensityInput = scanner.nextInt();
+                adjustIntensity(intensityInput);
+            } else {
+                System.out.println(ANSI_RED + "Неверный ввод. Установлена интенсивность работы устройства по умолчанию (75%)." + ANSI_RESET);
+                setIntensity(75);
+                scanner.nextLine();
+            }
+
+            scanner.nextLine();
             System.out.print("Введите продолжительность полива в минутах (5 - 90): ");
             if (scanner.hasNextInt()) {
                 int minutes = scanner.nextInt();
