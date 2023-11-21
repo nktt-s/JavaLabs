@@ -20,13 +20,13 @@ public abstract class GardeningDevice {
         if (isValidYear(productionYear)) {
             this.productionYear = productionYear;
         } else {
-            System.out.println(ANSI_RED + "Введён неверный год производства. Установлено значение по умолчанию (2000 год)." + ANSI_RESET);
+            System.out.println(ANSI_RED + "Введённое значение не соответствует допустимому диапазону. Установлен год производства по умолчанию (2000 год)." + ANSI_RESET);
             this.productionYear = 2000;
         }
         if (isValidLifetime(lifetime)) {
             this.lifetime = lifetime;
         } else {
-            System.out.println(ANSI_RED + "Введён неверный срок службы. Установлено значение по умолчанию (5 лет)." + ANSI_RESET);
+            System.out.println(ANSI_RED + "Введённое значение не соответствует допустимому диапазону. Установлен срок службы по умолчанию (5 лет)." + ANSI_RESET);
             this.lifetime = 5;
         }
         this.isOn = false;

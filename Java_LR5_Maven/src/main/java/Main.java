@@ -54,6 +54,10 @@ public class Main {
                         System.out.println(ANSI_RED + "Введено неверное значение, попробуйте ещё раз!" + ANSI_RESET);
                         break;
                 }
+            } else {
+                logger.warn("Попытка ввода недопустимого значения при выборе действия.");
+                System.out.println(ANSI_RED + "Неверный ввод. Попробуйте ещё раз." + ANSI_RESET);
+                sc.nextLine();
             }
         }
     }
@@ -95,33 +99,60 @@ public class Main {
         if (sc.hasNextInt()) {
             int deviceType = sc.nextInt();
             sc.nextLine();
-            System.out.println("\tВведите производителя: ");
-            // TODO ПРОВЕРКА НА НЕПУСТОЙ ВВОД
-            String manufacturer = sc.nextLine();
-            System.out.println("\tВведите модель: ");
-            String model = sc.nextLine();
-            System.out.println("\tВведите источник питания: ");
-            String powerSource = sc.nextLine();
-            System.out.println("\tВведите год производства (2000 - " + CURRENT_YEAR + "): ");
+            String manufacturer = "";
+            String model = "";
+            String powerSource = "";
+
+            while (true) {
+                System.out.print("\tВведите производителя: ");
+                manufacturer = sc.nextLine();
+                if (!manufacturer.isEmpty()) break;
+                else {
+                    logger.warn("Попытка ввода пустой строки в качестве значения атрибута 'производитель'.");
+                    System.out.println(ANSI_RED + "Неверный ввод - значение не может быть пустым. Попробуйте ещё раз." + ANSI_RESET);
+                }
+            }
+
+            while (true) {
+                System.out.print("\tВведите модель: ");
+                model = sc.nextLine();
+                if (!model.isEmpty()) break;
+                else {
+                    logger.warn("Попытка ввода пустой строки в качестве значения атрибута 'модель'.");
+                    System.out.println(ANSI_RED + "Неверный ввод - значение не может быть пустым. Попробуйте ещё раз." + ANSI_RESET);
+                }
+            }
+
+            while (true) {
+                System.out.print("\tВведите источник питания: ");
+                powerSource = sc.nextLine();
+                if (!powerSource.isEmpty()) break;
+                else {
+                    logger.warn("Попытка ввода пустой строки в качестве значения атрибута 'источник питания'.");
+                    System.out.println(ANSI_RED + "Неверный ввод - значение не может быть пустым. Попробуйте ещё раз." + ANSI_RESET);
+                }
+            }
+
+            System.out.print("\tВведите год производства (2000 - " + CURRENT_YEAR + "): ");
             int productionYear;
             if (sc.hasNextInt()) {
                 productionYear = sc.nextInt();
             } else {
                 logger.warn("Попытка ввода недопустимого значения года производства устройства.");
-                System.out.println(ANSI_RED + "Введено неверное значение! Установлен год производства по умолчанию (2000 год)." + ANSI_RESET);
+                System.out.println(ANSI_RED + "\nВведено недопустимое значение. Установлен год производства по умолчанию (2000 год)." + ANSI_RESET);
                 productionYear = 2000;
+                sc.nextLine();
             }
 
-            System.out.println("\tВведите срок службы устройства (3 года - 20 лет): ");
+            System.out.print("\tВведите срок службы устройства (3 года - 20 лет): ");
             int expectedLifetime;
             if (sc.hasNextInt()) {
                 expectedLifetime = sc.nextInt();
             } else {
                 logger.warn("Попытка ввода недопустимого значения срока службы устройства.");
-                System.out.println(ANSI_RED + "Введено неверное значение! Установлен срок службы по умолчанию (5 лет)." + ANSI_RESET);
+                System.out.println(ANSI_RED + "\nВведено недопустимое значение. Установлен срок службы по умолчанию (5 лет)." + ANSI_RESET);
                 expectedLifetime = 5;
             }
-
 
             GardeningDevice device;
 
@@ -324,6 +355,12 @@ public class Main {
                         System.out.println(ANSI_RED + "\nВведено неверное значение. Операция не выполнена.\n" + ANSI_RESET);
                 }
             }
+        }
+    }
+
+    public static void isEmptyString(String string) {
+        if (string.isEmpty()) {
+            System.out.println(ANSI_RED + "Неверный ввод - значение не может быть пустым. Попробуйте ещё раз." + ANSI_RESET);
         }
     }
 }
