@@ -8,6 +8,7 @@ public class ThermalDrive extends GardeningDevice {
     private int highTemp;
     private boolean isProtectiveFunctionOn;
     private boolean calibrateTemperatureSensors;
+    private boolean isCalibrated;
 
     public ThermalDrive(String manufacturer, String model, String powerSource, int productionYear, int lifetime) {
         super(manufacturer, model, powerSource, productionYear, lifetime);
@@ -151,8 +152,10 @@ public class ThermalDrive extends GardeningDevice {
             Thread.sleep(500);
             System.out.println();
             System.out.println(ANSI_GREEN + "Калибровка успешно завершена!" + ANSI_RESET);
+            isCalibrated = true;
         } else {
             System.out.println(ANSI_YELLOW + "Калибровка датчиков температуры пропущена." + ANSI_RESET);
+            isCalibrated = false;
         }
     }
 
@@ -168,6 +171,9 @@ public class ThermalDrive extends GardeningDevice {
     public void setProtectiveFunction(boolean isProtectiveFunctionOn) {
         this.isProtectiveFunctionOn = isProtectiveFunctionOn;
     }
+    public boolean getProtectiveFunction() {
+        return isProtectiveFunctionOn;
+    }
     public void setLowTemp(int lowTemp) {
         this.lowTemp = lowTemp;
     }
@@ -182,5 +188,17 @@ public class ThermalDrive extends GardeningDevice {
     }
     public void setCalibrateTemperatureSensors(boolean calibrateTemperatureSensors) {
         this.calibrateTemperatureSensors = calibrateTemperatureSensors;
+    }
+    public boolean isCalibrated() {
+        return isCalibrated;
+    }
+    public void switchOn() {
+        isOn = true;
+    }
+    public void switchOff() {
+        isOn = false;
+    }
+    public boolean getStatus() {
+        return isOn;
     }
 }

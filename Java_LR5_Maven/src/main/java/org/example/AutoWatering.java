@@ -155,7 +155,7 @@ isOn = true;
     public void switchOff() {
         isOn = false;
     }
-    public boolean getOnOrOff() {
+    public boolean getStatus() {
         return isOn;
     }
 }

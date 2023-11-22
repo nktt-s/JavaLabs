@@ -5,14 +5,16 @@ public class AutoWateringTest {
     @org.junit.jupiter.api.Test
     public void turnOnOffTest() {
         AutoWatering autoWatering = new AutoWatering("Rain Bird", "MODEL_81", "солнечные панели", 2014, 10);
+        assertFalse(autoWatering.getStatus());
 
         autoWatering.switchOn();
-        assertTrue(autoWatering.getOnOrOff());
+        assertTrue(autoWatering.getStatus());
 
         autoWatering.switchOff();
-        assertFalse(autoWatering.getOnOrOff());
+        assertFalse(autoWatering.getStatus());
     }
 
+    @org.junit.jupiter.api.Test
     public void adjustWorkingMinutesTest() {
         AutoWatering autoWatering = new AutoWatering("Rain Bird", "MODEL_81", "солнечные панели", 2014, 10);
 
@@ -32,6 +34,7 @@ public class AutoWateringTest {
         assertEquals(10, autoWatering.getWorkingMinutes());
     }
 
+    @org.junit.jupiter.api.Test
     public void adjustWaterPressureTest() {
         AutoWatering autoWatering = new AutoWatering("Rain Bird", "MODEL_81", "солнечные панели", 2014, 10);
 

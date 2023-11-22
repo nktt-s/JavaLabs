@@ -5,11 +5,13 @@ public class LawnmowerTest {
     @org.junit.jupiter.api.Test
     public void turnOnOffTest() {
         Lawnmower lawnmower = new Lawnmower("Karcher", "Model_1", "бензин", 2010, 8);
+        assertFalse(lawnmower.getStatus());
+
         lawnmower.switchOn();
-        assertTrue(lawnmower.getOnOrOff());
+        assertTrue(lawnmower.getStatus());
 
         lawnmower.switchOff();
-        assertFalse(lawnmower.getOnOrOff());
+        assertFalse(lawnmower.getStatus());
     }
 
     @org.junit.jupiter.api.Test
