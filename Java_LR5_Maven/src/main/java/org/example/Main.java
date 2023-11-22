@@ -1,3 +1,5 @@
+package org.example;
+
 import java.util.Scanner;
 import java.util.InputMismatchException;
 import org.apache.logging.log4j.Logger;

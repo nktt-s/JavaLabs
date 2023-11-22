@@ -1,3 +1,5 @@
+package org.example;
+
 import java.util.Scanner;
 
 public class AutoWatering extends GardeningDevice {
@@ -73,6 +75,7 @@ public class AutoWatering extends GardeningDevice {
             super.isOn = false;
         }
     }
+
     @Override
     public void performAction(Scanner scanner) throws InterruptedException {
         if (super.isOn) {
@@ -145,5 +148,14 @@ public class AutoWatering extends GardeningDevice {
     }
     public void setWinterMode(boolean winterMode) {
         isWinterMode = winterMode;
+    }
+    public void switchOn() {
+isOn = true;
+    }
+    public void switchOff() {
+        isOn = false;
+    }
+    public boolean getOnOrOff() {
+        return isOn;
     }
 }

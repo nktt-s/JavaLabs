@@ -1,3 +1,5 @@
+package org.example;
+
 import java.util.Scanner;
 
 public class Lawnmower extends GardeningDevice {
@@ -83,6 +85,7 @@ public class Lawnmower extends GardeningDevice {
             super.isOn = false;
         }
     }
+
     @Override
     public void performAction(Scanner scanner) throws InterruptedException {
         if (super.isOn) {
@@ -202,5 +205,17 @@ public class Lawnmower extends GardeningDevice {
     }
     public void setCuttingHeight(int cuttingHeight) {
         this.cuttingHeight = cuttingHeight;
+    }
+    public int getBatteryLevel() {
+        return batteryLevel;
+    }
+    public void switchOn() {
+        isOn = true;
+    }
+    public void switchOff() {
+        isOn = false;
+    }
+    public boolean getOnOrOff() {
+        return isOn;
     }
 }
