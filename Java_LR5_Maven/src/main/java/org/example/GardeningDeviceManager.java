@@ -36,13 +36,15 @@ public class GardeningDeviceManager {
         }
     }
     public void showObjects() {
-        System.out.println("\nID\tТИП\t\t\t\tПРОИЗВОДИТЕЛЬ\t\tМОДЕЛЬ\t\tИСТОЧНИК ПИТАНИЯ\t\tГОД ПРОИЗВОДСТВА\tСРОК СЛУЖБЫ");
+        System.out.println("\nID\tТИП\t\tПРОИЗВОДИТЕЛЬ\tМОДЕЛЬ\t\tИСТОЧНИК ПИТАНИЯ\tГОД ПРОИЗВОДСТВА\tСРОК СЛУЖБЫ");
         System.out.println("=================================================================================================================");
         if (this.devices.isEmpty()) {
             System.out.println("--------------------------------------------------- NO OBJECTS --------------------------------------------------");
         } else {
+            String obj;
             for (GardeningDevice device : devices) {
-                System.out.printf("%-2d\t%-15s\t%-16s\t%-10s\t%-20s\t\t%-16s\t%-11s\n", device.getId(), device.getClass().toString().substring(6),
+                obj = device.getClass().toString().substring(18);
+                System.out.printf("%-2d\t%-15s\t%-10s\t%-10s\t%-20s\t%-16s\t%-11s\n", device.getId(), obj,
                         device.getManufacturer(), device.getModel(), device.getPowerSource(), device.getProductionYear(), device.getLifetime());
             }
         }

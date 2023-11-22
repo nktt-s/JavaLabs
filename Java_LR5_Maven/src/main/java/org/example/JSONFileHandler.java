@@ -94,10 +94,10 @@ public class JSONFileHandler {
 
                 try {
                     jsonObject = gson.fromJson(jsonString, Lawnmower.class);
-                    switch (jsonObject.getClass().toString().substring(6)) {
-                        case "org.example.Lawnmower" -> jsonObject = gson.fromJson(jsonString, Lawnmower.class);
-                        case "org.example.AutoWatering" -> jsonObject = gson.fromJson(jsonString, AutoWatering.class);
-                        case "org.example.ThermalDrive" -> jsonObject = gson.fromJson(jsonString, ThermalDrive.class);
+                    switch (jsonObject.getClass().toString().substring(18)) {
+                        case "Lawnmower" -> jsonObject = gson.fromJson(jsonString, Lawnmower.class);
+                        case "AutoWatering" -> jsonObject = gson.fromJson(jsonString, AutoWatering.class);
+                        case "ThermalDrive" -> jsonObject = gson.fromJson(jsonString, ThermalDrive.class);
                         default -> {
                             logger.error("Содержимое JSON не соответствует ни одному устройству.");
                             System.out.println(ANSI_RED + "Содержимое JSON не соответствует ни одному устройству." + ANSI_RESET);
@@ -111,10 +111,10 @@ public class JSONFileHandler {
                     jsonObject.setId();
                     deviceManager.addDevice(jsonObject);
                     System.out.print(ANSI_GREEN + "Устройство '");
-                    switch (jsonObject.getClass().toString().substring(6)) {
-                        case "org.example.Lawnmower" -> System.out.print("Газонокосилка'");
-                        case "org.example.AutoWatering" -> System.out.print("Автополив'");
-                        case "org.example.ThermalDrive" -> System.out.print("Термопривод'");
+                    switch (jsonObject.getClass().toString().substring(18)) {
+                        case "Lawnmower" -> System.out.print("Газонокосилка'");
+                        case "AutoWatering" -> System.out.print("Автополив'");
+                        case "ThermalDrive" -> System.out.print("Термопривод'");
                     }
                     logger.info("Данные об устройстве успешно получены.");
                     System.out.println(" успешно добавлено!" + ANSI_RESET);
@@ -130,9 +130,6 @@ public class JSONFileHandler {
             System.out.println(ANSI_RED + "Ошибка - файл с таким именем не существует!" + ANSI_RESET);
         }
     }
-
-
-
 
     public static final String ANSI_RESET = "\u001B[0m";
     public static final String ANSI_RED = "\u001B[31m";
