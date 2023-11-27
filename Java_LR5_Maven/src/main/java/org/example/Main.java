@@ -7,57 +7,40 @@ import org.apache.logging.log4j.LogManager;
 
 public class Main {
     protected static final Logger logger = LogManager.getLogger(Main.class);
+    static Scanner sc = new Scanner(System.in);
 
     public static void main(String[] args) throws InterruptedException {
         logger.info("Начало работы программы.");
         GardeningDeviceManager deviceManager = getGardeningDeviceManager();
 
         System.out.println(ANSI_BLUE + "\n\t\t\t=== Лабораторная работа #5 ===\n\t\tВыполнил студент группы ИКПИ-14 Сергеев Н.В.\n" + ANSI_RESET);
-        Scanner sc = new Scanner(System.in);
         while (true) {
             showMenu();
             if (sc.hasNextInt()) {
                 int choice = sc.nextInt();
                 switch (choice) {
-                    case 1:
+                    case 1 -> {
                         logger.info("Запуск действия - просмотр устройств.");
                         deviceManager.showObjects();
-                        break;
-
-                    case 2:
-                        addDevice(deviceManager);
-                        break;
-
-                    case 3:
-                        editDevice(deviceManager);
-                        break;
-
-                    case 4:
-                        removeDevice(deviceManager);
-                        break;
-
-                    case 5:
-                        operateDevices(deviceManager, sc);
-                        break;
-
-                    case 6:
+                    }
+                    case 2 -> addDevice(deviceManager);
+                    case 3 -> editDevice(deviceManager);
+                    case 4 -> removeDevice(deviceManager);
+                    case 5 -> operateDevices(deviceManager);
+                    case 6 -> {
                         deviceManager.showObjects();
                         JSONFileHandler.saveDeviceToJSON(deviceManager, sc);
-                        break;
-
-                    case 7:
-                        JSONFileHandler.loadDeviceFromJSON(deviceManager, sc);
-                        break;
-
-                    case 0:
+                    }
+                    case 7 -> JSONFileHandler.loadDeviceFromJSON(deviceManager, sc);
+                    case 0 -> {
                         logger.info("Завершение работы программы.");
                         System.out.println("Завершение работы...");
                         return;
-
-                    default:
+                    }
+                    default -> {
                         logger.warn("Попытка ввода неверного значения при выборе действия.");
                         System.out.println(ANSI_RED + "Введено неверное значение, попробуйте ещё раз!" + ANSI_RESET);
-                        break;
+                    }
                 }
             } else {
                 logger.warn("Попытка ввода недопустимого значения при выборе действия.");
@@ -102,7 +85,6 @@ public class Main {
         System.out.println("\t1. Газонокосилка");
         System.out.println("\t2. Автополив");
         System.out.println("\t3. Термопривод для теплиц");
-        Scanner sc = new Scanner(System.in);
         if (sc.hasNextInt()) {
             int deviceType = sc.nextInt();
             sc.nextLine();
@@ -194,7 +176,6 @@ public class Main {
             System.out.println(ANSI_RED + "\nОтсутствуют устройства для изменения!\n" + ANSI_RESET);
         } else {
             deviceManager.showObjects();
-            Scanner sc = new Scanner(System.in);
             int id;
 
             while (true) {
@@ -271,7 +252,6 @@ public class Main {
         } else {
             deviceManager.showObjects();
 
-            Scanner sc = new Scanner(System.in);
             int id;
 
             while (true) {
@@ -290,7 +270,7 @@ public class Main {
         }
     }
 
-    public static void operateDevices(GardeningDeviceManager deviceManager, Scanner scanner) throws InterruptedException {
+    public static void operateDevices(GardeningDeviceManager deviceManager) throws InterruptedException {
         logger.info("Запуск действия - работа с устройствами.");
         System.out.println(ANSI_BLUE + "=== Функциональная работа с устройствами ===" + ANSI_RESET);
         if (deviceManager.getDevices().isEmpty()) {
@@ -299,7 +279,6 @@ public class Main {
         } else {
             deviceManager.showObjects();
 
-            Scanner sc = new Scanner(System.in);
             int id;
 
             while (true) {
@@ -349,7 +328,7 @@ public class Main {
                 switch (operation) {
                     case 1:
                         logger.info("Запуск действия - включение устройства.");
-                        device.turnOn(scanner);
+                        device.turnOn();
                         break;
 
                     case 2:
@@ -359,7 +338,7 @@ public class Main {
 
                     case 3:
                         logger.info("Запуск действия - выполнение операции устройством.");
-                        device.performAction(scanner);
+                        device.performAction();
                         break;
 
                     case 4:

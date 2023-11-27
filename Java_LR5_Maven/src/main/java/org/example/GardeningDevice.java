@@ -1,7 +1,5 @@
 package org.example;
 
-import java.util.Scanner;
-
 public abstract class GardeningDevice {
     private String manufacturer;
     private String model;
@@ -43,9 +41,9 @@ public abstract class GardeningDevice {
         }
     }
 
-    public abstract void turnOn(Scanner scanner) throws InterruptedException;
+    public abstract void turnOn() throws InterruptedException;
     public abstract void turnOff();
-    public abstract void performAction(Scanner scanner) throws InterruptedException;
+    public abstract void performAction() throws InterruptedException;
 
 
     public void isExpired() {

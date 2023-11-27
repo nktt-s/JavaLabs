@@ -16,39 +16,39 @@ public class ThermalDrive extends GardeningDevice {
     }
 
     @Override
-    public void turnOn(Scanner scanner) throws InterruptedException {
+    public void turnOn() throws InterruptedException {
         if (super.isOn) {
             System.out.println(ANSI_YELLOW + "Термопривод уже включён!" + ANSI_RESET);
         } else {
 
             System.out.print("Установите интенсивность работы устройства (10 - 100%): ");
-            if (scanner.hasNextInt()) {
-                int intensityInput = scanner.nextInt();
+            if (Main.sc.hasNextInt()) {
+                int intensityInput = Main.sc.nextInt();
                 adjustIntensity(intensityInput);
             } else {
                 System.out.println(ANSI_RED + "Неверный ввод. Установлена интенсивность работы устройства по умолчанию (75%)." + ANSI_RESET);
                 setIntensity(75);
-                scanner.nextLine();
+                Main.sc.nextLine();
             }
 
-            System.out.print("Включить систему авторегуляции температуры в необходимом диапазоне? (да/нет): ");
-            scanner.nextLine();
-            String autoregulationInput = scanner.nextLine().toLowerCase();
-            setAutoregulation(autoregulationInput.equals("да"));
-            manageAutoregulation(scanner);
+            System.out.print("Включить систему авторегуляции температуры в необходимом диапазоне? (y/n): ");
+            Main.sc.nextLine();
+            String autoregulationInput = Main.sc.nextLine().toLowerCase();
+            setAutoregulation(autoregulationInput.equals("y"));
+            manageAutoregulation(Main.sc);
 
             if (!isAutoregulationOn) {
-                adjustTemperature(scanner);
+                adjustTemperature(Main.sc);
             }
 
-            System.out.print("Включить систему защиты от перегрева и переохлаждения? (да/нет): ");
-            String protectiveFunctionInput = scanner.nextLine().toLowerCase();
-            setProtectiveFunction(protectiveFunctionInput.equals("да"));
+            System.out.print("Включить систему защиты от перегрева и переохлаждения? (y/n): ");
+            String protectiveFunctionInput = Main.sc.nextLine().toLowerCase();
+            setProtectiveFunction(protectiveFunctionInput.equals("y"));
             manageProtectiveFunction();
 
-            System.out.print("Выполнить калибровку температурных датчиков? (да/нет): ");
-            String calibrateSensorsInput = scanner.nextLine().toLowerCase();
-            setCalibrateTemperatureSensors(calibrateSensorsInput.equals("да"));
+            System.out.print("Выполнить калибровку температурных датчиков? (y/n): ");
+            String calibrateSensorsInput = Main.sc.nextLine().toLowerCase();
+            setCalibrateTemperatureSensors(calibrateSensorsInput.equals("y"));
             manageCalibrationTemperatureSensors();
 
             System.out.println(ANSI_GREEN + "Термопривод готов к работе.\n" + ANSI_RESET);
@@ -65,7 +65,7 @@ public class ThermalDrive extends GardeningDevice {
         }
     }
     @Override
-    public void performAction(Scanner scanner) {
+    public void performAction() {
         if (super.isOn) {
             if (!isAutoregulationOn) {
                 System.out.println(ANSI_GREEN + "Термопривод работает! Установленная температура: " + getTemperature() + "°C.\n" + ANSI_RESET);

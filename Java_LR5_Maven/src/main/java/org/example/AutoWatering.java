@@ -1,5 +1,4 @@
 package org.example;
-import java.util.Scanner;
 
 public class AutoWatering extends GardeningDevice {
     private int workingMinutes;
@@ -16,49 +15,49 @@ public class AutoWatering extends GardeningDevice {
     }
 
     @Override
-    public void turnOn(Scanner scanner) {
+    public void turnOn() {
         if (super.isOn) {
             System.out.println(ANSI_YELLOW + "Автополив уже включён!\n" + ANSI_RESET);
         } else {
             System.out.print("Установите интенсивность работы устройства (10 - 100%): ");
-            if (scanner.hasNextInt()) {
-                int intensityInput = scanner.nextInt();
+            if (Main.sc.hasNextInt()) {
+                int intensityInput = Main.sc.nextInt();
                 adjustIntensity(intensityInput);
             } else {
                 System.out.println(ANSI_RED + "Неверный ввод. Установлена интенсивность работы устройства по умолчанию (75%)." + ANSI_RESET);
                 setIntensity(75);
-                scanner.nextLine();
+                Main.sc.nextLine();
             }
 
-            scanner.nextLine();
+            Main.sc.nextLine();
             System.out.print("Введите продолжительность полива в минутах (5 - 90): ");
-            if (scanner.hasNextInt()) {
-                int minutes = scanner.nextInt();
+            if (Main.sc.hasNextInt()) {
+                int minutes = Main.sc.nextInt();
                 adjustWorkingMinutes(minutes);
             } else {
                 System.out.println(ANSI_RED + "Неверный ввод. Установлено значение по умолчанию (10 мин)." + ANSI_RESET);
                 setWorkingMinutes(10);
             }
-            scanner.nextLine();
+            Main.sc.nextLine();
 
-            System.out.print("Установить дождеватель? (да/нет): ");
-            String sprinklerInput = scanner.nextLine().toLowerCase();
-            setSprinklerAttached(sprinklerInput.equals("да"));
+            System.out.print("Установить дождеватель? (y/n): ");
+            String sprinklerInput = Main.sc.nextLine().toLowerCase();
+            setSprinklerAttached(sprinklerInput.equals("y"));
             manageSprinkler();
 
             System.out.print("Введите давление воды в psi (20 - 80): ");
-            if (scanner.hasNextInt()) {
-                int pressure = scanner.nextInt();
+            if (Main.sc.hasNextInt()) {
+                int pressure = Main.sc.nextInt();
                 adjustWaterPressure(pressure);
             } else {
                 System.out.println(ANSI_RED + "Неверный ввод. Установлено значение по умолчанию (40 psi)." + ANSI_RESET);
                 setWaterPressure(40);
             }
-            scanner.nextLine();
+            Main.sc.nextLine();
 
-            System.out.print("Установить зимний режим? (да/нет): ");
-            String winterModeInput = scanner.nextLine().toLowerCase();
-            setWinterMode(winterModeInput.equals("да"));
+            System.out.print("Установить зимний режим? (y/n): ");
+            String winterModeInput = Main.sc.nextLine().toLowerCase();
+            setWinterMode(winterModeInput.equals("y"));
             manageWinterMode();
 
             System.out.println(ANSI_GREEN + "Система автополива готова к работе!\n" + ANSI_RESET);
@@ -76,7 +75,7 @@ public class AutoWatering extends GardeningDevice {
     }
 
     @Override
-    public void performAction(Scanner scanner) throws InterruptedException {
+    public void performAction() throws InterruptedException {
         if (super.isOn) {
             System.out.print(ANSI_GREEN + "Полив растений" + ANSI_RESET);
             Thread.sleep(500);

@@ -1,5 +1,4 @@
 package org.example;
-import java.util.Scanner;
 
 public class Lawnmower extends GardeningDevice {
     private boolean isGrassCollectionFull; // Заполненность травосборника
@@ -18,28 +17,28 @@ public class Lawnmower extends GardeningDevice {
     }
 
     @Override
-    public void turnOn(Scanner scanner) throws InterruptedException {
+    public void turnOn() throws InterruptedException {
         if (super.isOn) {
             System.out.println(ANSI_YELLOW + "Газонокосилка уже включена!\n" + ANSI_RESET);
         } else {
 
             System.out.print("Установите интенсивность работы устройства (10 - 100%): ");
-            if (scanner.hasNextInt()) {
-                int intensityInput = scanner.nextInt();
+            if (Main.sc.hasNextInt()) {
+                int intensityInput = Main.sc.nextInt();
                 adjustIntensity(intensityInput);
             } else {
                 System.out.println(ANSI_RED + "Неверный ввод. Установлена интенсивность работы устройства по умолчанию (75%)." + ANSI_RESET);
                 setIntensity(75);
-                scanner.nextLine();
+                Main.sc.nextLine();
             }
 
-            scanner.nextLine();
-            System.out.print("Включить мульчирование? (да/нет): ");
-            String mulchingInput = scanner.nextLine().toLowerCase();
-            if (mulchingInput.equals("да")) {
+            Main.sc.nextLine();
+            System.out.print("Включить мульчирование? (y/n): ");
+            String mulchingInput = Main.sc.nextLine().toLowerCase();
+            if (mulchingInput.equals("y")) {
                 isMulchingEnabled = true;
                 manageMulching();
-            } else if (mulchingInput.equals("нет")) {
+            } else if (mulchingInput.equals("n")) {
                 isMulchingEnabled = false;
                 manageMulching();
             } else {
@@ -47,22 +46,22 @@ public class Lawnmower extends GardeningDevice {
             }
 
             System.out.print("Введите желаемую высоту среза (20 - 100 мм): ");
-            if (scanner.hasNextInt()) {
-                int height = scanner.nextInt();
+            if (Main.sc.hasNextInt()) {
+                int height = Main.sc.nextInt();
                 adjustCuttingHeight(height);
             } else {
                 System.out.println(ANSI_RED + "Неверный ввод. Установлена высота среза по умолчанию (40 мм)." + ANSI_RESET);
                 setCuttingHeight(40);
-                scanner.nextLine();
+                Main.sc.nextLine();
             }
 
             checkBatteryLevel();
             if (super.getPowerSource().equalsIgnoreCase("Аккумулятор")) {
                 if (batteryLevel < 10) {
                     System.out.println(ANSI_RED + "Низкий уровень заряда аккумулятора! Газонокосилка не может быть включена." + ANSI_RESET);
-                    System.out.print("Зарядить аккумулятор? (да/нет): ");
-                    String chargeInput = scanner.nextLine().toLowerCase();
-                    if (chargeInput.equals("да")) {
+                    System.out.print("Зарядить аккумулятор? (y/n): ");
+                    String chargeInput = Main.sc.nextLine().toLowerCase();
+                    if (chargeInput.equals("y")) {
                         batteryCharge();
                     }
                 } else {
@@ -86,15 +85,15 @@ public class Lawnmower extends GardeningDevice {
     }
 
     @Override
-    public void performAction(Scanner scanner) throws InterruptedException {
+    public void performAction() throws InterruptedException {
         if (super.isOn) {
             if (super.getPowerSource().equalsIgnoreCase("Аккумулятор")) {
                 if (batteryLevel < 10) {
                     System.out.println(ANSI_RED + "Низкий уровень заряда аккумулятора! Газонокосилка не может работать." + ANSI_RESET);
-                    System.out.println("Зарядить аккумулятор? (да/нет): ");
-                    String chargeInput = scanner.nextLine().toLowerCase();
-                    scanner.nextLine();
-                    if (chargeInput.equals("да")) {
+                    System.out.println("Зарядить аккумулятор? (y/n): ");
+                    String chargeInput = Main.sc.nextLine().toLowerCase();
+                    Main.sc.nextLine();
+                    if (chargeInput.equals("y")) {
                         batteryCharge();
                         cutTheGrass();
                     } else {
