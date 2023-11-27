@@ -1,5 +1,4 @@
 package org.example;
-import java.util.Scanner;
 
 public class ThermalDrive extends GardeningDevice {
     private int temperature;
@@ -35,10 +34,10 @@ public class ThermalDrive extends GardeningDevice {
             Main.sc.nextLine();
             String autoregulationInput = Main.sc.nextLine().toLowerCase();
             setAutoregulation(autoregulationInput.equals("y"));
-            manageAutoregulation(Main.sc);
+            manageAutoregulation();
 
             if (!isAutoregulationOn) {
-                adjustTemperature(Main.sc);
+                adjustTemperature();
             }
 
             System.out.print("Включить систему защиты от перегрева и переохлаждения? (y/n): ");
@@ -77,11 +76,11 @@ public class ThermalDrive extends GardeningDevice {
         }
     }
 
-    public void manageAutoregulation(Scanner scanner) {
+    public void manageAutoregulation() {
         if (isAutoregulationOn) {
             System.out.print("Введите минимальное значение температуры (5 - 30°C): ");
-            if (scanner.hasNextInt()) {
-                lowTemp = scanner.nextInt();
+            if (Main.sc.hasNextInt()) {
+                lowTemp = Main.sc.nextInt();
                 if (!(5 <= lowTemp && lowTemp <= 30)) {
                     System.out.println(ANSI_RED + "Введённое значение не соответствует диапазону. Установлено значение минимальной температуры по умолчанию (5°C)." + ANSI_RESET);
                     setLowTemp(5);
@@ -91,8 +90,8 @@ public class ThermalDrive extends GardeningDevice {
                 setLowTemp(5);
             }
             System.out.print("Введите максимальное значение температуры (5 - 30°C): ");
-            if (scanner.hasNextInt()) {
-                highTemp = scanner.nextInt();
+            if (Main.sc.hasNextInt()) {
+                highTemp = Main.sc.nextInt();
                 if (!(5 <= highTemp && highTemp <= 30)) {
                     System.out.println(ANSI_RED + "Введённое значение не соответствует диапазону. Установлено значение максимальной температуры по умолчанию (30°C)." + ANSI_RESET);
                     setHighTemp(30);
@@ -107,17 +106,17 @@ public class ThermalDrive extends GardeningDevice {
                 setHighTemp(30);
             }
             System.out.println(ANSI_GREEN + "Система авторегуляции включена и настроена. Температура будет поддерживаться в диапазоне от " + getLowTemp() + "°C до " + getHighTemp() + "°C." + ANSI_RESET);
-            scanner.nextLine();
+            Main.sc.nextLine();
         } else {
             System.out.println(ANSI_YELLOW + "Система авторегуляции отключена." + ANSI_RESET);
         }
     }
 
-    public void adjustTemperature(Scanner scanner) {
+    public void adjustTemperature() {
         int temperature;
         System.out.print("Установите температуру (5 - 30°C): ");
-        if (scanner.hasNextInt()) {
-            temperature = scanner.nextInt();
+        if (Main.sc.hasNextInt()) {
+            temperature = Main.sc.nextInt();
             if (5 <= temperature && temperature <= 30) {
                 setTemperature(temperature);
                 System.out.println(ANSI_GREEN + "Значение температуры успешно установлено на " + getTemperature() + "°C." + ANSI_RESET);
@@ -129,7 +128,7 @@ public class ThermalDrive extends GardeningDevice {
             setTemperature(20);
             System.out.println(ANSI_RED + "Неверный ввод. Установлено значение температуры по умолчанию (20°C)." + ANSI_RESET);
         }
-        scanner.nextLine();
+        Main.sc.nextLine();
     }
 
     public void manageProtectiveFunction() {
