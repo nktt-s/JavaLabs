@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.javafx_project.controllers.AppController">
+    <children>
+        <Label id="windowName" layoutX="383.0" layoutY="11.0" text="Добавить устройство">
+            <font>
+                <Font size="24.0" />
+            </font>
+        </Label>
+        <GridPane layoutX="300.0" layoutY="28.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="400.0">
+            <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="158.0" minWidth="10.0" prefWidth="101.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="235.0" minWidth="10.0" prefWidth="224.0" />
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints minHeight="35.0" prefHeight="35.0" vgrow="SOMETIMES" />
+                <RowConstraints />
+                <RowConstraints />
+                <RowConstraints />
+                <RowConstraints />
+                <RowConstraints />
+                <RowConstraints />
+                <RowConstraints />
+                <RowConstraints minHeight="40.0" />
+                <RowConstraints minHeight="40.0" />
+            </rowConstraints>
+            <children>
+                <Label prefHeight="40.0" text="Производитель" GridPane.rowIndex="2">
+                    <font>
+                        <Font size="15.0" />
+                    </font></Label>
+                <Label prefHeight="40.0" text="Модель" GridPane.rowIndex="3">
+                    <font>
+                        <Font size="15.0" />
+                    </font></Label>
+                <Label prefHeight="40.0" text="Источник питания" GridPane.rowIndex="4">
+                    <font>
+                        <Font size="15.0" />
+                    </font></Label>
+                <Label prefHeight="40.0" text="Год производства" GridPane.rowIndex="5">
+                    <font>
+                        <Font size="15.0" />
+                    </font></Label>
+                <Label prefHeight="40.0" text="Срок службы" GridPane.rowIndex="6">
+                    <font>
+                        <Font size="15.0" />
+                    </font></Label>
+                <Label prefHeight="40.0" text="Включён" GridPane.rowIndex="8">
+                    <font>
+                        <Font size="15.0" />
+                    </font>
+                </Label>
+                <ChoiceBox id="type" prefWidth="262.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                <TextField id="initialTemperature" prefHeight="40.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                    <font>
+                        <Font size="15.0" />
+                    </font>
+                </TextField>
+                <TextField id="maxTemperature" prefHeight="40.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                    <font>
+                        <Font size="15.0" />
+                    </font>
+                </TextField>
+                <ChoiceBox id="units" prefWidth="262.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                <TextField id="locationX" prefHeight="40.0" GridPane.columnIndex="1" GridPane.rowIndex="6">
+                    <font>
+                        <Font size="15.0" />
+                    </font>
+                </TextField>
+                <TextField id="locationY" prefHeight="40.0" GridPane.columnIndex="1" GridPane.rowIndex="7">
+                    <font>
+                        <Font size="15.0" />
+                    </font>
+                </TextField>
+                <CheckBox id="active" prefHeight="40.0" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+
+                <Button id="next" mnemonicParsing="false" prefHeight="44.0" prefWidth="147.0" text="Далее" GridPane.columnIndex="1" GridPane.rowIndex="9">
+                    <font>
+                        <Font size="15.0" />
+                    </font>
+                </Button>
+                <Button id="back" mnemonicParsing="false" prefHeight="46.0" prefWidth="145.0" text="Назад" GridPane.rowIndex="9">
+                    <font>
+                        <Font size="15.0" />
+                    </font>
+                </Button>
+            </children>
+        </GridPane>
+    </children>
+</AnchorPane>

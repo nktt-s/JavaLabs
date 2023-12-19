@@ -43,7 +43,8 @@ public class GardeningDeviceManager {
         } else {
             String obj;
             for (GardeningDevice device : devices) {
-                obj = device.getClass().toString().substring(18);
+//                obj = device.getClass().toString().substring(18);
+                obj = device.getClass().toString();
                 System.out.printf("%-2d\t%-15s\t%-10s\t%-10s\t%-20s\t%-16s\t%-11s\n", device.getId(), obj,
                         device.getManufacturer(), device.getModel(), device.getPowerSource(), device.getProductionYear(), device.getLifetime());
             }
