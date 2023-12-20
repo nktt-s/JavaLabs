@@ -5,7 +5,6 @@ import org.apache.logging.log4j.Logger;
 
 public class AutoWatering extends GardeningDevice {
     private static final Logger logger = LogManager.getLogger(AutoWatering.class);
-    private int workingMinutes;
     private boolean isSprinklerAttached;
     private int waterPressure;
     private boolean isWinterMode;
@@ -16,7 +15,6 @@ public class AutoWatering extends GardeningDevice {
 
     public AutoWatering(String manufacturer, String model, String powerSource, int productionYear, int lifetime) {
         super(manufacturer, model, powerSource, productionYear, lifetime);
-        this.workingMinutes = 0;
         isSprinklerAttached = false;
         this.waterPressure = 0;
         this.isWinterMode = false;
@@ -29,7 +27,6 @@ public class AutoWatering extends GardeningDevice {
             logger.error("Попытка включить уже включённый автополив");
         } else {
             setIntensity(75);
-            setWorkingMinutes(10);
             setSprinklerAttached(true);
             setWaterPressure(40);
             setWinterMode(false);
@@ -54,16 +51,6 @@ public class AutoWatering extends GardeningDevice {
             logger.info("Выключен автополив");
         } else {
             logger.error("Попытка выполнить действие выключенного автополива");
-        }
-    }
-
-    public void adjustWorkingMinutes(int minutes) {
-        if (5 <= minutes && minutes <= 90) {
-            setWorkingMinutes(minutes);
-            logger.info("Установлена продолжительность полива на " + getWorkingMinutes() + " минут");
-        } else {
-            setWorkingMinutes(10);
-            logger.warn("Попытка неверного ввода. Установлена продолжительность полива по умолчанию (10 мин)");
         }
     }
 
@@ -93,12 +80,6 @@ public class AutoWatering extends GardeningDevice {
        }
     }
 
-    public void setWorkingMinutes(int minutes) {
-        this.workingMinutes = minutes;
-    }
-    public int getWorkingMinutes() {
-        return workingMinutes;
-    }
     public void setSprinklerAttached(boolean sprinklerAttached) {
         isSprinklerAttached = sprinklerAttached;
     }

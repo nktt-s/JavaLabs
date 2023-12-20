@@ -5,7 +5,6 @@ import org.apache.logging.log4j.Logger;
 
 public class Lawnmower extends GardeningDevice {
     private static final Logger logger = LogManager.getLogger(Lawnmower.class);
-    private boolean isGrassCollectionFull; // Заполненность травосборника
     private boolean isMulchingEnabled; // Система мульчирования - поверхностное покрытие почвы скошенной измельчённой травой для её защиты и улучшения свойств
     private int cuttingHeight; // Высота среза
 
@@ -15,7 +14,6 @@ public class Lawnmower extends GardeningDevice {
 
     public Lawnmower(String manufacturer, String model, String powerSource, int productionYear, int lifetime) {
         super(manufacturer, model, powerSource, productionYear, lifetime);
-        this.isGrassCollectionFull = false;
         this.isMulchingEnabled = false;
         setCuttingHeight(40);
         logger.info("Создана новая газонокосилка");
@@ -47,8 +45,6 @@ public class Lawnmower extends GardeningDevice {
     public void performAction() {
         if (super.isOn) {
             cutTheGrass();
-            isGrassCollectionFull = true;
-            emptyGrassCollector();
         } else {
             logger.error("Попытка выполнить действие выключенной газонокосилки");
         }
@@ -76,15 +72,6 @@ public class Lawnmower extends GardeningDevice {
         }
     }
 
-    public void emptyGrassCollector() {
-        if (isGrassCollectionFull) {
-            logger.info("Травосборник газонокосилки полон");
-            isGrassCollectionFull = false;
-            logger.info("Травосборник газонокосилки очищен");
-        } else {
-            logger.info("Травосборник газонокосилки пуст, очистка не требуется");
-        }
-    }
     public int getCuttingHeight() {
         return cuttingHeight;
     }

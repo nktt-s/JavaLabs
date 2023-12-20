@@ -30,11 +30,11 @@
                     <font>
                         <Font size="15.0" />
                     </font></Label>
-                <Label text="Источник питания" GridPane.rowIndex="3">
+                <Label prefHeight="40.0" text="Источник питания" GridPane.rowIndex="3">
                     <font>
                         <Font size="15.0" />
                     </font></Label>
-                <Label text="Год производства" GridPane.rowIndex="4">
+                <Label prefHeight="40.0" text="Год производства" GridPane.rowIndex="4">
                     <font>
                         <Font size="15.0" />
                     </font></Label>
@@ -42,15 +42,19 @@
                     <font>
                         <Font size="15.0" />
                     </font></Label>
-                <Label prefHeight="40.0" text="Установленная температура" GridPane.rowIndex="6">
+                <Label prefHeight="40.0" text="Давление воды" GridPane.rowIndex="6">
                     <font>
                         <Font size="15.0" />
                     </font></Label>
-                <Label prefHeight="40.0" text="Функция защиты" GridPane.rowIndex="7">
+                <Label prefHeight="40.0" text="Дождеватель установлен" GridPane.rowIndex="7">
                     <font>
                         <Font size="15.0" />
                     </font></Label>
-                <Label prefHeight="40.0" text="Устройство включено" GridPane.rowIndex="8">
+                <Label prefHeight="40.0" text="Зимний режим" GridPane.rowIndex="8">
+                    <font>
+                        <Font size="15.0" />
+                    </font></Label>
+                <Label prefHeight="40.0" text="Устройство включено" GridPane.rowIndex="9">
                     <font>
                         <Font size="15.0" />
                     </font>
@@ -75,22 +79,23 @@
                     <font>
                         <Font size="15.0" />
                     </font></TextField>
-                <TextField id="temperature" GridPane.columnIndex="1" GridPane.rowIndex="6">
+                <TextField id="waterPressure" GridPane.columnIndex="1" GridPane.rowIndex="6">
                     <font>
                         <Font size="15.0" />
                     </font>
                 </TextField>
-                <CheckBox id="protectiveFunction" prefHeight="40.0" GridPane.columnIndex="1" GridPane.rowIndex="7" />
-                <CheckBox id="isOn" prefHeight="40.0" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+                <CheckBox id="isSprinklerAttached" prefHeight="40.0" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+                <CheckBox id="isWinterMode" prefHeight="40.0" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+                <CheckBox id="isOn" prefHeight="40.0" GridPane.columnIndex="1" GridPane.rowIndex="9" />
                 <Button id="cancelButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="145.0"
-                        text="Отмена" GridPane.rowIndex="9" onAction="#onCancelButtonClicked">
+                        text="Отмена" GridPane.rowIndex="10" onAction="#onCancelButtonClicked">
                     <font>
                         <Font size="15.0" />
                     </font>
                 </Button>
-      
+
                 <Button id="applyButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="145.0" text="Подтвердить"
-                        GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="9" onAction="#onApplyButtonClicked">
+                        GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="10" onAction="#onApplyButtonClicked">
                     <font>
                         <Font size="15.0" />
                     </font>

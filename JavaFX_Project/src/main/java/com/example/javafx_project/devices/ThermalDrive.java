@@ -6,9 +6,6 @@ import org.apache.logging.log4j.Logger;
 public class ThermalDrive extends GardeningDevice {
     private static final Logger logger = LogManager.getLogger(AutoWatering.class);
     private int temperature;
-    private boolean isAutoregulationOn;
-    private int lowTemp;
-    private int highTemp;
     private boolean isProtectiveFunctionOn;
     private boolean calibrateTemperatureSensors;
     private boolean isCalibrated;
@@ -28,8 +25,6 @@ public class ThermalDrive extends GardeningDevice {
         if (super.isOn) {
             logger.error("Попытка включить уже включённый термопривод");
         } else {
-            setIntensity(75);
-            setAutoregulation(false);
             setTemperature(20);
             setProtectiveFunction(true);
             setCalibrateTemperatureSensors(true);
@@ -49,36 +44,9 @@ public class ThermalDrive extends GardeningDevice {
     @Override
     public void performAction() {
         if (super.isOn) {
-            if (!isAutoregulationOn) {
-                logger.info("Термопривод работает. Установленная температура: " + getTemperature() + "°C.");
-            } else {
-                logger.info("Термопривод работает! Температура поддерживается в диапазоне от " + getLowTemp() + "°C до " + getHighTemp() + "°C.");
-            }
+            logger.info("Термопривод работает. Установленная температура: " + getTemperature() + "°C.");
         } else {
             logger.error("Попытка выполнить действие выключенного термопривода");
-        }
-    }
-
-    public void manageAutoregulation(int lowTemp, int highTemp) {
-        if (isAutoregulationOn) {
-            if (!(5 <= lowTemp && lowTemp <= 30)) {
-                logger.error("Неверный ввод. Значение минимальной температуры не соответствует диапазону");
-                logger.info("Установлено значение минимальной температуры по умолчанию (5°C)");
-                setLowTemp(5);
-            }
-            if (!(5 <= highTemp && highTemp <= 30)) {
-                logger.error("Неверный ввод. Значение максимальной температуры не соответствует диапазону");
-                logger.info("Установлено значение максимальной температуры по умолчанию (30°C)");
-                setHighTemp(30);
-            }
-            if (getLowTemp() >= getHighTemp()) {
-                logger.error("Неверный ввод. Значение минимальной температуры больше значения максимальной");
-                logger.info("Установлено значение максимальной температуры по умолчанию (30°C)");
-                setHighTemp(30);
-            }
-            logger.info("Система авторегуляции термопривода включена и настроена");
-        } else {
-            logger.info("Система авторегуляции термопривода отключена");
         }
     }
 
@@ -116,26 +84,11 @@ public class ThermalDrive extends GardeningDevice {
     public void setTemperature(int temperature) {
         this.temperature = temperature;
     }
-    public void setAutoregulation(boolean isAutoregulationOn) {
-        this.isAutoregulationOn = isAutoregulationOn;
-    }
     public void setProtectiveFunction(boolean isProtectiveFunctionOn) {
         this.isProtectiveFunctionOn = isProtectiveFunctionOn;
     }
     public boolean getProtectiveFunction() {
         return isProtectiveFunctionOn;
-    }
-    public void setLowTemp(int lowTemp) {
-        this.lowTemp = lowTemp;
-    }
-    public int getLowTemp() {
-        return lowTemp;
-    }
-    public void setHighTemp(int highTemp) {
-        this.highTemp = highTemp;
-    }
-    public int getHighTemp() {
-        return highTemp;
     }
     public void setCalibrateTemperatureSensors(boolean calibrateTemperatureSensors) {
         this.calibrateTemperatureSensors = calibrateTemperatureSensors;

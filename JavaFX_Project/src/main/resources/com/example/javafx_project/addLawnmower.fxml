@@ -30,11 +30,11 @@
                     <font>
                         <Font size="15.0" />
                     </font></Label>
-                <Label text="Источник питания" GridPane.rowIndex="3">
+                <Label prefHeight="40.0" text="Источник питания" GridPane.rowIndex="3">
                     <font>
                         <Font size="15.0" />
                     </font></Label>
-                <Label text="Год производства" GridPane.rowIndex="4">
+                <Label prefHeight="40.0" text="Год производства" GridPane.rowIndex="4">
                     <font>
                         <Font size="15.0" />
                     </font></Label>
@@ -42,11 +42,11 @@
                     <font>
                         <Font size="15.0" />
                     </font></Label>
-                <Label prefHeight="40.0" text="Установленная температура" GridPane.rowIndex="6">
+                <Label prefHeight="40.0" text="Высота среза" GridPane.rowIndex="6">
                     <font>
                         <Font size="15.0" />
                     </font></Label>
-                <Label prefHeight="40.0" text="Функция защиты" GridPane.rowIndex="7">
+                <Label prefHeight="40.0" text="Функция мульчирования" GridPane.rowIndex="7">
                     <font>
                         <Font size="15.0" />
                     </font></Label>
@@ -75,12 +75,12 @@
                     <font>
                         <Font size="15.0" />
                     </font></TextField>
-                <TextField id="temperature" GridPane.columnIndex="1" GridPane.rowIndex="6">
+                <TextField id="cuttingHeight" GridPane.columnIndex="1" GridPane.rowIndex="6">
                     <font>
                         <Font size="15.0" />
                     </font>
                 </TextField>
-                <CheckBox id="protectiveFunction" prefHeight="40.0" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+                <CheckBox id="isMulchingEnabled" prefHeight="40.0" GridPane.columnIndex="1" GridPane.rowIndex="7" />
                 <CheckBox id="isOn" prefHeight="40.0" GridPane.columnIndex="1" GridPane.rowIndex="8" />
                 <Button id="cancelButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="145.0"
                         text="Отмена" GridPane.rowIndex="9" onAction="#onCancelButtonClicked">
@@ -88,7 +88,7 @@
                         <Font size="15.0" />
                     </font>
                 </Button>
-      
+
                 <Button id="applyButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="145.0" text="Подтвердить"
                         GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="9" onAction="#onApplyButtonClicked">
                     <font>

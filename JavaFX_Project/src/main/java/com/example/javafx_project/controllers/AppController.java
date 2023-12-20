@@ -46,9 +46,9 @@ public class AppController {
     @FXML
     private ContextMenu createContextMenu() {
         ContextMenu contextMenu = new ContextMenu();
-        MenuItem item1 = new MenuItem("Lawnmower");
-        MenuItem item2 = new MenuItem("AutoWatering");
-        MenuItem item3 = new MenuItem("ThermalDrive");
+        MenuItem item1 = new MenuItem("Газонокосилка");
+        MenuItem item2 = new MenuItem("Автополив");
+        MenuItem item3 = new MenuItem("Термопривод");
 
         contextMenu.getItems().addAll(item1, item2, item3);
 
@@ -69,36 +69,28 @@ public class AppController {
 
     @FXML
     private void handleMenuItemClick(ActionEvent event) {
-        MenuItem menuItem = (MenuItem) event.getSource();
-        String itemName = menuItem.getText();
-        System.out.println("Выбрано: " + itemName);
-
+        String menuItem = ((MenuItem) event.getSource()).getText();
+        String itemName;
+        switch (menuItem) {
+            case "Газонокосилка" -> itemName = "Lawnmower";
+            case "Автополив" -> itemName = "AutoWatering";
+            case "Термопривод" -> itemName = "ThermalDrive";
+            default -> itemName = "ERROR";
+        }
         Scene currentScene = addButton.getScene();
         Stage stage = (Stage) currentScene.getWindow();
 
         try {
-            // TODO
-            FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("add" + itemName + "Device.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("add" + itemName + ".fxml"));
             Scene scene = new Scene(fxmlLoader.load(), 1000, 600);
             stage.setResizable(false);
-            stage.setTitle("Gardening Devices | Добавление устройства " + itemName);
+            stage.setTitle("Gardening Devices | Добавление устройства - " + menuItem);
             stage.setScene(scene);
             stage.show();
-
 
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
-//        try {
-//            FXMLLoader loader = new FXMLLoader(Application.class.getResource("addAirConditioner.fxml"));
-//            Parent root = loader.load();
-//            stage.setScene(new Scene(root));
-//            ControllerAddAirConditioner controller = loader.getController();
-//            controller.start(stage);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
     }
 
     @FXML
