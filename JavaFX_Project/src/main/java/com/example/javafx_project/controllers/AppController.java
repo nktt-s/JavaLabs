@@ -2,6 +2,7 @@ package com.example.javafx_project.controllers;
 
 import com.example.javafx_project.App;
 import com.example.javafx_project.DatabaseManager;
+import com.example.javafx_project.devices.AutoWatering;
 import com.example.javafx_project.devices.GardeningDevice;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -20,6 +21,8 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 public class AppController {
@@ -86,7 +89,18 @@ public class AppController {
             stage.setResizable(false);
             stage.setTitle("Gardening Devices | Добавление устройства - " + menuItem);
             stage.setScene(scene);
-            stage.show();
+            Object temp_object = fxmlLoader.getController();
+            if (temp_object instanceof AddLawnmower) {
+                AddLawnmower controller = fxmlLoader.getController();
+                controller.start(stage);
+            } else if (temp_object instanceof AddAutoWatering) {
+                AddAutoWatering controller = fxmlLoader.getController();
+                controller.start(stage);
+            } else {
+                AddThermalDrive controller = fxmlLoader.getController();
+                controller.start(stage);
+            }
+//            stage.show();
 
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -101,7 +115,7 @@ public class AppController {
 
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("addDevice.fxml"));
-            Scene scene = new Scene(fxmlLoader.load(), 600, 400);
+            Scene scene = new Scene(fxmlLoader.load(), 1000, 600);
             stage.setResizable(false);
             stage.setTitle("Gardening Devices | Добавление устройства");
             stage.setScene(scene);
@@ -131,10 +145,9 @@ public class AppController {
 
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("main-window.fxml"));
-
         Scene scene = new Scene(fxmlLoader.load(), 1000, 600);
         stage.setResizable(false);
-        stage.setTitle("Gardening Devices | Просмотр устройств");
+        stage.setTitle("Gardening Devices | Список устройств");
         InputStream iconStream = getClass().getResourceAsStream("/images/icon2.png");
         assert iconStream != null;
         Image icon = new Image(iconStream);

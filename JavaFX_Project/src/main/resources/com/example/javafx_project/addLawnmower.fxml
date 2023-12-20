@@ -6,7 +6,7 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0"
             xmlns="http://javafx.com/javafx/17.0.2-ea"
-            xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.javafx_project.controllers.AddDeviceController">
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.javafx_project.controllers.AddLawnmower">
     <children>
         <Label id="windowName" layoutX="383.0" layoutY="11.0" text="Добавить устройство">
             <font>
@@ -55,41 +55,41 @@
                         <Font size="15.0" />
                     </font>
                 </Label>
-                <TextField id="manufacturer" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                <TextField fx:id="manufacturer" GridPane.columnIndex="1" GridPane.rowIndex="1">
                     <font>
                         <Font size="15.0" />
                     </font></TextField>
-                <TextField id="model" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                <TextField fx:id="model" GridPane.columnIndex="1" GridPane.rowIndex="2">
                     <font>
                         <Font size="15.0" />
                     </font></TextField>
-                <TextField id="powerSource" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                <TextField fx:id="powerSource" GridPane.columnIndex="1" GridPane.rowIndex="3">
                     <font>
                         <Font size="15.0" />
                     </font></TextField>
-                <TextField id="productionYear" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                <TextField fx:id="productionYear" GridPane.columnIndex="1" GridPane.rowIndex="4">
                     <font>
                         <Font size="15.0" />
                     </font></TextField>
-                <TextField id="lifetime" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                <TextField fx:id="lifetime" GridPane.columnIndex="1" GridPane.rowIndex="5">
                     <font>
                         <Font size="15.0" />
                     </font></TextField>
-                <TextField id="cuttingHeight" GridPane.columnIndex="1" GridPane.rowIndex="6">
+                <TextField fx:id="cuttingHeight" GridPane.columnIndex="1" GridPane.rowIndex="6">
                     <font>
                         <Font size="15.0" />
                     </font>
                 </TextField>
-                <CheckBox id="isMulchingEnabled" prefHeight="40.0" GridPane.columnIndex="1" GridPane.rowIndex="7" />
-                <CheckBox id="isOn" prefHeight="40.0" GridPane.columnIndex="1" GridPane.rowIndex="8" />
-                <Button id="cancelButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="145.0"
+                <CheckBox fx:id="isMulchingEnabled" prefHeight="40.0" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+                <CheckBox fx:id="isOn" prefHeight="40.0" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+                <Button fx:id="cancelButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="145.0"
                         text="Отмена" GridPane.rowIndex="9" onAction="#onCancelButtonClicked">
                     <font>
                         <Font size="15.0" />
                     </font>
                 </Button>
 
-                <Button id="applyButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="145.0" text="Подтвердить"
+                <Button fx:id="applyButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="145.0" text="Подтвердить"
                         GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="9" onAction="#onApplyButtonClicked">
                     <font>
                         <Font size="15.0" />
