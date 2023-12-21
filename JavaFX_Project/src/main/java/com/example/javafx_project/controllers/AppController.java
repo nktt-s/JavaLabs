@@ -2,7 +2,6 @@ package com.example.javafx_project.controllers;
 
 import com.example.javafx_project.App;
 import com.example.javafx_project.DatabaseManager;
-import com.example.javafx_project.devices.AutoWatering;
 import com.example.javafx_project.devices.GardeningDevice;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -21,8 +20,6 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
 
 public class AppController {
