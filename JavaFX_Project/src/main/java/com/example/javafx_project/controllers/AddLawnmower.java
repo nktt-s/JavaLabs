@@ -8,7 +8,6 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-
 import java.io.IOException;
 
 public class AddLawnmower {
@@ -41,7 +40,7 @@ public class AddLawnmower {
     @FXML
     private Button applyButton;
 
-    boolean hasErrors = true;
+    private boolean hasErrors = true;
 
     public void start(Stage stage) {
         manufacturer.setText("manufacturer");
@@ -78,25 +77,29 @@ public class AddLawnmower {
             _productionYear, _lifetime, _cuttingHeight, _isMulchingEnabled, _isOn);
 
         if (!lawnmower.isValidYear(_productionYear)) {
-            errorMessage_productionYear.setText("Установлено недопустимое значение в поле 'Год производства' (2000-2023)");
+            errorMessage_productionYear.setText("Установлено недопустимое значение " +
+                "в поле 'Год производства' (2000-2023)");
             hasErrors = true;
         } else {
             errorMessage_productionYear.setText("");
         }
         if (!lawnmower.isValidLifetime(_lifetime)) {
-            errorMessage_lifetime.setText("Установлено недопустимое значение в поле 'Срок службы' (3-20 лет)");
+            errorMessage_lifetime.setText("Установлено недопустимое значение " +
+                "в поле 'Срок службы' (3-20 лет)");
             hasErrors = true;
         } else {
             errorMessage_lifetime.setText("");
         }
         if (!lawnmower.isValidCuttingHeight(_cuttingHeight)) {
-            errorMessage_cuttingHeight.setText("Установлено недопустимое значение в поле 'Высота среза' (20-100 мм)");
+            errorMessage_cuttingHeight.setText("Установлено недопустимое значение " +
+                "в поле 'Высота среза' (20-100 мм)");
             hasErrors = true;
         } else {
             errorMessage_cuttingHeight.setText("");
         }
 
-        if (lawnmower.isValidYear(_productionYear) && lawnmower.isValidLifetime(_lifetime) && lawnmower.isValidCuttingHeight(_cuttingHeight)) hasErrors = false;
+        if (lawnmower.isValidYear(_productionYear) && lawnmower.isValidLifetime(_lifetime)
+            && lawnmower.isValidCuttingHeight(_cuttingHeight)) hasErrors = false;
         if (!hasErrors) {
             // TODO
 //            System.out.println("ОШИБОК НЕТ!");

@@ -5,14 +5,17 @@ import org.apache.logging.log4j.Logger;
 
 public class Lawnmower extends GardeningDevice {
     private static final Logger logger = LogManager.getLogger(Lawnmower.class);
-    private boolean isMulchingEnabled; // Система мульчирования - поверхностное покрытие почвы скошенной измельчённой травой для её защиты и улучшения свойств
+    private boolean isMulchingEnabled; // Система мульчирования - поверхностное
+    // покрытие почвы скошенной измельчённой травой для её защиты и улучшения свойств
     private int cuttingHeight; // Высота среза
 
     public Lawnmower() {
         super();
     }
 
-    public Lawnmower(String manufacturer, String model, String powerSource, int productionYear, int lifetime, int cuttingHeight, boolean isMulchingEnabled, boolean isOn) {
+    public Lawnmower(String manufacturer, String model, String powerSource,
+                     int productionYear, int lifetime, int cuttingHeight, boolean isMulchingEnabled,
+                     boolean isOn) {
         super(manufacturer, model, powerSource, productionYear, lifetime);
         this.cuttingHeight = cuttingHeight;
         this.isMulchingEnabled = isMulchingEnabled;
@@ -70,10 +73,12 @@ public class Lawnmower extends GardeningDevice {
     public void adjustCuttingHeight(int height) {
         if (20 <= height && height <= 100) {
             setCuttingHeight(height);
-            logger.info("Высота среза травы для газонокосилки установлена на " + getCuttingHeight() + "мм");
+            logger.info("Высота среза травы для газонокосилки установлена на " +
+                + getCuttingHeight() + "мм");
         } else {
             setCuttingHeight(40);
-            logger.error("Неверный ввод. Установлена высота среза травы для газонокосилки по умолчанию (40 мм).");
+            logger.error("Неверный ввод. Установлена высота среза травы для газонокосилки " +
+                "по умолчанию (40 мм).");
         }
     }
 

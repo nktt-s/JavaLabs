@@ -13,11 +13,13 @@ public class AutoWatering extends GardeningDevice {
         super();
     }
 
-    public AutoWatering(String manufacturer, String model, String powerSource, int productionYear, int lifetime) {
+    public AutoWatering(String manufacturer, String model, String powerSource,
+                        int productionYear, int lifetime, int waterPressure,
+                        boolean isSprinklerAttached, boolean isWinterMode, boolean isOn) {
         super(manufacturer, model, powerSource, productionYear, lifetime);
-        isSprinklerAttached = false;
-        this.waterPressure = 0;
-        this.isWinterMode = false;
+        this.waterPressure = waterPressure;
+        this.isSprinklerAttached = isSprinklerAttached;
+        this.isWinterMode = isWinterMode;
         logger.info("Создан новый автополив");
     }
 
@@ -60,6 +62,10 @@ public class AutoWatering extends GardeningDevice {
        } else {
             logger.info("Не установлен дождеватель");
        }
+    }
+
+    public boolean isValidWaterPressure(int pressure) {
+        return 20 <= pressure && pressure <= 80;
     }
 
     public void adjustWaterPressure(int pressure) {
