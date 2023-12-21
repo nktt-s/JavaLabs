@@ -64,7 +64,7 @@ public abstract class GardeningDevice {
 //        }
     }
     public boolean isValidYear(int productionYear) {
-        return 2000 < productionYear && productionYear < CURRENT_YEAR;
+        return 2000 <= productionYear && productionYear < CURRENT_YEAR;
     }
     public boolean isValidLifetime(int expectedLifetime) {
         return 3 <= expectedLifetime && expectedLifetime <= 20;

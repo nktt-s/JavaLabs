@@ -14,9 +14,13 @@ public class ThermalDrive extends GardeningDevice {
         super();
     };
 
-    public ThermalDrive(String manufacturer, String model, String powerSource, int productionYear, int lifetime) {
+    public ThermalDrive(String manufacturer, String model, String powerSource,
+                        int productionYear, int lifetime, int temperature,
+                        boolean isProtectiveFunctionOn, boolean isOn) {
         super(manufacturer, model, powerSource, productionYear, lifetime);
-        this.temperature = 0;
+        this.temperature = temperature;
+        this.isProtectiveFunctionOn = isProtectiveFunctionOn;
+        this.isOn = isOn;
         logger.info("Создан новый термопривод");
     }
 
@@ -48,6 +52,10 @@ public class ThermalDrive extends GardeningDevice {
         } else {
             logger.error("Попытка выполнить действие выключенного термопривода");
         }
+    }
+
+    public boolean isValidTemperature(int temperature) {
+        return 5 <= temperature && temperature <= 30;
     }
 
     public void adjustTemperature(int temperature) {

@@ -47,7 +47,7 @@ public class AddLawnmower {
         model.setText("model");
         powerSource.setText("battery power");
         productionYear.setText("2020");
-        lifetime.setText("10");
+        lifetime.setText("5");
         cuttingHeight.setText("40");
         isMulchingEnabled.setSelected(true);
         isOn.setSelected(false);

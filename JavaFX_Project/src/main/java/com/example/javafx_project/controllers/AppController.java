@@ -49,6 +49,7 @@ public class AppController {
     @FXML
     private ContextMenu createContextMenu() {
         ContextMenu contextMenu = new ContextMenu();
+        contextMenu.setStyle("-fx-font-size: 15");
         MenuItem item1 = new MenuItem("Газонокосилка");
         MenuItem item2 = new MenuItem("Автополив");
         MenuItem item3 = new MenuItem("Термопривод");
