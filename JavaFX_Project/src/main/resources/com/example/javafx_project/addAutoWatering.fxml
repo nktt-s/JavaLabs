@@ -4,11 +4,9 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0"
-            xmlns="http://javafx.com/javafx/17.0.2-ea"
-            xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.javafx_project.controllers.AddAutoWatering">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.javafx_project.controllers.AddAutoWatering">
     <children>
-        <Label id="windowName" layoutX="383.0" layoutY="11.0" text="Добавить устройство">
+        <Label id="windowName" layoutX="306.0" layoutY="14.0" text='Добавление устройства "Автополив"'>
             <font>
                 <Font size="24.0" />
             </font>
@@ -42,7 +40,7 @@
                     <font>
                         <Font size="15.0" />
                     </font></Label>
-                <Label prefHeight="40.0" text="Давление воды" GridPane.rowIndex="6">
+                <Label prefHeight="40.0" text="Давление воды (psi)" GridPane.rowIndex="6">
                     <font>
                         <Font size="15.0" />
                     </font></Label>
@@ -50,7 +48,7 @@
                     <font>
                         <Font size="15.0" />
                     </font></Label>
-                <Label prefHeight="40.0" text="Зимний режим" GridPane.rowIndex="8">
+                <Label prefHeight="40.0" text="Зимний режим включён" GridPane.rowIndex="8">
                     <font>
                         <Font size="15.0" />
                     </font></Label>
@@ -87,15 +85,13 @@
                 <CheckBox fx:id="isSprinklerAttached" prefHeight="40.0" GridPane.columnIndex="1" GridPane.rowIndex="7" />
                 <CheckBox fx:id="isWinterMode" prefHeight="40.0" GridPane.columnIndex="1" GridPane.rowIndex="8" />
                 <CheckBox fx:id="isOn" prefHeight="40.0" GridPane.columnIndex="1" GridPane.rowIndex="9" />
-                <Button fx:id="cancelButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="145.0"
-                        text="Отмена" GridPane.rowIndex="10" onAction="#onCancelButtonClicked">
+                <Button fx:id="cancelButton" mnemonicParsing="false" onAction="#onCancelButtonClicked" prefHeight="30.0" prefWidth="145.0" text="Отмена" GridPane.rowIndex="10">
                     <font>
                         <Font size="15.0" />
                     </font>
                 </Button>
 
-                <Button fx:id="applyButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="145.0" text="Подтвердить"
-                        GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="10" onAction="#onApplyButtonClicked">
+                <Button fx:id="applyButton" mnemonicParsing="false" onAction="#onApplyButtonClicked" prefHeight="30.0" prefWidth="145.0" text="Подтвердить" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="10">
                     <font>
                         <Font size="15.0" />
                     </font>

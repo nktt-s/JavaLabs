@@ -12,10 +12,11 @@ public class Lawnmower extends GardeningDevice {
         super();
     }
 
-    public Lawnmower(String manufacturer, String model, String powerSource, int productionYear, int lifetime) {
+    public Lawnmower(String manufacturer, String model, String powerSource, int productionYear, int lifetime, int cuttingHeight, boolean isMulchingEnabled, boolean isOn) {
         super(manufacturer, model, powerSource, productionYear, lifetime);
-        this.isMulchingEnabled = false;
-        setCuttingHeight(40);
+        this.cuttingHeight = cuttingHeight;
+        this.isMulchingEnabled = isMulchingEnabled;
+        this.isOn = isOn;
         logger.info("Создана новая газонокосилка");
     }
 
@@ -60,6 +61,10 @@ public class Lawnmower extends GardeningDevice {
         } else {
             logger.info("Отключена система мульчирования газонокосилки");
         }
+    }
+
+    public boolean isValidCuttingHeight(int height) {
+        return 20 <= height && height <= 100;
     }
 
     public void adjustCuttingHeight(int height) {
