@@ -6,7 +6,7 @@ public abstract class GardeningDevice {
     private String model;
     private String powerSource;
     private int intensity;
-    protected boolean isOn;
+    public boolean isOn;
     private int lifetime;
     private int productionYear;
     private String type;
@@ -16,6 +16,15 @@ public abstract class GardeningDevice {
 
     public GardeningDevice() {
         this.id = nextId++;
+    }
+
+    public GardeningDevice(int id, String manufacturer, String model, String powerSource, int productionYear, int lifetime) {
+        this.id = id;
+        this.manufacturer = manufacturer;
+        this.model = model;
+        this.powerSource = powerSource;
+        this.productionYear = productionYear;
+        this.lifetime = lifetime;
     }
 
     public GardeningDevice(String manufacturer, String model, String powerSource, int productionYear, int lifetime) {
@@ -52,6 +61,7 @@ public abstract class GardeningDevice {
 
     public abstract void turnOn();
     public abstract void turnOff();
+
     public abstract void performAction();
 
 

@@ -3,6 +3,7 @@ module com.example.javafx_project {
     requires javafx.fxml;
     requires java.sql;
     requires org.apache.logging.log4j;
+    requires mysql.connector.java;
 
 
     opens com.example.javafx_project to javafx.fxml;

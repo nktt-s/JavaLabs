@@ -13,6 +13,14 @@ public class Lawnmower extends GardeningDevice {
         super();
     }
 
+    public Lawnmower(int id, String manufacturer, String model, String powerSource,
+                     int productionYear, int lifetime, boolean isOn) {
+        super(id, manufacturer, model, powerSource, productionYear, lifetime);
+//        this.cuttingHeight = 40;
+//        this.isMulchingEnabled = true;
+        this.isOn = isOn;
+    }
+
     public Lawnmower(String manufacturer, String model, String powerSource,
                      int productionYear, int lifetime, int cuttingHeight, boolean isMulchingEnabled,
                      boolean isOn) {
@@ -43,6 +51,13 @@ public class Lawnmower extends GardeningDevice {
             super.isOn = false;
             logger.info("Выключена газонокосилка");
         }
+    }
+
+
+    // TODO НУЖНО ЛИ ЭТО ВООБЩЕ?
+    public void update(int cuttingHeight, boolean isMulchingEnabled) {
+        this.cuttingHeight = cuttingHeight;
+        this.isMulchingEnabled = isMulchingEnabled;
     }
 
     @Override

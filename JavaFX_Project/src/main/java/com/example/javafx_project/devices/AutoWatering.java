@@ -13,6 +13,15 @@ public class AutoWatering extends GardeningDevice {
         super();
     }
 
+    public AutoWatering(int id, String manufacturer, String model, String powerSource,
+                        int productionYear, int lifetime, boolean isOn) {
+        super(id, manufacturer, model, powerSource, productionYear, lifetime);
+//        this.waterPressure = 40;
+//        this.isSprinklerAttached = false;
+//        this.isWinterMode = false;
+        this.isOn = isOn;
+    }
+
     public AutoWatering(String manufacturer, String model, String powerSource,
                         int productionYear, int lifetime, int waterPressure,
                         boolean isSprinklerAttached, boolean isWinterMode, boolean isOn) {

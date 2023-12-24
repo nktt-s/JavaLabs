@@ -14,6 +14,14 @@ public class ThermalDrive extends GardeningDevice {
         super();
     };
 
+    public ThermalDrive(int id, String manufacturer, String model, String powerSource,
+                        int productionYear, int lifetime, boolean isOn) {
+        super(id, manufacturer, model, powerSource, productionYear, lifetime);
+//        this.temperature = 20;
+//        this.isProtectiveFunctionOn = true;
+        this.isOn = isOn;
+    }
+
     public ThermalDrive(String manufacturer, String model, String powerSource,
                         int productionYear, int lifetime, int temperature,
                         boolean isProtectiveFunctionOn, boolean isOn) {
