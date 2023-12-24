@@ -29,7 +29,7 @@ public class DatabaseManager implements Serializable {
         try {
 //            System.out.println(url + "\n" + login + "\n" + password);
 //            Class.forName("com.mysql.jdbc.Driver");
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3307/Gardening_Devices", "root", "");
+            Connection connection = DriverManager.getConnection(url, login, password);
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(query);
 
@@ -76,7 +76,7 @@ public class DatabaseManager implements Serializable {
         String query = "SELECT * FROM devices WHERE id = ?";
 
         try {
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3307/Gardening_Devices", "root", "");
+            Connection connection = DriverManager.getConnection(url, login, password);
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setInt(1, id);
             ResultSet resultSet = statement.executeQuery();
@@ -112,7 +112,7 @@ public class DatabaseManager implements Serializable {
     public static boolean deleteDevice(int id) {
         String deleteQuery = "DELETE FROM devices WHERE id = ?";
 
-        try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3307/Gardening_Devices", "root", "");
+        try (Connection connection = DriverManager.getConnection(url, login, password);
              PreparedStatement preparedStatement = connection.prepareStatement(deleteQuery)) {
 
             preparedStatement.setInt(1, id);

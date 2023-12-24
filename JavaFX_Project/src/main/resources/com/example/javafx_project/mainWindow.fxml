@@ -47,56 +47,56 @@
             </padding>
         </GridPane>
         <Button fx:id="exitButton" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#onExitButtonClick" style="-fx-font-weight: bold;" text="Выход" textFill="#e11d1d" />
-<!--        <ScrollPane fx:id="list_scrollPane" fitToWidth="true" layoutX="50.0" layoutY="88.0" prefHeight="469.0" prefWidth="880.0">-->
-<!--            <content>-->
+        <ScrollPane fx:id="list_scrollPane" fitToWidth="true" layoutX="50.0" layoutY="88.0" prefHeight="469.0" prefWidth="880.0">
+            <content>
                 <TableView fx:id="listOfDevices" prefHeight="469" prefWidth="880">
-<!--                    <columns>-->
-<!--                        <TableColumn fx:id="idColumn" prefWidth="63.0" text="ID">-->
-<!--&lt;!&ndash;                            <cellValueFactory>&ndash;&gt;-->
-<!--&lt;!&ndash;                                <PropertyValueFactory property="id" />&ndash;&gt;-->
-<!--&lt;!&ndash;                            </cellValueFactory>&ndash;&gt;-->
-<!--                        </TableColumn>-->
-<!--                        <TableColumn fx:id="typeColumn" prefWidth="126.0" text="Type">-->
-<!--&lt;!&ndash;                            <cellValueFactory>&ndash;&gt;-->
-<!--&lt;!&ndash;                                <PropertyValueFactory property="type" />&ndash;&gt;-->
-<!--&lt;!&ndash;                            </cellValueFactory>&ndash;&gt;-->
-<!--                        </TableColumn>-->
-<!--                        <TableColumn fx:id="isOnColumn" prefWidth="45.0" text="Is on">-->
-<!--&lt;!&ndash;                            <cellValueFactory>&ndash;&gt;-->
-<!--&lt;!&ndash;                                <PropertyValueFactory property="isOn" />&ndash;&gt;-->
-<!--&lt;!&ndash;                            </cellValueFactory>&ndash;&gt;-->
-<!--                        </TableColumn>-->
-<!--                        <TableColumn fx:id="manufacturerColumn" prefWidth="152.0" text="Manufacturer">-->
-<!--&lt;!&ndash;                            <cellValueFactory>&ndash;&gt;-->
-<!--&lt;!&ndash;                                <PropertyValueFactory property="manufacturer" />&ndash;&gt;-->
-<!--&lt;!&ndash;                            </cellValueFactory>&ndash;&gt;-->
-<!--                        </TableColumn>-->
-<!--                        <TableColumn fx:id="modelColumn" prefWidth="86.0" text="Model">-->
-<!--&lt;!&ndash;                            <cellValueFactory>&ndash;&gt;-->
-<!--&lt;!&ndash;                                <PropertyValueFactory property="model" />&ndash;&gt;-->
-<!--&lt;!&ndash;                            </cellValueFactory>&ndash;&gt;-->
-<!--                        </TableColumn>-->
-<!--                        <TableColumn fx:id="powerSourceColumn" prefWidth="135.0" text="PowerSource">-->
-<!--&lt;!&ndash;                            <cellValueFactory>&ndash;&gt;-->
-<!--&lt;!&ndash;                                <PropertyValueFactory property="powerSource" />&ndash;&gt;-->
-<!--&lt;!&ndash;                            </cellValueFactory>&ndash;&gt;-->
-<!--                        </TableColumn>-->
-<!--                        <TableColumn fx:id="productionYearColumn" prefWidth="125.0" text="Production Year">-->
-<!--&lt;!&ndash;                            <cellValueFactory>&ndash;&gt;-->
-<!--&lt;!&ndash;                                <PropertyValueFactory property="productionYear" />&ndash;&gt;-->
-<!--&lt;!&ndash;                            </cellValueFactory>&ndash;&gt;-->
-<!--                        </TableColumn>-->
-<!--                        <TableColumn fx:id="lifetimeColumn" prefWidth="132.0" text="Lifetime">-->
-<!--&lt;!&ndash;                            <cellValueFactory>&ndash;&gt;-->
-<!--&lt;!&ndash;                                <PropertyValueFactory property="lifetime" />&ndash;&gt;-->
-<!--&lt;!&ndash;                            </cellValueFactory>&ndash;&gt;-->
-<!--                        </TableColumn>-->
-<!--                    </columns>-->
+                    <columns>
+                        <TableColumn fx:id="idColumn" prefWidth="63.0" text="ID">
+<!--                            <cellValueFactory>-->
+<!--                                <PropertyValueFactory property="id" />-->
+<!--                            </cellValueFactory>-->
+                        </TableColumn>
+                        <TableColumn fx:id="typeColumn" prefWidth="126.0" text="Type">
+<!--                            <cellValueFactory>-->
+<!--                                <PropertyValueFactory property="type" />-->
+<!--                            </cellValueFactory>-->
+                        </TableColumn>
+                        <TableColumn fx:id="isOnColumn" prefWidth="45.0" text="Is on">
+<!--                            <cellValueFactory>-->
+<!--                                <PropertyValueFactory property="isOn" />-->
+<!--                            </cellValueFactory>-->
+                        </TableColumn>
+                        <TableColumn fx:id="manufacturerColumn" prefWidth="152.0" text="Manufacturer">
+<!--                            <cellValueFactory>-->
+<!--                                <PropertyValueFactory property="manufacturer" />-->
+<!--                            </cellValueFactory>-->
+                        </TableColumn>
+                        <TableColumn fx:id="modelColumn" prefWidth="86.0" text="Model">
+<!--                            <cellValueFactory>-->
+<!--                                <PropertyValueFactory property="model" />-->
+<!--                            </cellValueFactory>-->
+                        </TableColumn>
+                        <TableColumn fx:id="powerSourceColumn" prefWidth="135.0" text="PowerSource">
+<!--                            <cellValueFactory>-->
+<!--                                <PropertyValueFactory property="powerSource" />-->
+<!--                            </cellValueFactory>-->
+                        </TableColumn>
+                        <TableColumn fx:id="productionYearColumn" prefWidth="125.0" text="Production Year">
+<!--                            <cellValueFactory>-->
+<!--                                <PropertyValueFactory property="productionYear" />-->
+<!--                            </cellValueFactory>-->
+                        </TableColumn>
+                        <TableColumn fx:id="lifetimeColumn" prefWidth="132.0" text="Lifetime">
+<!--                            <cellValueFactory>-->
+<!--                                <PropertyValueFactory property="lifetime" />-->
+<!--                            </cellValueFactory>-->
+                        </TableColumn>
+                    </columns>
                 </TableView>
 
 <!--                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="467.0" prefWidth="878.0">-->
 <!--                </AnchorPane>-->
-<!--            </content>-->
-<!--        </ScrollPane>-->
+            </content>
+        </ScrollPane>
     </children>
 </AnchorPane>

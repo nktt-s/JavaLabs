@@ -1,5 +1,7 @@
 package com.example.javafx_project.devices;
 
+import javafx.beans.property.IntegerProperty;
+
 public abstract class GardeningDevice {
 
     private String manufacturer;

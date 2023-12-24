@@ -18,16 +18,11 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.Objects;
-import java.util.ResourceBundle;
 
 public class AppController {
     @FXML
@@ -42,8 +37,8 @@ public class AppController {
     private Button exitButton;
     @FXML
     private TableView<GardeningDevice> listOfDevices;
-//    @FXML
-//    private ScrollPane list_scrollPane;
+    @FXML
+    private ScrollPane list_scrollPane;
     @FXML
     private TableColumn<GardeningDevice, Integer> idColumn;
     @FXML
@@ -178,19 +173,20 @@ public class AppController {
 //        System.out.println("DEBUG INFO:\n\n" + controller);
 
         ArrayList<GardeningDevice> devices = DatabaseManager.getAllDevices();
-
-        assert devices != null;
-        ObservableList<GardeningDevice> res_devices = FXCollections.observableArrayList(devices);
-
-        listOfDevices = new TableView<>();
-
-        TableColumn<GardeningDevice, Integer> idColumn = new TableColumn<>("ID");
-        TableColumn<GardeningDevice, String> manufacturerColumn = new TableColumn<>("Manufacturer");
-        TableColumn<GardeningDevice, String> modelColumn = new TableColumn<>("Model");
-        TableColumn<GardeningDevice, String> powerSourceColumn = new TableColumn<>("Power Source");
-        TableColumn<GardeningDevice, Integer> productionYearColumn = new TableColumn<>("Production Year");
-        TableColumn<GardeningDevice, Integer> lifetimeColumn = new TableColumn<>("Lifetime");
-        TableColumn<GardeningDevice, Boolean> isOnColumn = new TableColumn<>("Is On");
+        System.out.println(devices);
+//
+//        assert devices != null;
+//        ObservableList<GardeningDevice> res_devices = FXCollections.observableArrayList(devices);
+//
+//        listOfDevices = new TableView<>();
+//
+//        TableColumn<GardeningDevice, Integer> idColumn = new TableColumn<>("ID");
+//        TableColumn<GardeningDevice, String> manufacturerColumn = new TableColumn<>("Manufacturer");
+//        TableColumn<GardeningDevice, String> modelColumn = new TableColumn<>("Model");
+//        TableColumn<GardeningDevice, String> powerSourceColumn = new TableColumn<>("Power Source");
+//        TableColumn<GardeningDevice, Integer> productionYearColumn = new TableColumn<>("Production Year");
+//        TableColumn<GardeningDevice, Integer> lifetimeColumn = new TableColumn<>("Lifetime");
+//        TableColumn<GardeningDevice, Boolean> isOnColumn = new TableColumn<>("Is On");
 
 //        Назначьте соответствующие значения для каждого столбца
 //        manufacturerColumn.setCellValueFactory(cellData -> new ReadOnlyObjectWrapper<>(cellData.getValue().getManufacturer()));
@@ -200,21 +196,19 @@ public class AppController {
 //        lifetimeColumn.setCellValueFactory(cellData -> new ReadOnlyObjectWrapper<>(cellData.getValue().getLifetime()));
 //        isOnColumn.setCellValueFactory(cellData -> new ReadOnlyObjectWrapper<>(cellData.getValue().isOn));
 
-        idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
+//        idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
 //        typeColumn.setCellValueFactory(new PropertyValueFactory<>("type"));
-        manufacturerColumn.setCellValueFactory(new PropertyValueFactory<>("manufacturer"));
-        modelColumn.setCellValueFactory(new PropertyValueFactory<>("model"));
-        powerSourceColumn.setCellValueFactory(new PropertyValueFactory<>("powerSource"));
-        productionYearColumn.setCellValueFactory(new PropertyValueFactory<>("productionYear"));
-        lifetimeColumn.setCellValueFactory(new PropertyValueFactory<>("lifetime"));
-        isOnColumn.setCellValueFactory(new PropertyValueFactory<>("isOn"));
+//        manufacturerColumn.setCellValueFactory(new PropertyValueFactory<>("manufacturer"));
+//        modelColumn.setCellValueFactory(new PropertyValueFactory<>("model"));
+//        powerSourceColumn.setCellValueFactory(new PropertyValueFactory<>("powerSource"));
+//        productionYearColumn.setCellValueFactory(new PropertyValueFactory<>("productionYear"));
+//        lifetimeColumn.setCellValueFactory(new PropertyValueFactory<>("lifetime"));
+//        isOnColumn.setCellValueFactory(new PropertyValueFactory<>("isOn"));
 
-        listOfDevices.getColumns().addAll(idColumn, manufacturerColumn, modelColumn,
-                powerSourceColumn, productionYearColumn, lifetimeColumn, isOnColumn);
+//        listOfDevices.getColumns().addAll(idColumn, manufacturerColumn, modelColumn,
+//                powerSourceColumn, productionYearColumn, lifetimeColumn, isOnColumn);
 
-        listOfDevices.setItems(res_devices);
-        StackPane root = new StackPane();
-        root.getChildren().add(listOfDevices);
+//        listOfDevices.setItems(res_devices);
 
 
 //        listOfDevices.getColumns().add(idColumn);
