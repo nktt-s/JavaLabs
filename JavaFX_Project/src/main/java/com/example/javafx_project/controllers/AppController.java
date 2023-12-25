@@ -3,6 +3,8 @@ package com.example.javafx_project.controllers;
 import com.example.javafx_project.App;
 import com.example.javafx_project.DatabaseManager;
 import com.example.javafx_project.devices.GardeningDevice;
+import com.example.javafx_project.devices.Lawnmower;
+import com.example.javafx_project.devices.Person;
 import javafx.application.Platform;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -17,6 +19,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
@@ -167,63 +170,48 @@ public class AppController {
     }
 
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("mainWindow.fxml"));
+//        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("mainWindow.fxml"));
 
 //        AppController controller = fxmlLoader.getController();
 //        System.out.println("DEBUG INFO:\n\n" + controller);
+        ObservableList<GardeningDevice> res_devices = FXCollections.observableArrayList(
+                new Lawnmower(1, "Manuf", "Model_1", "Mains power", 2020, 8, false)
+        );
+        listOfDevices = new TableView<>(res_devices);
+        list_scrollPane = new ScrollPane(listOfDevices);
 
-        ArrayList<GardeningDevice> devices = DatabaseManager.getAllDevices();
-        System.out.println(devices);
-//
-//        assert devices != null;
-//        ObservableList<GardeningDevice> res_devices = FXCollections.observableArrayList(devices);
-//
-//        listOfDevices = new TableView<>();
-//
-//        TableColumn<GardeningDevice, Integer> idColumn = new TableColumn<>("ID");
-//        TableColumn<GardeningDevice, String> manufacturerColumn = new TableColumn<>("Manufacturer");
-//        TableColumn<GardeningDevice, String> modelColumn = new TableColumn<>("Model");
-//        TableColumn<GardeningDevice, String> powerSourceColumn = new TableColumn<>("Power Source");
-//        TableColumn<GardeningDevice, Integer> productionYearColumn = new TableColumn<>("Production Year");
-//        TableColumn<GardeningDevice, Integer> lifetimeColumn = new TableColumn<>("Lifetime");
-//        TableColumn<GardeningDevice, Boolean> isOnColumn = new TableColumn<>("Is On");
+//        ArrayList<GardeningDevice> devices = DatabaseManager.getAllDevices();
+//        System.out.println(devices);
 
-//        Назначьте соответствующие значения для каждого столбца
-//        manufacturerColumn.setCellValueFactory(cellData -> new ReadOnlyObjectWrapper<>(cellData.getValue().getManufacturer()));
-//        modelColumn.setCellValueFactory(cellData -> new ReadOnlyObjectWrapper<>(cellData.getValue().getModel()));
-//        powerSourceColumn.setCellValueFactory(cellData -> new ReadOnlyObjectWrapper<>(cellData.getValue().getPowerSource()));
-//        productionYearColumn.setCellValueFactory(cellData -> new ReadOnlyObjectWrapper<>(cellData.getValue().getProductionYear()));
-//        lifetimeColumn.setCellValueFactory(cellData -> new ReadOnlyObjectWrapper<>(cellData.getValue().getLifetime()));
-//        isOnColumn.setCellValueFactory(cellData -> new ReadOnlyObjectWrapper<>(cellData.getValue().isOn));
+        ObservableList<Person> people = FXCollections.observableArrayList(
 
-//        idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
-//        typeColumn.setCellValueFactory(new PropertyValueFactory<>("type"));
-//        manufacturerColumn.setCellValueFactory(new PropertyValueFactory<>("manufacturer"));
-//        modelColumn.setCellValueFactory(new PropertyValueFactory<>("model"));
-//        powerSourceColumn.setCellValueFactory(new PropertyValueFactory<>("powerSource"));
-//        productionYearColumn.setCellValueFactory(new PropertyValueFactory<>("productionYear"));
-//        lifetimeColumn.setCellValueFactory(new PropertyValueFactory<>("lifetime"));
-//        isOnColumn.setCellValueFactory(new PropertyValueFactory<>("isOn"));
+                new Person("Tom", 34),
+                new Person("Bob", 22),
+                new Person("Sam", 28),
+                new Person("Alice", 29)
+        );
+        // определяем таблицу и устанавливаем данные
+        TableView<Person> table = new TableView<Person>(people);
+        table.setPrefWidth(250);
+        table.setPrefHeight(200);
 
-//        listOfDevices.getColumns().addAll(idColumn, manufacturerColumn, modelColumn,
-//                powerSourceColumn, productionYearColumn, lifetimeColumn, isOnColumn);
+        // столбец для вывода имени
+        TableColumn<Person, String> nameColumn = new TableColumn<>("Name");
+        // определяем фабрику для столбца с привязкой к свойству name
+        nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+        // добавляем столбец
+        table.getColumns().add(nameColumn);
 
-//        listOfDevices.setItems(res_devices);
+        // столбец для вывода возраста
+        TableColumn<Person, Integer> ageColumn = new TableColumn<>("Age");
+        ageColumn.setCellValueFactory(new PropertyValueFactory<>("age"));
+        table.getColumns().add(ageColumn);
 
+        FlowPane root = new FlowPane(10, 10, table);
 
-//        listOfDevices.getColumns().add(idColumn);
-//        listOfDevices.getColumns().add(manufacturerColumn);
-//        listOfDevices.getColumns().add(modelColumn);
-//        listOfDevices.getColumns().add(powerSourceColumn);
-//        listOfDevices.getColumns().add(productionYearColumn);
-//        listOfDevices.getColumns().add(lifetimeColumn);
-//        listOfDevices.getColumns().add(isOnColumn);
+        Scene scene = new Scene(root, 300, 250);
 
-//        list_scrollPane = new ScrollPane(listOfDevices);
-
-//        updateListOfDevices();
-
-        Scene scene = new Scene(fxmlLoader.load(), 1000, 600);
+//        Scene scene = new Scene(fxmlLoader.load(), 1000, 600);
         stage.setResizable(false);
         stage.setTitle("Gardening Devices | Список устройств");
         InputStream iconStream = getClass().getResourceAsStream("/images/icon2.png");
@@ -237,53 +225,33 @@ public class AppController {
     public void updateListOfDevices() {
         try {
             ArrayList<GardeningDevice> devices = DatabaseManager.getAllDevices();
+            ObservableList<GardeningDevice> res_devices = FXCollections.observableArrayList(
+                new Lawnmower(1, "Manuf", "Model_1", "Mains power", 2020, 8, false)
+            );
+
+            listOfDevices = new TableView<>(res_devices);
 
             if (devices == null) return;
-            listOfDevices.getItems().clear();
+
+//            listOfDevices.getItems().clear();
 //            listOfDevices = new TableView<>(res_devices);
 //            listOfDevices.getItems().addAll(devices);
-            for (GardeningDevice device : devices) {
+//            for (GardeningDevice device : devices) {
 //                device.update
 //                GridPane gridPane = createGridPane(device.getId(), device.getType(), device.getManufacturer(),
 //                    device.getModel(), device.getPowerSource(), device.getProductionYear(), device.getLifetime(), device.checkStatus());
 //                listOfDevices.getChildrenUnmodifiable().add(gridPane);
 
-                TableColumn<GardeningDevice, Integer> idColumn = new TableColumn<>("ID");
-                idColumn.setCellValueFactory(new PropertyValueFactory<>(String.valueOf(device.getId())));
-                listOfDevices.getColumns().add(idColumn);
-
-
-                TableColumn<GardeningDevice, String> manufacturerColumn = new TableColumn<>("Manufacturer");
-                TableColumn<GardeningDevice, String> modelColumn = new TableColumn<>("Model");
-                TableColumn<GardeningDevice, String> powerSourceColumn = new TableColumn<>("Power Source");
-                TableColumn<GardeningDevice, Integer> productionYearColumn = new TableColumn<>("Production Year");
-                TableColumn<GardeningDevice, Integer> lifetimeColumn = new TableColumn<>("Lifetime");
-                TableColumn<GardeningDevice, Boolean> isOnColumn = new TableColumn<>("Is On");
-
-//                 Назначьте соответствующие значения для каждого столбца
-//                manufacturerColumn.setCellValueFactory(cellData -> new ReadOnlyObjectWrapper<>(cellData.getValue().getManufacturer()));
-//                modelColumn.setCellValueFactory(cellData -> new ReadOnlyObjectWrapper<>(cellData.getValue().getModel()));
-//                powerSourceColumn.setCellValueFactory(cellData -> new ReadOnlyObjectWrapper<>(cellData.getValue().getPowerSource()));
-//                productionYearColumn.setCellValueFactory(cellData -> new ReadOnlyObjectWrapper<>(cellData.getValue().getProductionYear()));
-//                lifetimeColumn.setCellValueFactory(cellData -> new ReadOnlyObjectWrapper<>(cellData.getValue().getLifetime()));
-//                isOnColumn.setCellValueFactory(cellData -> new ReadOnlyObjectWrapper<>(cellData.getValue().isOn));
-
-                // Добавьте столбцы в таблицу
-//                listOfDevices.getColumns().addAll(idColumn, manufacturerColumn, modelColumn, powerSourceColumn, productionYearColumn, lifetimeColumn, isOnColumn);
-
-
-
-                // Отобразите данные устройств в таблице
-//                listOfDevices.setItems(FXCollections.observableArrayList(devices));
-
-
-
-//                try {
-//                    Parent item = FXMLLoader.load(Objects.requireNonNull(App.class.getResource("DeviceItems.fxml")));
-//                } catch (IOException e) {
-//                    throw new RuntimeException(e);
-//                }
-            }
+//                TableColumn<GardeningDevice, Integer> idColumn = new TableColumn<>("ID");
+//                idColumn.setCellValueFactory(new PropertyValueFactory<>(String.valueOf(device.getId())));
+//                listOfDevices.getColumns().add(idColumn);
+//
+//                ObservableList<GardeningDevice> res_devices = FXCollections.observableArrayList(
+//                        new Lawnmower(1, "Manuf", "Model_1", "Mains power", 2020, 8, false)
+//                );
+//
+//
+//            }
 //            list_scrollPane.setFitToHeight(true);
 //            list_scrollPane.setFitToWidth(true);
         } catch (Exception ex) {
