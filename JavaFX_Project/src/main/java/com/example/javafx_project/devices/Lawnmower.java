@@ -109,7 +109,7 @@ public class Lawnmower extends GardeningDevice {
     public void switchOff() {
         isOn = false;
     }
-    public boolean getStatus() {
+    public boolean isIsOn() {
         return isOn;
     }
 }

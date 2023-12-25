@@ -4,10 +4,7 @@ import com.example.javafx_project.App;
 import com.example.javafx_project.DatabaseManager;
 import com.example.javafx_project.devices.GardeningDevice;
 import com.example.javafx_project.devices.Lawnmower;
-import com.example.javafx_project.devices.Person;
 import javafx.application.Platform;
-import javafx.beans.property.ReadOnlyObjectWrapper;
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -19,7 +16,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
-import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
@@ -39,15 +35,11 @@ public class AppController {
     @FXML
     private Button exitButton;
     @FXML
-    private TableView<GardeningDevice> listOfDevices;
-    @FXML
-    private ScrollPane list_scrollPane;
+    private TableView<GardeningDevice> table;
     @FXML
     private TableColumn<GardeningDevice, Integer> idColumn;
     @FXML
     private TableColumn<GardeningDevice, String> typeColumn;
-    @FXML
-    private TableColumn<GardeningDevice, Boolean> isOnColumn;
     @FXML
     private TableColumn<GardeningDevice, String> manufacturerColumn;
     @FXML
@@ -58,6 +50,8 @@ public class AppController {
     private TableColumn<GardeningDevice, Integer> productionYearColumn;
     @FXML
     private TableColumn<GardeningDevice, Integer> lifetimeColumn;
+    @FXML
+    private TableColumn<GardeningDevice, Boolean> isOnColumn;
 
     public Button addLawnmower;
     public Button addAutoWatering;
@@ -132,26 +126,6 @@ public class AppController {
             throw new RuntimeException(e);
         }
     }
-
-    @FXML
-    private void onAddButtonClick() {
-
-        Scene currentScene = addButton.getScene();
-        Stage stage = (Stage) currentScene.getWindow();
-
-        try {
-            FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("addDevice.fxml"));
-            Scene scene = new Scene(fxmlLoader.load(), 1000, 600);
-            stage.setResizable(false);
-            stage.setTitle("Gardening Devices | Добавление устройства");
-            stage.setScene(scene);
-            stage.show();
-
-
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
     @FXML
     private void onEditButtonClick() {
 
@@ -170,48 +144,13 @@ public class AppController {
     }
 
     public void start(Stage stage) throws IOException {
-//        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("mainWindow.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("mainWindow.fxml"));
+        Parent root = fxmlLoader.load();
 
-//        AppController controller = fxmlLoader.getController();
-//        System.out.println("DEBUG INFO:\n\n" + controller);
-        ObservableList<GardeningDevice> res_devices = FXCollections.observableArrayList(
-                new Lawnmower(1, "Manuf", "Model_1", "Mains power", 2020, 8, false)
-        );
-        listOfDevices = new TableView<>(res_devices);
-        list_scrollPane = new ScrollPane(listOfDevices);
+        ScrollPane scrollPane = (ScrollPane) root.lookup("#scrollPane");
+        updateListOfDevices(scrollPane);
 
-//        ArrayList<GardeningDevice> devices = DatabaseManager.getAllDevices();
-//        System.out.println(devices);
-
-        ObservableList<Person> people = FXCollections.observableArrayList(
-
-                new Person("Tom", 34),
-                new Person("Bob", 22),
-                new Person("Sam", 28),
-                new Person("Alice", 29)
-        );
-        // определяем таблицу и устанавливаем данные
-        TableView<Person> table = new TableView<Person>(people);
-        table.setPrefWidth(250);
-        table.setPrefHeight(200);
-
-        // столбец для вывода имени
-        TableColumn<Person, String> nameColumn = new TableColumn<>("Name");
-        // определяем фабрику для столбца с привязкой к свойству name
-        nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
-        // добавляем столбец
-        table.getColumns().add(nameColumn);
-
-        // столбец для вывода возраста
-        TableColumn<Person, Integer> ageColumn = new TableColumn<>("Age");
-        ageColumn.setCellValueFactory(new PropertyValueFactory<>("age"));
-        table.getColumns().add(ageColumn);
-
-        FlowPane root = new FlowPane(10, 10, table);
-
-        Scene scene = new Scene(root, 300, 250);
-
-//        Scene scene = new Scene(fxmlLoader.load(), 1000, 600);
+        Scene scene = new Scene(root, 1000, 600);
         stage.setResizable(false);
         stage.setTitle("Gardening Devices | Список устройств");
         InputStream iconStream = getClass().getResourceAsStream("/images/icon2.png");
@@ -222,42 +161,58 @@ public class AppController {
         stage.show();
     }
 
-    public void updateListOfDevices() {
-        try {
-            ArrayList<GardeningDevice> devices = DatabaseManager.getAllDevices();
-            ObservableList<GardeningDevice> res_devices = FXCollections.observableArrayList(
-                new Lawnmower(1, "Manuf", "Model_1", "Mains power", 2020, 8, false)
-            );
+    public void updateListOfDevices(ScrollPane scrollPane) {
+            ArrayList<GardeningDevice> devicesFromDB = DatabaseManager.getAllDevices();
 
-            listOfDevices = new TableView<>(res_devices);
+            if (devicesFromDB == null) return;
+            ObservableList<GardeningDevice> devices = FXCollections.observableArrayList(devicesFromDB);
 
-            if (devices == null) return;
+            table = new TableView<>(devices);
+            table.setStyle("-fx-font-size: 14px");
+            table.setPrefWidth(950);
+            table.setPrefHeight(550);
 
-//            listOfDevices.getItems().clear();
-//            listOfDevices = new TableView<>(res_devices);
-//            listOfDevices.getItems().addAll(devices);
-//            for (GardeningDevice device : devices) {
-//                device.update
-//                GridPane gridPane = createGridPane(device.getId(), device.getType(), device.getManufacturer(),
-//                    device.getModel(), device.getPowerSource(), device.getProductionYear(), device.getLifetime(), device.checkStatus());
-//                listOfDevices.getChildrenUnmodifiable().add(gridPane);
+            idColumn = new TableColumn<>("ID");
+            idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
+            idColumn.setPrefWidth(50.0);
+            table.getColumns().add(idColumn);
 
-//                TableColumn<GardeningDevice, Integer> idColumn = new TableColumn<>("ID");
-//                idColumn.setCellValueFactory(new PropertyValueFactory<>(String.valueOf(device.getId())));
-//                listOfDevices.getColumns().add(idColumn);
-//
-//                ObservableList<GardeningDevice> res_devices = FXCollections.observableArrayList(
-//                        new Lawnmower(1, "Manuf", "Model_1", "Mains power", 2020, 8, false)
-//                );
-//
-//
-//            }
-//            list_scrollPane.setFitToHeight(true);
-//            list_scrollPane.setFitToWidth(true);
-        } catch (Exception ex) {
-//            System.out.println("EXCEPTION");
-            ex.printStackTrace();
-        }
+            typeColumn = new TableColumn<>("Type");
+            typeColumn.setCellValueFactory(new PropertyValueFactory<>("type"));
+            typeColumn.setPrefWidth(100.0);
+            table.getColumns().add(typeColumn);
+
+            manufacturerColumn = new TableColumn<>("Manufacturer");
+            manufacturerColumn.setCellValueFactory(new PropertyValueFactory<>("manufacturer"));
+            manufacturerColumn.setPrefWidth(130.0);
+            table.getColumns().add(manufacturerColumn);
+
+            modelColumn = new TableColumn<>("Model");
+            modelColumn.setCellValueFactory(new PropertyValueFactory<>("model"));
+            modelColumn.setPrefWidth(85.0);
+            table.getColumns().add(modelColumn);
+
+            powerSourceColumn = new TableColumn<>("Power source");
+            powerSourceColumn.setCellValueFactory(new PropertyValueFactory<>("powerSource"));
+            powerSourceColumn.setPrefWidth(130.0);
+            table.getColumns().add(powerSourceColumn);
+
+            productionYearColumn = new TableColumn<>("Production year");
+            productionYearColumn.setCellValueFactory(new PropertyValueFactory<>("productionYear"));
+            productionYearColumn.setPrefWidth(125.0);
+            table.getColumns().add(productionYearColumn);
+
+            lifetimeColumn = new TableColumn<>("Lifetime");
+            lifetimeColumn.setCellValueFactory(new PropertyValueFactory<>("lifetime"));
+            lifetimeColumn.setPrefWidth(100.0);
+            table.getColumns().add(lifetimeColumn);
+
+            isOnColumn = new TableColumn<>("Is switched on");
+            isOnColumn.setCellValueFactory(new PropertyValueFactory<>("isOn"));
+            isOnColumn.setPrefWidth(135.0);
+            table.getColumns().add(isOnColumn);
+
+            scrollPane.setContent(table);
     }
 
     public GridPane createTableRow(int id, String type, String manufacturer, String model, String powerSource,
@@ -270,7 +225,7 @@ public class AppController {
 
             deleteDeviceButton.setOnAction(event -> {
                 DatabaseManager.deleteDevice(id);
-                updateListOfDevices();
+                updateListOfDevices(new ScrollPane());
             });
 
             GridPane.setConstraints(deleteDeviceButton, 0, 0);

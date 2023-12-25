@@ -142,7 +142,7 @@ public abstract class GardeningDevice {
             setIntensity(75);
         }
     }
-    public String getType() { return this.getClass().toString().substring(38);}
+    public String getType() { return this.getClass().toString().substring(41);}
 
     public static final int CURRENT_YEAR = 2023;
 }
