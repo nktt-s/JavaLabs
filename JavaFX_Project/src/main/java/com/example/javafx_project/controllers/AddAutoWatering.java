@@ -84,7 +84,7 @@ public class AddAutoWatering {
 
         if (!autoWatering.isValidYear(_productionYear)) {
             errorMessage_productionYear.setText("Установлено недопустимое значение " +
-                "в поле 'Год производства' (2000-2023)");
+                "в поле 'Год производства' (2000-" + autoWatering.getCurrentYear() + ")");
             hasErrors = true;
         } else {
             errorMessage_productionYear.setText("");

@@ -11,7 +11,7 @@
                 <Font size="24.0" />
             </font>
         </Label>
-        <GridPane layoutX="282.0" layoutY="160.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="332.0" prefWidth="456.0">
+        <GridPane layoutX="282.0" layoutY="160.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="348.0" prefWidth="489.0">
             <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="225.0" minWidth="10.0" prefWidth="207.0" />
                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="260.0" minWidth="10.0" prefWidth="249.0" />
@@ -36,11 +36,11 @@
                     <font>
                         <Font size="15.0" />
                     </font></Label>
-                <Label text="Источник питания" GridPane.rowIndex="2">
+                <Label prefHeight="40.0" text="Источник питания" GridPane.rowIndex="2">
                     <font>
                         <Font size="15.0" />
                     </font></Label>
-                <Label text="Год производства" GridPane.rowIndex="3">
+                <Label prefHeight="40.0" text="Год производства" GridPane.rowIndex="3">
                     <font>
                         <Font size="15.0" />
                     </font></Label>
@@ -81,7 +81,7 @@
                     <font>
                         <Font size="15.0" />
                     </font></TextField>
-                <TextField fx:id="temperature" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                <TextField fx:id="temperature" maxHeight="-Infinity" GridPane.columnIndex="1" GridPane.rowIndex="5">
                     <font>
                         <Font size="15.0" />
                     </font>

@@ -80,7 +80,7 @@ public class AddThermalDrive {
 
         if (!thermalDrive.isValidYear(_productionYear)) {
             errorMessage_productionYear.setText("Установлено недопустимое значение " +
-                "в поле 'Год производства' (2000-2023)");
+                "в поле 'Год производства' (2000-" + thermalDrive.getCurrentYear() + ")");
             hasErrors = true;
         } else {
             errorMessage_productionYear.setText("");

@@ -2,6 +2,8 @@ package com.example.javafx_project.devices;
 
 import javafx.beans.property.IntegerProperty;
 
+import java.time.Year;
+
 public abstract class GardeningDevice {
 
     private String manufacturer;
@@ -143,6 +145,9 @@ public abstract class GardeningDevice {
         }
     }
     public String getType() { return this.getClass().toString().substring(41);}
+    public int getCurrentYear() {
+        return CURRENT_YEAR;
+    }
 
-    public static final int CURRENT_YEAR = 2023;
+    public static final int CURRENT_YEAR = Year.now().getValue();
 }
