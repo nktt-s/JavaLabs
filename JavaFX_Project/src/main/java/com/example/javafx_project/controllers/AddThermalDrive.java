@@ -1,5 +1,6 @@
 package com.example.javafx_project.controllers;
 
+import com.example.javafx_project.DatabaseManager;
 import com.example.javafx_project.devices.ThermalDrive;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
@@ -104,12 +105,11 @@ public class AddThermalDrive {
             && thermalDrive.isValidTemperature(_temperature)) hasErrors = false;
         if (!hasErrors) {
             // TODO
-//            System.out.println("ОШИБОК НЕТ!");
+//            System.out.println("Валидация прошла успешно: ошибок нет.");
         }
 
 
-
-
+        DatabaseManager.addDevice(thermalDrive);
     }
 
 

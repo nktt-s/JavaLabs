@@ -68,8 +68,37 @@ public class DatabaseManager implements Serializable {
             }
 
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            System.err.println("SQLException on getting devices!");
+            return null;
+//            throw new RuntimeException(e);
         }
+    }
+
+    public static void addDevice(GardeningDevice device) {
+        String query = "INSERT INTO devices (id, Type, isOn, Manufacturer, Model, PowerSource, ProductionYear, Lifetime) VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
+        try {
+            Connection connection = DriverManager.getConnection(url, login, password);
+            PreparedStatement prepStatement = connection.prepareStatement(query);
+//            prepStatement.setInt(0, device.getId());
+
+            // TODO - java.sql.SQLIntegrityConstraintViolationException: Duplicate entry '1' for key 'devices.PRIMARY'
+
+            prepStatement.setInt(DatabaseAttributes.ID.ordinal(), device.getId());
+            prepStatement.setString(DatabaseAttributes.TYPE.ordinal(), device.getType());
+            prepStatement.setBoolean(DatabaseAttributes.IS_ON.ordinal(), device.checkStatus());
+            prepStatement.setString(DatabaseAttributes.MANUFACTURER.ordinal(), device.getManufacturer());
+            prepStatement.setString(DatabaseAttributes.MODEL.ordinal(), device.getModel());
+            prepStatement.setString(DatabaseAttributes.POWER_SOURCE.ordinal(), device.getPowerSource());
+            prepStatement.setInt(DatabaseAttributes.PRODUCTION_YEAR.ordinal(), device.getProductionYear());
+            prepStatement.setInt(DatabaseAttributes.LIFETIME.ordinal(), device.getLifetime());
+
+            prepStatement.execute();
+
+        } catch (SQLException ex) {
+            System.err.println("SQLException on inserting device!");
+            ex.printStackTrace();
+        }
+
     }
 
     public static GardeningDevice getDevice(int id) {
@@ -132,4 +161,16 @@ public class DatabaseManager implements Serializable {
             return false;
         }
     }
+}
+
+enum DatabaseAttributes {
+    NONE,
+    ID,
+    TYPE,
+    IS_ON,
+    MANUFACTURER,
+    MODEL,
+    POWER_SOURCE,
+    PRODUCTION_YEAR,
+    LIFETIME
 }

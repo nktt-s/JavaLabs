@@ -1,8 +1,10 @@
 package com.example.javafx_project.devices;
 
+import com.example.javafx_project.DatabaseManager;
 import javafx.beans.property.IntegerProperty;
 
 import java.time.Year;
+import java.util.ArrayList;
 
 public abstract class GardeningDevice {
 
@@ -19,7 +21,17 @@ public abstract class GardeningDevice {
     private static int nextId = 1;
 
     public GardeningDevice() {
-        this.id = nextId++;
+//        this.id = nextId++;
+        this.setUniqueId();
+    }
+
+    public void setUniqueId() {
+        ArrayList<GardeningDevice> devicesFromDB = DatabaseManager.getAllDevices();
+        if (devicesFromDB != null) {
+            this.id = devicesFromDB.size() + 1;
+        } else {
+            this.id = 1;
+        }
     }
 
     public GardeningDevice(int id, String manufacturer, String model, String powerSource, int productionYear, int lifetime) {
