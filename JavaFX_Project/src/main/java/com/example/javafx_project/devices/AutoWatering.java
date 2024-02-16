@@ -9,10 +9,6 @@ public class AutoWatering extends GardeningDevice {
     private int waterPressure;
     private boolean isWinterMode;
 
-    public AutoWatering() {
-        super();
-    }
-
     public AutoWatering(int id, String manufacturer, String model, String powerSource,
                         int productionYear, int lifetime, boolean isOn) {
         super(id, manufacturer, model, powerSource, productionYear, lifetime);

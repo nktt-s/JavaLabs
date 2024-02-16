@@ -2,9 +2,6 @@ package com.example.javafx_project;
 
 import com.example.javafx_project.devices.*;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.sql.*;
 import java.util.ArrayList;
@@ -79,7 +76,6 @@ public class DatabaseManager implements Serializable {
         try {
             Connection connection = DriverManager.getConnection(url, login, password);
             PreparedStatement prepStatement = connection.prepareStatement(query);
-//            prepStatement.setInt(0, device.getId());
 
             // TODO - java.sql.SQLIntegrityConstraintViolationException: Duplicate entry '1' for key 'devices.PRIMARY'
 

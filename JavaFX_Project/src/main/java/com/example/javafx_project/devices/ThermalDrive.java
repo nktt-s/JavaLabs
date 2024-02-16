@@ -10,10 +10,6 @@ public class ThermalDrive extends GardeningDevice {
     private boolean calibrateTemperatureSensors;
     private boolean isCalibrated;
 
-    public ThermalDrive() {
-        super();
-    };
-
     public ThermalDrive(int id, String manufacturer, String model, String powerSource,
                         int productionYear, int lifetime, boolean isOn) {
         super(id, manufacturer, model, powerSource, productionYear, lifetime);

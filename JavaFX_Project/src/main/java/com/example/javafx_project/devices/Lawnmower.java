@@ -9,10 +9,6 @@ public class Lawnmower extends GardeningDevice {
     // покрытие почвы скошенной измельчённой травой для её защиты и улучшения свойств
     private int cuttingHeight; // Высота среза
 
-    public Lawnmower() {
-        super();
-    }
-
     public Lawnmower(int id, String manufacturer, String model, String powerSource,
                      int productionYear, int lifetime, boolean isOn) {
         super(id, manufacturer, model, powerSource, productionYear, lifetime);

@@ -15,11 +15,9 @@ public abstract class GardeningDevice {
     public boolean isOn;
     private int lifetime;
     private int productionYear;
-    private String type;
 
     private int id;
     private static int nextId = 1;
-//    private static int nextId = (DatabaseManager.getAllDevices() != null) ? DatabaseManager.getAllDevices().size() : 1;
 
     public GardeningDevice() {
         this.id = nextId++;
@@ -52,18 +50,6 @@ public abstract class GardeningDevice {
         this.powerSource = powerSource;
         this.productionYear = productionYear;
         this.lifetime = lifetime;
-        //        if (isValidYear(productionYear)) {
-//            this.productionYear = productionYear;
-//        } else {
-//            System.out.println(ANSI_RED + "Введённое значение не соответствует допустимому диапазону. Установлен год производства по умолчанию (2000 год)." + ANSI_RESET);
-//            this.productionYear = 2000;
-//        }
-//        if (isValidLifetime(lifetime)) {
-//            this.lifetime = lifetime;
-//        } else {
-//            System.out.println(ANSI_RED + "Введённое значение не соответствует допустимому диапазону. Установлен срок службы по умолчанию (5 лет)." + ANSI_RESET);
-//            this.lifetime = 5;
-//        }
         this.isOn = false;
         this.intensity = 0;
     }
@@ -76,16 +62,6 @@ public abstract class GardeningDevice {
     public abstract void turnOff();
 
     public abstract void performAction();
-
-
-    public void isExpired() {
-//        int age = CURRENT_YEAR - this.productionYear;
-//        if (age >= this.lifetime) {
-//            System.out.println(ANSI_RED + "Срок службы устройства истёк!\n" + ANSI_RESET);
-//        } else {
-//            System.out.println(ANSI_GREEN + "Срок службы устройства ещё не истёк!\n" + ANSI_RESET);
-//        }
-    }
     public boolean isValidYear(int productionYear) {
         return 2000 <= productionYear && productionYear <= CURRENT_YEAR;
     }
@@ -97,9 +73,6 @@ public abstract class GardeningDevice {
     // Геттеры и сеттеры для свойств
     public int getId() {
         return id;
-    }
-    public void setId() {
-        this.id = nextId++;
     }
     public String getManufacturer() {
         return manufacturer;
