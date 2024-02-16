@@ -104,7 +104,6 @@ public class AddThermalDrive {
         if (thermalDrive.isValidYear(_productionYear) && thermalDrive.isValidLifetime(_lifetime)
             && thermalDrive.isValidTemperature(_temperature)) hasErrors = false;
         if (!hasErrors) {
-            // TODO
 //            System.out.println("Валидация прошла успешно: ошибок нет.");
             DatabaseManager.addDevice(thermalDrive);
 
@@ -112,15 +111,6 @@ public class AddThermalDrive {
             Scene currentScene = cancelButton.getScene();
             Stage stage = (Stage) currentScene.getWindow();
             appController.start(stage);
-
-
-
-
         }
-
-
-
     }
-
-
 }

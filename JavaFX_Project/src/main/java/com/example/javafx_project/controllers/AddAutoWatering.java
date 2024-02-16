@@ -1,5 +1,6 @@
 package com.example.javafx_project.controllers;
 
+import com.example.javafx_project.DatabaseManager;
 import com.example.javafx_project.devices.AutoWatering;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
@@ -67,7 +68,7 @@ public class AddAutoWatering {
     }
 
     @FXML
-    private void onApplyButtonClicked() {
+    private void onApplyButtonClicked() throws IOException {
         System.out.println("Apply button clicked!");
         String _manufacturer = manufacturer.getText();
         String _model = model.getText();
@@ -107,15 +108,13 @@ public class AddAutoWatering {
         if (autoWatering.isValidYear(_productionYear) && autoWatering.isValidLifetime(_lifetime)
             && autoWatering.isValidWaterPressure(_waterPressure)) hasErrors = false;
         if (!hasErrors) {
-            // TODO
-//            System.out.println("ОШИБОК НЕТ!");
+//            System.out.println("Валидация прошла успешно: ошибок нет.");
+            DatabaseManager.addDevice(autoWatering);
+
+            AppController appController = new AppController();
+            Scene currentScene = cancelButton.getScene();
+            Stage stage = (Stage) currentScene.getWindow();
+            appController.start(stage);
         }
-
-
-
-
     }
-
-
-
 }

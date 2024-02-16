@@ -25,6 +25,7 @@ public class AutoWatering extends GardeningDevice {
         this.waterPressure = waterPressure;
         this.isSprinklerAttached = isSprinklerAttached;
         this.isWinterMode = isWinterMode;
+        this.isOn = isOn;
         logger.info("Создан новый автополив");
     }
 
