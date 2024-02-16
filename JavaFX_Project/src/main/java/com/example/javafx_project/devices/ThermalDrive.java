@@ -118,7 +118,4 @@ public class ThermalDrive extends GardeningDevice {
     public void switchOff() {
         isOn = false;
     }
-    public boolean getStatus() {
-        return isOn;
-    }
 }

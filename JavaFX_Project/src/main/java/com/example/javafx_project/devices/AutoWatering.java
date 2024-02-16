@@ -113,7 +113,4 @@ isOn = true;
     public void switchOff() {
         isOn = false;
     }
-    public boolean getStatus() {
-        return isOn;
-    }
 }

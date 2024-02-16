@@ -19,10 +19,11 @@ public abstract class GardeningDevice {
 
     private int id;
     private static int nextId = 1;
+//    private static int nextId = (DatabaseManager.getAllDevices() != null) ? DatabaseManager.getAllDevices().size() : 1;
 
     public GardeningDevice() {
-//        this.id = nextId++;
-        this.setUniqueId();
+        this.id = nextId++;
+//        this.setUniqueId();
     }
 
     public void setUniqueId() {
@@ -44,7 +45,8 @@ public abstract class GardeningDevice {
     }
 
     public GardeningDevice(String manufacturer, String model, String powerSource, int productionYear, int lifetime) {
-        this.id = nextId++;
+//        this.id = nextId++;
+        this.setUniqueId();
         this.manufacturer = manufacturer;
         this.model = model;
         this.powerSource = powerSource;
@@ -66,13 +68,8 @@ public abstract class GardeningDevice {
         this.intensity = 0;
     }
 
-    public boolean checkStatus() {
+    public boolean getIsOn() {
         return isOn;
-//        if (isOn) {
-//            System.out.println(ANSI_GREEN + "Устройство готово к работе!\n" + ANSI_RESET);
-//        } else {
-//            System.out.println(ANSI_RED + "Устройство выключено!\n" + ANSI_RESET);
-//        }
     }
 
     public abstract void turnOn();
@@ -90,7 +87,7 @@ public abstract class GardeningDevice {
 //        }
     }
     public boolean isValidYear(int productionYear) {
-        return 2000 <= productionYear && productionYear < CURRENT_YEAR;
+        return 2000 <= productionYear && productionYear <= CURRENT_YEAR;
     }
     public boolean isValidLifetime(int expectedLifetime) {
         return 3 <= expectedLifetime && expectedLifetime <= 20;

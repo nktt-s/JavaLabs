@@ -85,7 +85,7 @@ public class DatabaseManager implements Serializable {
 
             prepStatement.setInt(DatabaseAttributes.ID.ordinal(), device.getId());
             prepStatement.setString(DatabaseAttributes.TYPE.ordinal(), device.getType());
-            prepStatement.setBoolean(DatabaseAttributes.IS_ON.ordinal(), device.checkStatus());
+            prepStatement.setBoolean(DatabaseAttributes.IS_ON.ordinal(), device.getIsOn());
             prepStatement.setString(DatabaseAttributes.MANUFACTURER.ordinal(), device.getManufacturer());
             prepStatement.setString(DatabaseAttributes.MODEL.ordinal(), device.getModel());
             prepStatement.setString(DatabaseAttributes.POWER_SOURCE.ordinal(), device.getPowerSource());
@@ -98,7 +98,6 @@ public class DatabaseManager implements Serializable {
             System.err.println("SQLException on inserting device!");
             ex.printStackTrace();
         }
-
     }
 
     public static GardeningDevice getDevice(int id) {
