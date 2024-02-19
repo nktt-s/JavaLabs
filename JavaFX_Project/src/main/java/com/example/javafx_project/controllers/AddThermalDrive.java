@@ -70,9 +70,9 @@ public class AddThermalDrive {
         String _manufacturer = manufacturer.getText();
         String _model = model.getText();
         String _powerSource = powerSource.getText();
-        int _productionYear = Integer.parseInt(productionYear.getText());
-        int _lifetime = Integer.parseInt(lifetime.getText());
-        int _temperature = Integer.parseInt(temperature.getText());
+        int _productionYear = Integer.parseInt(productionYear.getText());       // TODO Добавить проверку на ввод текста
+        int _lifetime = Integer.parseInt(lifetime.getText());                   // TODO Добавить проверку на ввод текста
+        int _temperature = Integer.parseInt(temperature.getText());             // TODO Добавить проверку на ввод текста
         boolean _protectiveFunction = protectiveFunction.isSelected();
         boolean _isOn = isOn.isSelected();
 

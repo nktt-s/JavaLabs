@@ -73,9 +73,9 @@ public class AddAutoWatering {
         String _manufacturer = manufacturer.getText();
         String _model = model.getText();
         String _powerSource = powerSource.getText();
-        int _productionYear = Integer.parseInt(productionYear.getText());
-        int _lifetime = Integer.parseInt(lifetime.getText());
-        int _waterPressure = Integer.parseInt(waterPressure.getText());
+        int _productionYear = Integer.parseInt(productionYear.getText());       // TODO Добавить проверку на ввод текста
+        int _lifetime = Integer.parseInt(lifetime.getText());                   // TODO Добавить проверку на ввод текста
+        int _waterPressure = Integer.parseInt(waterPressure.getText());         // TODO Добавить проверку на ввод текста
         boolean _isSprinklerAttached = isSprinklerAttached.isSelected();
         boolean _isWinterMode = isWinterMode.isSelected();
         boolean _isOn = isOn.isSelected();
