@@ -19,6 +19,8 @@ public class AddThermalDrive {
     private Label errorMessage_lifetime;
     @FXML
     private Label errorMessage_temperature;
+    @FXML
+    private Label errorMessage_Nan;
 
     @FXML
     private TextField manufacturer;
@@ -70,9 +72,33 @@ public class AddThermalDrive {
         String _manufacturer = manufacturer.getText();
         String _model = model.getText();
         String _powerSource = powerSource.getText();
-        int _productionYear = Integer.parseInt(productionYear.getText());       // TODO Добавить проверку на ввод текста
-        int _lifetime = Integer.parseInt(lifetime.getText());                   // TODO Добавить проверку на ввод текста
-        int _temperature = Integer.parseInt(temperature.getText());             // TODO Добавить проверку на ввод текста
+        int _productionYear;                                                    // TODO Добавить проверку на ввод текста
+        try {
+            _productionYear = Integer.parseInt(productionYear.getText());
+            errorMessage_Nan.setText("");
+        } catch (NumberFormatException e) {
+            errorMessage_Nan.setText("Проверьте числовые значения!");
+            hasErrors = true;
+            return;
+        }
+        int _lifetime;                                                          // TODO Добавить проверку на ввод текста
+        try {
+            _lifetime = Integer.parseInt(lifetime.getText());
+            errorMessage_Nan.setText("");
+        } catch (NumberFormatException e) {
+            errorMessage_Nan.setText("Проверьте числовые значения!");
+            hasErrors = true;
+            return;
+        }
+        int _temperature;                                                       // TODO Добавить проверку на ввод текста
+        try {
+            _temperature = Integer.parseInt(temperature.getText());
+            errorMessage_Nan.setText("");
+        } catch (NumberFormatException e) {
+            errorMessage_Nan.setText("Проверьте числовые значения!");
+            hasErrors = true;
+            return;
+        }
         boolean _protectiveFunction = protectiveFunction.isSelected();
         boolean _isOn = isOn.isSelected();
 
