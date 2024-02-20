@@ -19,6 +19,8 @@ public class AddAutoWatering {
     private Label errorMessage_lifetime;
     @FXML
     private Label errorMessage_waterPressure;
+    @FXML
+    private Label errorMessage_Nan;
 
     @FXML
     private TextField manufacturer;
@@ -73,9 +75,36 @@ public class AddAutoWatering {
         String _manufacturer = manufacturer.getText();
         String _model = model.getText();
         String _powerSource = powerSource.getText();
-        int _productionYear = Integer.parseInt(productionYear.getText());       // TODO Добавить проверку на ввод текста
-        int _lifetime = Integer.parseInt(lifetime.getText());                   // TODO Добавить проверку на ввод текста
-        int _waterPressure = Integer.parseInt(waterPressure.getText());         // TODO Добавить проверку на ввод текста
+        int _productionYear;
+        try {
+            _productionYear = Integer.parseInt(productionYear.getText());
+            errorMessage_Nan.setText("");
+        } catch (NumberFormatException e) {
+            errorMessage_Nan.setText("Проверьте числовые значения!");
+            hasErrors = true;
+            return;
+        }
+
+        int _lifetime;
+        try {
+            _lifetime = Integer.parseInt(lifetime.getText());
+            errorMessage_Nan.setText("");
+        } catch (NumberFormatException e) {
+            errorMessage_Nan.setText("Проверьте числовые значения!");
+            hasErrors = true;
+            return;
+        }
+
+        int _waterPressure;
+        try {
+            _waterPressure = Integer.parseInt(waterPressure.getText());
+            errorMessage_Nan.setText("");
+        } catch (NumberFormatException e) {
+            errorMessage_Nan.setText("Проверьте числовые значения!");
+            hasErrors = true;
+            return;
+        }
+
         boolean _isSprinklerAttached = isSprinklerAttached.isSelected();
         boolean _isWinterMode = isWinterMode.isSelected();
         boolean _isOn = isOn.isSelected();
