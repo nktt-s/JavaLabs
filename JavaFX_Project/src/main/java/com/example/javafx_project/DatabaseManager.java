@@ -77,8 +77,6 @@ public class DatabaseManager implements Serializable {
             Connection connection = DriverManager.getConnection(url, login, password);
             PreparedStatement prepStatement = connection.prepareStatement(query);
 
-            // TODO - java.sql.SQLIntegrityConstraintViolationException: Duplicate entry '1' for key 'devices.PRIMARY'
-
             prepStatement.setInt(DatabaseAttributes.ID.ordinal(), device.getId());
             prepStatement.setString(DatabaseAttributes.TYPE.ordinal(), device.getType());
             prepStatement.setBoolean(DatabaseAttributes.IS_ON.ordinal(), device.getIsOn());

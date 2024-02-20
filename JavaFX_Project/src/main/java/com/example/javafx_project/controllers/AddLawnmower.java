@@ -19,6 +19,9 @@ public class AddLawnmower {
     @FXML
     private Label errorMessage_cuttingHeight;
     @FXML
+    private Label errorMessage_Nan;
+
+    @FXML
     private TextField manufacturer;
     @FXML
     private TextField model;
@@ -68,9 +71,37 @@ public class AddLawnmower {
         String _manufacturer = manufacturer.getText();
         String _model = model.getText();
         String _powerSource = powerSource.getText();
-        int _productionYear = Integer.parseInt(productionYear.getText());       // TODO Добавить проверку на ввод текста
-        int _lifetime = Integer.parseInt(lifetime.getText());                   // TODO Добавить проверку на ввод текста
-        int _cuttingHeight = Integer.parseInt(cuttingHeight.getText());         // TODO Добавить проверку на ввод текста
+
+        int _productionYear;
+        try {
+            _productionYear = Integer.parseInt(productionYear.getText());
+            errorMessage_Nan.setText("");
+        } catch (NumberFormatException e) {
+            errorMessage_Nan.setText("Проверьте числовые значения!");
+            hasErrors = true;
+            return;
+        }
+
+        int _lifetime;
+        try {
+            _lifetime = Integer.parseInt(lifetime.getText());
+            errorMessage_Nan.setText("");
+        } catch (NumberFormatException e) {
+            errorMessage_Nan.setText("Проверьте числовые значения!");
+            hasErrors = true;
+            return;
+        }
+
+        int _cuttingHeight;
+        try {
+            _cuttingHeight = Integer.parseInt(cuttingHeight.getText());
+            errorMessage_Nan.setText("");
+        } catch (NumberFormatException e) {
+            errorMessage_Nan.setText("Проверьте числовые значения!");
+            hasErrors = true;
+            return;
+        }
+
         boolean _isMulchingEnabled = isMulchingEnabled.isSelected();
         boolean _isOn = isOn.isSelected();
 

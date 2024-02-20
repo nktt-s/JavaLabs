@@ -75,6 +75,7 @@ public class AddAutoWatering {
         String _manufacturer = manufacturer.getText();
         String _model = model.getText();
         String _powerSource = powerSource.getText();
+
         int _productionYear;
         try {
             _productionYear = Integer.parseInt(productionYear.getText());
