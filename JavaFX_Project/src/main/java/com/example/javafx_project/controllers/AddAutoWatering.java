@@ -2,6 +2,7 @@ package com.example.javafx_project.controllers;
 
 import com.example.javafx_project.DatabaseManager;
 import com.example.javafx_project.devices.AutoWatering;
+import com.example.javafx_project.devices.GardeningDevice;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -115,7 +116,7 @@ public class AddAutoWatering {
 
         if (!autoWatering.isValidYear(_productionYear)) {
             errorMessage_productionYear.setText("Установлено недопустимое значение " +
-                "в поле 'Год производства' (2000-" + autoWatering.getCurrentYear() + ")");
+                "в поле 'Год производства' (" + GardeningDevice.MIN_YEAR + "-" + autoWatering.getCurrentYear() + ")");
             hasErrors = true;
         } else {
             errorMessage_productionYear.setText("");

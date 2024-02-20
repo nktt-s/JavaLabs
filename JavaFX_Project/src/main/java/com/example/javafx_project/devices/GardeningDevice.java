@@ -63,7 +63,7 @@ public abstract class GardeningDevice {
 
     public abstract void performAction();
     public boolean isValidYear(int productionYear) {
-        return 2000 <= productionYear && productionYear <= CURRENT_YEAR;
+        return MIN_YEAR <= productionYear && productionYear <= CURRENT_YEAR;
     }
     public boolean isValidLifetime(int expectedLifetime) {
         return 3 <= expectedLifetime && expectedLifetime <= 20;
@@ -131,5 +131,6 @@ public abstract class GardeningDevice {
         return CURRENT_YEAR;
     }
 
+    public static final int MIN_YEAR = 1950;
     public static final int CURRENT_YEAR = Year.now().getValue();
 }

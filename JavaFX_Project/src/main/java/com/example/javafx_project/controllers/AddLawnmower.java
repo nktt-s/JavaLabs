@@ -1,6 +1,7 @@
 package com.example.javafx_project.controllers;
 
 import com.example.javafx_project.DatabaseManager;
+import com.example.javafx_project.devices.GardeningDevice;
 import com.example.javafx_project.devices.Lawnmower;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
@@ -110,7 +111,7 @@ public class AddLawnmower {
 
         if (!lawnmower.isValidYear(_productionYear)) {
             errorMessage_productionYear.setText("Установлено недопустимое значение " +
-                "в поле 'Год производства' (2000-" + lawnmower.getCurrentYear() + ")");
+                "в поле 'Год производства' (" + GardeningDevice.MIN_YEAR + "-" + lawnmower.getCurrentYear() + ")");
             hasErrors = true;
         } else {
             errorMessage_productionYear.setText("");

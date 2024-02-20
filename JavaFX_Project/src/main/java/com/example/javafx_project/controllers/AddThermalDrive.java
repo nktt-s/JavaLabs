@@ -1,6 +1,7 @@
 package com.example.javafx_project.controllers;
 
 import com.example.javafx_project.DatabaseManager;
+import com.example.javafx_project.devices.GardeningDevice;
 import com.example.javafx_project.devices.ThermalDrive;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
@@ -111,7 +112,7 @@ public class AddThermalDrive {
 
         if (!thermalDrive.isValidYear(_productionYear)) {
             errorMessage_productionYear.setText("Установлено недопустимое значение " +
-                "в поле 'Год производства' (2000-" + thermalDrive.getCurrentYear() + ")");
+                "в поле 'Год производства' (" + GardeningDevice.MIN_YEAR + "-" + thermalDrive.getCurrentYear() + ")");
             hasErrors = true;
         } else {
             errorMessage_productionYear.setText("");

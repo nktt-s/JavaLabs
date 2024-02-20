@@ -94,6 +94,10 @@ public class DatabaseManager implements Serializable {
         }
     }
 
+    public static void deleteDevice(GardeningDevice device) {
+
+    }
+
     public static GardeningDevice getDevice(int id) {
         String query = "SELECT * FROM devices WHERE id = ?";
 
