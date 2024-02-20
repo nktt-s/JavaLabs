@@ -72,7 +72,8 @@ public class AddThermalDrive {
         String _manufacturer = manufacturer.getText();
         String _model = model.getText();
         String _powerSource = powerSource.getText();
-        int _productionYear;                                                    // TODO Добавить проверку на ввод текста
+
+        int _productionYear;
         try {
             _productionYear = Integer.parseInt(productionYear.getText());
             errorMessage_Nan.setText("");
@@ -81,7 +82,8 @@ public class AddThermalDrive {
             hasErrors = true;
             return;
         }
-        int _lifetime;                                                          // TODO Добавить проверку на ввод текста
+
+        int _lifetime;
         try {
             _lifetime = Integer.parseInt(lifetime.getText());
             errorMessage_Nan.setText("");
@@ -90,7 +92,8 @@ public class AddThermalDrive {
             hasErrors = true;
             return;
         }
-        int _temperature;                                                       // TODO Добавить проверку на ввод текста
+
+        int _temperature;
         try {
             _temperature = Integer.parseInt(temperature.getText());
             errorMessage_Nan.setText("");
@@ -99,6 +102,7 @@ public class AddThermalDrive {
             hasErrors = true;
             return;
         }
+
         boolean _protectiveFunction = protectiveFunction.isSelected();
         boolean _isOn = isOn.isSelected();
 
