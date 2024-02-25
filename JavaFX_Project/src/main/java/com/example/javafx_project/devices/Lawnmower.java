@@ -9,18 +9,22 @@ public class Lawnmower extends GardeningDevice {
     // покрытие почвы скошенной измельчённой травой для её защиты и улучшения свойств
     private int cuttingHeight; // Высота среза
 
-    public Lawnmower(int id, String manufacturer, String model, String powerSource,
-                     int productionYear, int lifetime, boolean isOn) {
+    public Lawnmower(int id, String manufacturer, String model, String powerSource, int productionYear, int lifetime, boolean isOn) {
         super(id, manufacturer, model, powerSource, productionYear, lifetime);
 //        this.cuttingHeight = 40;
 //        this.isMulchingEnabled = true;
         this.isOn = isOn;
     }
 
-    public Lawnmower(String manufacturer, String model, String powerSource,
-                     int productionYear, int lifetime, int cuttingHeight, boolean isMulchingEnabled,
-                     boolean isOn) {
+    public Lawnmower(String manufacturer, String model, String powerSource, int productionYear, int lifetime, int cuttingHeight, boolean isMulchingEnabled, boolean isOn) {
         super(manufacturer, model, powerSource, productionYear, lifetime);
+        this.cuttingHeight = cuttingHeight;
+        this.isMulchingEnabled = isMulchingEnabled;
+        this.isOn = isOn;
+        logger.info("Создана новая газонокосилка");
+    }
+    public Lawnmower(int id, String manufacturer, String model, String powerSource, int productionYear, int lifetime, int cuttingHeight, boolean isMulchingEnabled, boolean isOn) {
+        super(id, manufacturer, model, powerSource, productionYear, lifetime);
         this.cuttingHeight = cuttingHeight;
         this.isMulchingEnabled = isMulchingEnabled;
         this.isOn = isOn;
@@ -39,6 +43,7 @@ public class Lawnmower extends GardeningDevice {
             logger.info("Включена газонокосилка");
         }
     }
+
     @Override
     public void turnOff() {
         if (!super.isOn) {
@@ -84,27 +89,29 @@ public class Lawnmower extends GardeningDevice {
     public void adjustCuttingHeight(int height) {
         if (20 <= height && height <= 100) {
             setCuttingHeight(height);
-            logger.info("Высота среза травы для газонокосилки установлена на " +
-                + getCuttingHeight() + "мм");
+            logger.info("Высота среза травы для газонокосилки установлена на " + +getCuttingHeight() + "мм");
         } else {
             setCuttingHeight(40);
-            logger.error("Неверный ввод. Установлена высота среза травы для газонокосилки " +
-                "по умолчанию (40 мм).");
+            logger.error("Неверный ввод. Установлена высота среза травы для газонокосилки " + "по умолчанию (40 мм).");
         }
     }
 
     public int getCuttingHeight() {
         return cuttingHeight;
     }
+
     public void setCuttingHeight(int cuttingHeight) {
         this.cuttingHeight = cuttingHeight;
     }
+
     public void switchOn() {
         isOn = true;
     }
+
     public void switchOff() {
         isOn = false;
     }
+
     public boolean isIsOn() {
         return isOn;
     }

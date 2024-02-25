@@ -1,6 +1,7 @@
 package com.example.javafx_project;
 
 import com.example.javafx_project.devices.*;
+import com.example.javafx_project.devices.GardeningDevice;
 
 import java.io.Serializable;
 import java.sql.*;
@@ -21,7 +22,7 @@ public class DatabaseManager implements Serializable {
 
     public static ArrayList<GardeningDevice> getAllDevices() {
         ArrayList<GardeningDevice> devices = new ArrayList<>();
-        String query = "SELECT * FROM Devices";
+        String query = "SELECT * FROM AllDevices";
 
         try {
 //            System.out.println(url + "\n" + login + "\n" + password);
@@ -40,21 +41,35 @@ public class DatabaseManager implements Serializable {
                 int productionYear = resultSet.getInt("ProductionYear");
                 int lifetime = resultSet.getInt("Lifetime");
 
+                int cuttingHeight = resultSet.getInt("CuttingHeight");
+                boolean isMulchingEnabled = resultSet.getBoolean("isMulchingEnabled");
+
+                int waterPressure = resultSet.getInt("WaterPressure");
+                boolean isSprinklerAttached = resultSet.getBoolean("isSprinklerAttached");
+                boolean isWinterMode = resultSet.getBoolean("isWinterMode");
+
+                int temperature = resultSet.getInt("Temperature");
+                boolean isProtectiveFunctionOn = resultSet.getBoolean("isProtectiveFunctionOn");
+
                 switch (type) {
                     case "Lawnmower":
-                        Lawnmower lawnmower = new Lawnmower(id, manufacturer, model, powerSource, productionYear, lifetime, isOn);
+                        Lawnmower lawnmower = new Lawnmower(id, manufacturer, model, powerSource, productionYear, lifetime, cuttingHeight, isMulchingEnabled, isOn);
                         devices.add(lawnmower);
                         break;
 
                     case "AutoWatering":
-                        AutoWatering autoWatering = new AutoWatering(id, manufacturer, model, powerSource, productionYear, lifetime, isOn);
+                        AutoWatering autoWatering = new AutoWatering(id, manufacturer, model, powerSource, productionYear, lifetime, waterPressure, isSprinklerAttached, isWinterMode, isOn);
                         devices.add(autoWatering);
                         break;
 
                     case "ThermalDrive":
-                        ThermalDrive thermalDrive = new ThermalDrive(id, manufacturer, model, powerSource, productionYear, lifetime, isOn);
+                        ThermalDrive thermalDrive = new ThermalDrive(id, manufacturer, model, powerSource, productionYear, lifetime, temperature, isProtectiveFunctionOn, isOn);
                         devices.add(thermalDrive);
                         break;
+
+                    default:
+                        System.err.println("Unknown device type!");
+                        return null;
                 }
             }
             connection.close();
@@ -138,21 +153,15 @@ public class DatabaseManager implements Serializable {
     public static boolean deleteDevice(int id) {
         String deleteQuery = "DELETE FROM devices WHERE id = ?";
 
-        try (Connection connection = DriverManager.getConnection(url, login, password);
-             PreparedStatement preparedStatement = connection.prepareStatement(deleteQuery)) {
+        try (Connection connection = DriverManager.getConnection(url, login, password); PreparedStatement preparedStatement = connection.prepareStatement(deleteQuery)) {
 
             preparedStatement.setInt(1, id);
             int rowsAffected = preparedStatement.executeUpdate();
 
-            if (rowsAffected > 0) {
-                // System.out.println("Запись успешно обновлена");
-                connection.close();
-                return true;
-            } else {
-                // System.out.println("Запись не была обновлена");
-                connection.close();
-                return false;
-            }
+            connection.close();
+            // System.out.println("Запись успешно обновлена");
+            // System.out.println("Запись не была обновлена");
+            return rowsAffected > 0;
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
@@ -161,13 +170,5 @@ public class DatabaseManager implements Serializable {
 }
 
 enum DatabaseAttributes {
-    NONE,
-    ID,
-    TYPE,
-    IS_ON,
-    MANUFACTURER,
-    MODEL,
-    POWER_SOURCE,
-    PRODUCTION_YEAR,
-    LIFETIME
+    NONE, ID, TYPE, IS_ON, MANUFACTURER, MODEL, POWER_SOURCE, PRODUCTION_YEAR, LIFETIME
 }

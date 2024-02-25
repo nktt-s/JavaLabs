@@ -9,8 +9,7 @@ public class AutoWatering extends GardeningDevice {
     private int waterPressure;
     private boolean isWinterMode;
 
-    public AutoWatering(int id, String manufacturer, String model, String powerSource,
-                        int productionYear, int lifetime, boolean isOn) {
+    public AutoWatering(int id, String manufacturer, String model, String powerSource, int productionYear, int lifetime, boolean isOn) {
         super(id, manufacturer, model, powerSource, productionYear, lifetime);
 //        this.waterPressure = 40;
 //        this.isSprinklerAttached = false;
@@ -18,10 +17,17 @@ public class AutoWatering extends GardeningDevice {
         this.isOn = isOn;
     }
 
-    public AutoWatering(String manufacturer, String model, String powerSource,
-                        int productionYear, int lifetime, int waterPressure,
-                        boolean isSprinklerAttached, boolean isWinterMode, boolean isOn) {
+    public AutoWatering(String manufacturer, String model, String powerSource, int productionYear, int lifetime, int waterPressure, boolean isSprinklerAttached, boolean isWinterMode, boolean isOn) {
         super(manufacturer, model, powerSource, productionYear, lifetime);
+        this.waterPressure = waterPressure;
+        this.isSprinklerAttached = isSprinklerAttached;
+        this.isWinterMode = isWinterMode;
+        this.isOn = isOn;
+        logger.info("Создан новый автополив");
+    }
+
+    public AutoWatering(int id, String manufacturer, String model, String powerSource, int productionYear, int lifetime, int waterPressure, boolean isSprinklerAttached, boolean isWinterMode, boolean isOn) {
+        super(id, manufacturer, model, powerSource, productionYear, lifetime);
         this.waterPressure = waterPressure;
         this.isSprinklerAttached = isSprinklerAttached;
         this.isWinterMode = isWinterMode;
@@ -42,6 +48,7 @@ public class AutoWatering extends GardeningDevice {
             logger.info("Включён автополив");
         }
     }
+
     @Override
     public void turnOff() {
         if (!super.isOn) {
@@ -63,11 +70,11 @@ public class AutoWatering extends GardeningDevice {
     }
 
     public void manageSprinkler() {
-       if (isSprinklerAttached) {
+        if (isSprinklerAttached) {
             logger.info("Установлен дождеватель");
-       } else {
+        } else {
             logger.info("Не установлен дождеватель");
-       }
+        }
     }
 
     public boolean isValidWaterPressure(int pressure) {
@@ -85,28 +92,33 @@ public class AutoWatering extends GardeningDevice {
     }
 
     public void manageWinterMode() {
-       if (isWinterMode) {
+        if (isWinterMode) {
             logger.info("Включён зимний режим для автополива");
-       } else {
+        } else {
             logger.info("Выключен зимний режим для автополива");
-       }
+        }
     }
 
     public void setSprinklerAttached(boolean sprinklerAttached) {
         isSprinklerAttached = sprinklerAttached;
     }
+
     public void setWaterPressure(int pressure) {
         this.waterPressure = pressure;
     }
+
     public int getWaterPressure() {
         return waterPressure;
     }
+
     public void setWinterMode(boolean winterMode) {
         isWinterMode = winterMode;
     }
+
     public void switchOn() {
-isOn = true;
+        isOn = true;
     }
+
     public void switchOff() {
         isOn = false;
     }

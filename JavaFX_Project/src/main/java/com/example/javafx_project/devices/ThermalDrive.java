@@ -10,18 +10,23 @@ public class ThermalDrive extends GardeningDevice {
     private boolean calibrateTemperatureSensors;
     private boolean isCalibrated;
 
-    public ThermalDrive(int id, String manufacturer, String model, String powerSource,
-                        int productionYear, int lifetime, boolean isOn) {
+    public ThermalDrive(int id, String manufacturer, String model, String powerSource, int productionYear, int lifetime, boolean isOn) {
         super(id, manufacturer, model, powerSource, productionYear, lifetime);
 //        this.temperature = 20;
 //        this.isProtectiveFunctionOn = true;
         this.isOn = isOn;
     }
 
-    public ThermalDrive(String manufacturer, String model, String powerSource,
-                        int productionYear, int lifetime, int temperature,
-                        boolean isProtectiveFunctionOn, boolean isOn) {
+    public ThermalDrive(String manufacturer, String model, String powerSource, int productionYear, int lifetime, int temperature, boolean isProtectiveFunctionOn, boolean isOn) {
         super(manufacturer, model, powerSource, productionYear, lifetime);
+        this.temperature = temperature;
+        this.isProtectiveFunctionOn = isProtectiveFunctionOn;
+        this.isOn = isOn;
+        logger.info("Создан новый термопривод");
+    }
+
+    public ThermalDrive(int id, String manufacturer, String model, String powerSource, int productionYear, int lifetime, int temperature, boolean isProtectiveFunctionOn, boolean isOn) {
+        super(id, manufacturer, model, powerSource, productionYear, lifetime);
         this.temperature = temperature;
         this.isProtectiveFunctionOn = isProtectiveFunctionOn;
         this.isOn = isOn;
@@ -40,6 +45,7 @@ public class ThermalDrive extends GardeningDevice {
             logger.info("Включён термопривод");
         }
     }
+
     @Override
     public void turnOff() {
         if (!super.isOn) {
@@ -49,6 +55,7 @@ public class ThermalDrive extends GardeningDevice {
             logger.info("Выключен термопривод");
         }
     }
+
     @Override
     public void performAction() {
         if (super.isOn) {
@@ -93,24 +100,31 @@ public class ThermalDrive extends GardeningDevice {
     public int getTemperature() {
         return temperature;
     }
+
     public void setTemperature(int temperature) {
         this.temperature = temperature;
     }
+
     public void setProtectiveFunction(boolean isProtectiveFunctionOn) {
         this.isProtectiveFunctionOn = isProtectiveFunctionOn;
     }
+
     public boolean getProtectiveFunction() {
         return isProtectiveFunctionOn;
     }
+
     public void setCalibrateTemperatureSensors(boolean calibrateTemperatureSensors) {
         this.calibrateTemperatureSensors = calibrateTemperatureSensors;
     }
+
     public boolean isCalibrated() {
         return isCalibrated;
     }
+
     public void switchOn() {
         isOn = true;
     }
+
     public void switchOff() {
         isOn = false;
     }
