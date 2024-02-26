@@ -3,7 +3,6 @@ package com.example.javafx_project.controllers;
 import com.example.javafx_project.App;
 import com.example.javafx_project.DatabaseManager;
 import com.example.javafx_project.devices.GardeningDevice;
-import com.example.javafx_project.devices.Lawnmower;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -16,12 +15,12 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
-import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class AppController {
     @FXML
@@ -34,6 +33,8 @@ public class AppController {
     private Button viewButton;
     @FXML
     private Button exitButton;
+    @FXML
+    private ScrollPane scrollPane;
     @FXML
     private TableView<GardeningDevice> table;
     @FXML
@@ -52,10 +53,13 @@ public class AppController {
     private TableColumn<GardeningDevice, Integer> lifetimeColumn;
     @FXML
     private TableColumn<GardeningDevice, Boolean> isOnColumn;
+    @FXML
+    private TableColumn<GardeningDevice, Button> editColumn;
+    @FXML
+    private TableColumn<GardeningDevice, Boolean> deleteColumn;
 
-    public Button addLawnmower;
-    public Button addAutoWatering;
-    public Button addThermalDrive;
+    @FXML
+    private Label errorMessage_on_edit;
 
     @FXML
     private void initialize() {
@@ -126,18 +130,98 @@ public class AppController {
             throw new RuntimeException(e);
         }
     }
+
     @FXML
     private void onEditButtonClick() {
+//        GardeningDevice selectedDevice = table.getSelectionModel().getSelectedItem();
+        ObservableList<GardeningDevice> devices = FXCollections.observableArrayList(Objects.requireNonNull(DatabaseManager.getAllDevices()));
+        table.setItems(devices);
+        System.out.println("table.getItems(): " + table.getItems());
+//        TableView.TableViewSelectionModel<GardeningDevice> selectionModel = table.getSelectionModel();
 
+        GardeningDevice selectedDevice = table.getSelectionModel().getSelectedItem();
+
+        System.out.println(selectedDevice);
+//        System.out.println(selectionModel.selectedItemProperty().toString());
+        System.out.println(table == null);
+        errorMessage_on_edit.setText("");
+        if (selectedDevice != null) {
+            Scene currentScene = editButton.getScene();
+            Stage stage = (Stage) currentScene.getWindow();;
+
+            String menuItem;
+            String itemName = selectedDevice.getType();
+            switch (itemName) {
+                case "Lawnmower" -> menuItem = "Газонокосилка";
+                case "AutoWatering" -> menuItem = "Автополив";
+                case "ThermalDrive" -> menuItem = "Термопривод";
+                default -> menuItem = "ERROR";
+            }
+
+            try {
+                FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("edit" + itemName + ".fxml"));
+                Scene scene = new Scene(fxmlLoader.load(), 1000, 600);
+                stage.setResizable(false);
+                stage.setTitle("Gardening Devices | Изменение устройства устройства - " + menuItem);
+                stage.setScene(scene);
+                Object temp_object = fxmlLoader.getController();
+                if (temp_object instanceof EditLawnmower) {
+                    EditLawnmower controller = fxmlLoader.getController();
+                    controller.start(stage);
+                } else if (temp_object instanceof EditAutoWatering) {
+                    EditAutoWatering controller = fxmlLoader.getController();
+                    controller.start(stage);
+                } else {
+                    EditThermalDrive controller = fxmlLoader.getController();
+                    controller.start(stage);
+                }
+//                stage.show();
+
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
+        } else {
+            errorMessage_on_edit.setText("Выберите устройство для редактирования!");
+        }
     }
+
     @FXML
     private void onDeleteButtonClick() {
+        GardeningDevice selectedDevice = table.getSelectionModel().getSelectedItem();
+        System.out.println(selectedDevice);
+//        errorMessage_on_edit.setText("");
+        if (selectedDevice != null) {
+            Scene currentScene = deleteButton.getScene();
+            Stage stage = (Stage) currentScene.getWindow();
 
+            String menuItem;
+            String itemName = selectedDevice.getType();
+            switch (itemName) {
+                case "Lawnmower" -> menuItem = "Газонокосилка";
+                case "AutoWatering" -> menuItem = "Автополив";
+                case "ThermalDrive" -> menuItem = "Термопривод";
+                default -> menuItem = "ERROR";
+            }
+
+            ObservableList<GardeningDevice> devicesList = table.getItems();
+            devicesList.remove(selectedDevice);
+            DatabaseManager.deleteDevice(selectedDevice);
+            System.out.println("Selected device deleted!");
+
+            System.out.println("Selected device deleted!");
+
+        } else {
+//            errorMessage_on_edit.setText("Выберите устройство для редактирования!");
+            System.out.println("Selected device is null while deleting!");
+        }
     }
+
     @FXML
     private void onViewButtonClick() {
 
     }
+
     @FXML
     private void onExitButtonClick() {
         Platform.exit();
@@ -148,6 +232,7 @@ public class AppController {
         Parent root = fxmlLoader.load();
 
         ScrollPane scrollPane = (ScrollPane) root.lookup("#scrollPane");
+//        scrollPane = new ScrollPane();
         updateListOfDevices(scrollPane);
 
         Scene scene = new Scene(root, 1000, 600);
@@ -162,151 +247,129 @@ public class AppController {
     }
 
     public void updateListOfDevices(ScrollPane scrollPane) {
-            ArrayList<GardeningDevice> devicesFromDB = DatabaseManager.getAllDevices();
+        ArrayList<GardeningDevice> devicesFromDB = DatabaseManager.getAllDevices();
 
-            if (devicesFromDB == null) return;
-            ObservableList<GardeningDevice> devices = FXCollections.observableArrayList(devicesFromDB);
+        if (devicesFromDB == null) return;
+        ObservableList<GardeningDevice> devices = FXCollections.observableArrayList(devicesFromDB);
 
-            table = new TableView<>(devices);
-            table.setStyle("-fx-font-size: 14px");
-            table.setPrefWidth(950);
-            table.setPrefHeight(550);
+        table = new TableView<>(devices);
 
-            idColumn = new TableColumn<>("ID");
-            idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
-            idColumn.setPrefWidth(50.0);
-            table.getColumns().add(idColumn);
+        table.setStyle("-fx-font-size: 14px");
+        table.setPrefWidth(950);
+        table.setPrefHeight(550);
 
-            typeColumn = new TableColumn<>("Type");
-            typeColumn.setCellValueFactory(new PropertyValueFactory<>("type"));
-            typeColumn.setPrefWidth(100.0);
-            table.getColumns().add(typeColumn);
+        idColumn = new TableColumn<>("ID");
+        idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
+        idColumn.setPrefWidth(30.0);
+        table.getColumns().add(idColumn);
 
-            manufacturerColumn = new TableColumn<>("Manufacturer");
-            manufacturerColumn.setCellValueFactory(new PropertyValueFactory<>("manufacturer"));
-            manufacturerColumn.setPrefWidth(130.0);
-            table.getColumns().add(manufacturerColumn);
+        typeColumn = new TableColumn<>("Type");
+        typeColumn.setCellValueFactory(new PropertyValueFactory<>("type"));
+        typeColumn.setPrefWidth(100.0);
+        table.getColumns().add(typeColumn);
 
-            modelColumn = new TableColumn<>("Model");
-            modelColumn.setCellValueFactory(new PropertyValueFactory<>("model"));
-            modelColumn.setPrefWidth(85.0);
-            table.getColumns().add(modelColumn);
+        manufacturerColumn = new TableColumn<>("Manufacturer");
+        manufacturerColumn.setCellValueFactory(new PropertyValueFactory<>("manufacturer"));
+        manufacturerColumn.setPrefWidth(130.0);
+        table.getColumns().add(manufacturerColumn);
 
-            powerSourceColumn = new TableColumn<>("Power source");
-            powerSourceColumn.setCellValueFactory(new PropertyValueFactory<>("powerSource"));
-            powerSourceColumn.setPrefWidth(130.0);
-            table.getColumns().add(powerSourceColumn);
+        modelColumn = new TableColumn<>("Model");
+        modelColumn.setCellValueFactory(new PropertyValueFactory<>("model"));
+        modelColumn.setPrefWidth(85.0);
+        table.getColumns().add(modelColumn);
 
-            productionYearColumn = new TableColumn<>("Production year");
-            productionYearColumn.setCellValueFactory(new PropertyValueFactory<>("productionYear"));
-            productionYearColumn.setPrefWidth(125.0);
-            table.getColumns().add(productionYearColumn);
+        powerSourceColumn = new TableColumn<>("Power source");
+        powerSourceColumn.setCellValueFactory(new PropertyValueFactory<>("powerSource"));
+        powerSourceColumn.setPrefWidth(130.0);
+        table.getColumns().add(powerSourceColumn);
 
-            lifetimeColumn = new TableColumn<>("Lifetime");
-            lifetimeColumn.setCellValueFactory(new PropertyValueFactory<>("lifetime"));
-            lifetimeColumn.setPrefWidth(100.0);
-            table.getColumns().add(lifetimeColumn);
+        productionYearColumn = new TableColumn<>("Production year");
+        productionYearColumn.setCellValueFactory(new PropertyValueFactory<>("productionYear"));
+        productionYearColumn.setPrefWidth(125.0);
+        table.getColumns().add(productionYearColumn);
 
-            isOnColumn = new TableColumn<>("Is switched on");
-            isOnColumn.setCellValueFactory(new PropertyValueFactory<>("isOn"));
-            isOnColumn.setPrefWidth(135.0);
-            table.getColumns().add(isOnColumn);
+        lifetimeColumn = new TableColumn<>("Lifetime");
+        lifetimeColumn.setCellValueFactory(new PropertyValueFactory<>("lifetime"));
+        lifetimeColumn.setPrefWidth(80.0);
+        table.getColumns().add(lifetimeColumn);
 
-            scrollPane.setContent(table);
-    }
+        isOnColumn = new TableColumn<>("Is switched on");
+        isOnColumn.setCellValueFactory(new PropertyValueFactory<>("isOn"));
+        isOnColumn.setPrefWidth(135.0);
+        table.getColumns().add(isOnColumn);
 
-    public GridPane createTableRow(int id, String type, String manufacturer, String model, String powerSource,
-                                   int productionYear, int lifetime, boolean isOn) {
-        try {
-            FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("deviceItem.fxml"));
-            GridPane gridPane = fxmlLoader.load();
+        editColumn = new TableColumn<>("Edit");
+        editColumn.setCellFactory(tc -> new TableCell<>() {
+            private final Button button = new Button("Edit");
 
-            Button deleteDeviceButton = new Button("Удалить");
+            {
+                button.setOnAction(event -> {
+                    GardeningDevice device = getTableView().getItems().get(getIndex());
+                    // ЛОГИКА ПРИ НАЖАТИИ КНОПКИ
 
-            deleteDeviceButton.setOnAction(event -> {
-                DatabaseManager.deleteDevice(id);
-                updateListOfDevices(new ScrollPane());
-            });
+                    Scene currentScene = button.getScene();
+                    Stage stage = (Stage) currentScene.getWindow();
 
-            GridPane.setConstraints(deleteDeviceButton, 0, 0);
-            gridPane.getChildren().add(deleteDeviceButton);
+                    String menuItem;
+                    String itemName = device.getType();
+                    switch (itemName) {
+                        case "Lawnmower" -> menuItem = "Газонокосилка";
+                        case "AutoWatering" -> menuItem = "Автополив";
+                        case "ThermalDrive" -> menuItem = "Термопривод";
+                        default -> menuItem = "ERROR";
+                    }
 
-            Button configureDeviceButton = new Button("Изменить");
-//            configureDeviceButton.setOnAction(event -> {
-//                GardeningDevice device = DatabaseManager.getDevice(id);
-//                switch (Objects.requireNonNull(device).getType()) {
-//                    case "Lawnmower": {
-//                        Scene currentScene = addLawnmower.getScene();
-//                        Stage stage = (Stage) currentScene.getWindow();
-//                        try {
-//                            FXMLLoader loader = new FXMLLoader(App.class.getResource("editLawnmower.fxml"));
-//                            Parent root = loader.load();
-//                            stage.setScene(new Scene(root));
-//                            EditLawnmower controller = loader.getController();
-//                            controller.start(stage, device);
-//                        } catch (IOException e) {
-//                            e.printStackTrace();
-//                        }
-//                        break;
-//                    }
-//                    case "AutoWatering": {
-//                        Scene currentScene = addAutoWatering.getScene();
-//                        Stage stage = (Stage) currentScene.getWindow();
-//                        try {
-//                            FXMLLoader loader = new FXMLLoader(App.class.getResource("editAutoWatering.fxml"));
-//                            Parent root = loader.load();
-//                            stage.setScene(new Scene(root));
-//                            EditAutoWatering controller = loader.getController();
-//                            controller.start(stage, device);
-//                        } catch (IOException e) {
-//                            e.printStackTrace();
-//                        }
-//                        break;
-//                    }
-//                    case "ThermalDrive": {
-//                        Scene currentScene = addThermalDrive.getScene();
-//                        Stage stage = (Stage) currentScene.getWindow();
-//                        try {
-//                            FXMLLoader loader = new FXMLLoader(App.class.getResource("configureHeater.fxml"));
-//                            Parent root = loader.load();
-//                            stage.setScene(new Scene(root));
-//                            EditThermalDrive controller = loader.getController();
-//                            controller.start(stage, device);
-//                        } catch (IOException e) {
-//                            e.printStackTrace();
-//                        }
-//                    }
-//                }
-//            });
-            GridPane.setConstraints(configureDeviceButton, 0, 1);
-            gridPane.getChildren().add(configureDeviceButton);
+                    try {
+                        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("edit" + itemName + ".fxml"));
+                        Scene scene = new Scene(fxmlLoader.load(), 1000, 600);
+                        stage.setResizable(false);
+                        stage.setTitle("Gardening Devices | Изменение устройства устройства - " + menuItem);
+                        stage.setScene(scene);
+                        Object temp_object = fxmlLoader.getController();
+                        if (temp_object instanceof EditLawnmower) {
+                            EditLawnmower controller = fxmlLoader.getController();
+                            controller.start(stage);
+                        } else if (temp_object instanceof EditAutoWatering) {
+                            EditAutoWatering controller = fxmlLoader.getController();
+                            controller.start(stage);
+                        } else {
+                            EditThermalDrive controller = fxmlLoader.getController();
+                            controller.start(stage);
+                        }
+//                        stage.show();
 
-            Label labelType = new Label(type);
-            GridPane.setConstraints(labelType, 1, 0);
-            gridPane.getChildren().add(labelType);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
 
-            Label labelManufacturer = new Label(manufacturer);
-            GridPane.setConstraints(labelManufacturer, 2, 0);
-            gridPane.getChildren().add(labelManufacturer);
 
-            Label labelModel = new Label(model);
-            GridPane.setConstraints(labelModel, 3, 0);
-            gridPane.getChildren().add(labelModel);
 
-            Label status;
-            if (isOn) {
-                status = new Label("Включено");
-            } else {
-                status = new Label("Отключено");
+                    System.out.println("Нажата кнопка Edit!!!!!!!!!!!!!!!!" + device.getId());
+                });
             }
-            GridPane.setConstraints(status, 4, 0);
-            gridPane.getChildren().add(status);
 
-            return gridPane;
+            @Override
+            protected void updateItem(Button item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setGraphic(null);
+                } else {
+                    setGraphic(button);
+                }
+            }
+        });
+        editColumn.setPrefWidth(50.0);
+        table.getColumns().add(editColumn);
 
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
-        return null;
+
+//        editColumn.setCellValueFactory(new PropertyValueFactory<>("Button"));
+//        editColumn.setCellFactory(new ButtonCellFactory());
+//        editColumn.setPrefWidth(50.0);
+//        table.getColumns().add(editColumn);
+
+
+
+
+        scrollPane.setContent(table);
     }
 }

@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.javafx_project.controllers.EditThermalDrive">
+    <children>
+        <Label id="windowName" layoutX="312.0" layoutY="14.0" text="Изменение устройства &quot;Термопривод&quot;">
+            <font>
+                <Font size="24.0" />
+            </font>
+        </Label>
+        <GridPane layoutX="282.0" layoutY="160.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="394.0" prefWidth="456.0">
+            <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="225.0" minWidth="10.0" prefWidth="207.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="260.0" minWidth="10.0" prefWidth="249.0" />
+            </columnConstraints>
+            <rowConstraints>
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            </rowConstraints>
+            <children>
+                <Label prefHeight="40.0" text="Производитель">
+                    <font>
+                        <Font size="15.0" />
+                    </font></Label>
+                <Label prefHeight="40.0" text="Модель" GridPane.rowIndex="1">
+                    <font>
+                        <Font size="15.0" />
+                    </font></Label>
+                <Label prefHeight="40.0" text="Источник питания" GridPane.rowIndex="2">
+                    <font>
+                        <Font size="15.0" />
+                    </font></Label>
+                <Label prefHeight="40.0" text="Год производства" GridPane.rowIndex="3">
+                    <font>
+                        <Font size="15.0" />
+                    </font></Label>
+                <Label prefHeight="40.0" text="Срок службы" GridPane.rowIndex="4">
+                    <font>
+                        <Font size="15.0" />
+                    </font></Label>
+                <Label prefHeight="40.0" text="Давление воды (psi)" GridPane.rowIndex="5">
+                    <font>
+                        <Font size="15.0" />
+                    </font></Label>
+                <Label prefHeight="40.0" text="Дождеватель установлен" GridPane.rowIndex="6">
+                    <font>
+                        <Font size="15.0" />
+                    </font></Label>
+                <Label prefHeight="40.0" text="Зимний режим включён" GridPane.rowIndex="7">
+                    <font>
+                        <Font size="15.0" />
+                    </font></Label>
+                <Label prefHeight="40.0" text="Устройство включено" GridPane.rowIndex="8">
+                    <font>
+                        <Font size="15.0" />
+                    </font>
+                </Label>
+                <TextField fx:id="manufacturer" GridPane.columnIndex="1">
+                    <font>
+                        <Font size="15.0" />
+                    </font></TextField>
+                <TextField fx:id="model" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                    <font>
+                        <Font size="15.0" />
+                    </font></TextField>
+                <TextField fx:id="powerSource" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                    <font>
+                        <Font size="15.0" />
+                    </font></TextField>
+                <TextField fx:id="productionYear" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                    <font>
+                        <Font size="15.0" />
+                    </font></TextField>
+                <TextField fx:id="lifetime" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                    <font>
+                        <Font size="15.0" />
+                    </font></TextField>
+                <TextField fx:id="waterPressure" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                    <font>
+                        <Font size="15.0" />
+                    </font>
+                </TextField>
+                <CheckBox fx:id="isSprinklerAttached" prefHeight="40.0" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                <CheckBox fx:id="isWinterMode" prefHeight="40.0" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+                <CheckBox fx:id="isOn" prefHeight="40.0" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+                <Button fx:id="cancelButton" mnemonicParsing="false" onAction="#onCancelButtonClicked" prefHeight="30.0" prefWidth="145.0" text="Отмена" GridPane.rowIndex="9">
+                    <font>
+                        <Font size="15.0" />
+                    </font>
+                </Button>
+
+                <Button fx:id="applyButton" mnemonicParsing="false" onAction="#onApplyButtonClicked" prefHeight="30.0" prefWidth="145.0" text="Подтвердить" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="9">
+                    <font>
+                        <Font size="15.0" />
+                    </font>
+                </Button>
+            </children>
+        </GridPane>
+        <Label fx:id="errorMessage_productionYear" layoutX="224.0" layoutY="49.0" prefHeight="31.0" prefWidth="572.0" style="-fx-font-weight: bold" textFill="red" wrapText="true">
+            <font>
+                <Font size="15.0" />
+            </font></Label>
+        <Label fx:id="errorMessage_lifetime" layoutX="248.0" layoutY="80.0" prefHeight="31.0" prefWidth="525.0" style="-fx-font-weight: bold" textFill="red" wrapText="true">
+            <font>
+                <Font size="15.0" />
+            </font></Label>
+        <Label fx:id="errorMessage_waterPressure" layoutX="238.0" layoutY="111.0" prefHeight="31.0" prefWidth="545.0" style="-fx-font-weight: bold" textFill="red" wrapText="true">
+            <font>
+                <Font size="15.0" />
+            </font></Label>
+        <Label fx:id="errorMessage_Nan" layoutX="23.0" layoutY="145.0" prefHeight="31.0" prefWidth="249.0" style="-fx-font-weight: bold" textFill="red" wrapText="true">
+            <font>
+                <Font size="15.0" />
+        </font></Label>
+    </children>
+</AnchorPane>

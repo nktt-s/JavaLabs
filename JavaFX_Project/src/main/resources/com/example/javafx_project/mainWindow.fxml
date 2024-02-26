@@ -2,11 +2,9 @@
 
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
-<?import javafx.scene.control.cell.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<?import javafx.scene.control.skin.TableHeaderRow?>
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" style="-fx-background-color: #FFFFFF;" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.javafx_project.controllers.AppController">
     <children>
         <Label alignment="CENTER" layoutX="403.0" layoutY="5.0" text="Список устройств">
@@ -14,6 +12,10 @@
                 <Font size="24.0" />
             </font>
         </Label>
+        <Label fx:id="errorMessage_on_edit" layoutX="635.0" layoutY="7.0" prefHeight="31.0" prefWidth="330.0" style="-fx-font-weight: bold" textFill="red" wrapText="true">
+            <font>
+                <Font size="15.0" />
+        </font></Label>
         <GridPane layoutX="50.0" layoutY="45.0" prefHeight="35.0" prefWidth="880.0">
             <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -47,7 +49,7 @@
             </padding>
         </GridPane>
         <Button fx:id="exitButton" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#onExitButtonClick" style="-fx-font-weight: bold;" text="Выход" textFill="#e11d1d" />
-        <ScrollPane id="scrollPane" fitToWidth="true" layoutX="50.0" layoutY="88.0" prefHeight="469.0" prefWidth="880.0">
+        <ScrollPane fx:id="scrollPane" fitToWidth="true" layoutX="50.0" layoutY="88.0" prefHeight="469.0" prefWidth="880.0">
             <content>
                 <TableView fx:id="table" prefHeight="469" prefWidth="880">
                     <columns>
@@ -59,6 +61,8 @@
                         <TableColumn fx:id="productionYearColumn" />
                         <TableColumn fx:id="lifetimeColumn" />
                         <TableColumn fx:id="isOnColumn" />
+                        <TableColumn fx:id="editColumn" />
+                        <TableColumn fx:id="deleteColumn" />
                     </columns>
                 </TableView>
 
@@ -66,5 +70,6 @@
 <!--                </AnchorPane>-->
             </content>
         </ScrollPane>
+
     </children>
 </AnchorPane>
