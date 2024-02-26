@@ -99,6 +99,14 @@ public class AutoWatering extends GardeningDevice {
         }
     }
 
+    public boolean isIsSprinklerAttached() {
+        return isSprinklerAttached;
+    }
+
+    public boolean isIsWinterMode() {
+        return isWinterMode;
+    }
+
     public void setSprinklerAttached(boolean sprinklerAttached) {
         isSprinklerAttached = sprinklerAttached;
     }

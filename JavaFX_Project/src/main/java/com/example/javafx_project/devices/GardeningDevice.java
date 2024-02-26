@@ -27,7 +27,8 @@ public abstract class GardeningDevice {
     public void setUniqueId() {
         ArrayList<GardeningDevice> devicesFromDB = DatabaseManager.getAllDevices();
         if (devicesFromDB != null) {
-            this.id = devicesFromDB.size() + 1;
+//            this.id = devicesFromDB.size() + 1;
+            this.id = devicesFromDB.getLast().getId() + 1;
         } else {
             this.id = 1;
         }

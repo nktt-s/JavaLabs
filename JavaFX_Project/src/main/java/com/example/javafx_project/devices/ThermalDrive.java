@@ -109,7 +109,7 @@ public class ThermalDrive extends GardeningDevice {
         this.isProtectiveFunctionOn = isProtectiveFunctionOn;
     }
 
-    public boolean getProtectiveFunction() {
+    public boolean isIsProtectiveFunctionOn() {
         return isProtectiveFunctionOn;
     }
 

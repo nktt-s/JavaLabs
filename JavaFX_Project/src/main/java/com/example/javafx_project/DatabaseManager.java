@@ -87,7 +87,9 @@ public class DatabaseManager implements Serializable {
     }
 
     public static void addDevice(GardeningDevice device) {
-        String query = "INSERT INTO devices (id, Type, isOn, Manufacturer, Model, PowerSource, ProductionYear, Lifetime) VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
+        String query = "INSERT INTO AllDevices (id, Type, isOn, Manufacturer, Model, PowerSource, ProductionYear, Lifetime, " +
+            "CuttingHeight, isMulchingEnabled, WaterPressure, isSprinklerAttached, isWinterMode, Temperature, isProtectiveFunctionOn) " +
+            "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
         try {
             Connection connection = DriverManager.getConnection(url, login, password);
             PreparedStatement prepStatement = connection.prepareStatement(query);
@@ -100,6 +102,35 @@ public class DatabaseManager implements Serializable {
             prepStatement.setString(DatabaseAttributes.POWER_SOURCE.ordinal(), device.getPowerSource());
             prepStatement.setInt(DatabaseAttributes.PRODUCTION_YEAR.ordinal(), device.getProductionYear());
             prepStatement.setInt(DatabaseAttributes.LIFETIME.ordinal(), device.getLifetime());
+
+            if (device instanceof Lawnmower) {
+                prepStatement.setInt(DatabaseAttributes.CUTTING_HEIGHT.ordinal(), ((Lawnmower) device).getCuttingHeight());
+                prepStatement.setBoolean(DatabaseAttributes.IS_MULCHING_ENABLED.ordinal(), ((Lawnmower) device).isIsMulchingEnabled());
+                prepStatement.setNull(DatabaseAttributes.WATER_PRESSURE.ordinal(), Types.NULL);
+                prepStatement.setNull(DatabaseAttributes.IS_SPRINKLER_ATTACHED.ordinal(), Types.NULL);
+                prepStatement.setNull(DatabaseAttributes.IS_WINTER_MODE.ordinal(), Types.NULL);
+                prepStatement.setNull(DatabaseAttributes.TEMPERATURE.ordinal(), Types.NULL);
+                prepStatement.setNull(DatabaseAttributes.IS_PROTECTIVE_FUNCTION_ON.ordinal(), Types.NULL);
+            } else if (device instanceof AutoWatering) {
+                prepStatement.setInt(DatabaseAttributes.WATER_PRESSURE.ordinal(), ((AutoWatering) device).getWaterPressure());
+                prepStatement.setBoolean(DatabaseAttributes.IS_SPRINKLER_ATTACHED.ordinal(), ((AutoWatering) device).isIsSprinklerAttached());
+                prepStatement.setBoolean(DatabaseAttributes.IS_WINTER_MODE.ordinal(), ((AutoWatering) device).isIsWinterMode());
+                prepStatement.setNull(DatabaseAttributes.CUTTING_HEIGHT.ordinal(), Types.NULL);
+                prepStatement.setNull(DatabaseAttributes.IS_MULCHING_ENABLED.ordinal(), Types.NULL);
+                prepStatement.setNull(DatabaseAttributes.TEMPERATURE.ordinal(), Types.NULL);
+                prepStatement.setNull(DatabaseAttributes.IS_PROTECTIVE_FUNCTION_ON.ordinal(), Types.NULL);
+            } else if (device instanceof ThermalDrive) {
+                prepStatement.setInt(DatabaseAttributes.TEMPERATURE.ordinal(), ((ThermalDrive) device).getTemperature());
+                prepStatement.setBoolean(DatabaseAttributes.IS_PROTECTIVE_FUNCTION_ON.ordinal(), ((ThermalDrive) device).isIsProtectiveFunctionOn());
+                prepStatement.setNull(DatabaseAttributes.CUTTING_HEIGHT.ordinal(), Types.NULL);
+                prepStatement.setNull(DatabaseAttributes.IS_MULCHING_ENABLED.ordinal(), Types.NULL);
+                prepStatement.setNull(DatabaseAttributes.WATER_PRESSURE.ordinal(), Types.NULL);
+                prepStatement.setNull(DatabaseAttributes.IS_SPRINKLER_ATTACHED.ordinal(), Types.NULL);
+                prepStatement.setNull(DatabaseAttributes.IS_WINTER_MODE.ordinal(), Types.NULL);
+            } else {
+                System.err.println("Unknown device type!");
+                return;
+            }
 
             prepStatement.execute();
 
@@ -114,7 +145,7 @@ public class DatabaseManager implements Serializable {
     }
 
     public static GardeningDevice getDevice(int id) {
-        String query = "SELECT * FROM devices WHERE id = ?";
+        String query = "SELECT * FROM AllDevices WHERE id = ?";
 
         try {
             Connection connection = DriverManager.getConnection(url, login, password);
@@ -151,7 +182,7 @@ public class DatabaseManager implements Serializable {
     }
 
     public static boolean deleteDevice(int id) {
-        String deleteQuery = "DELETE FROM devices WHERE id = ?";
+        String deleteQuery = "DELETE FROM AllDevices WHERE id = ?";
 
         try (Connection connection = DriverManager.getConnection(url, login, password); PreparedStatement preparedStatement = connection.prepareStatement(deleteQuery)) {
 
@@ -170,5 +201,6 @@ public class DatabaseManager implements Serializable {
 }
 
 enum DatabaseAttributes {
-    NONE, ID, TYPE, IS_ON, MANUFACTURER, MODEL, POWER_SOURCE, PRODUCTION_YEAR, LIFETIME
+    NONE, ID, TYPE, IS_ON, MANUFACTURER, MODEL, POWER_SOURCE, PRODUCTION_YEAR, LIFETIME,
+    CUTTING_HEIGHT, IS_MULCHING_ENABLED, WATER_PRESSURE, IS_SPRINKLER_ATTACHED, IS_WINTER_MODE, TEMPERATURE, IS_PROTECTIVE_FUNCTION_ON
 }

@@ -104,6 +104,10 @@ public class Lawnmower extends GardeningDevice {
         this.cuttingHeight = cuttingHeight;
     }
 
+    public boolean isIsMulchingEnabled() {
+        return isMulchingEnabled;
+    }
+
     public void switchOn() {
         isOn = true;
     }
