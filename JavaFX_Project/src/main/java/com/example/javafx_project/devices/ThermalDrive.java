@@ -113,6 +113,10 @@ public class ThermalDrive extends GardeningDevice {
         return isProtectiveFunctionOn;
     }
 
+    public boolean isIsOn() {
+        return isOn;
+    }
+
     public void setCalibrateTemperatureSensors(boolean calibrateTemperatureSensors) {
         this.calibrateTemperatureSensors = calibrateTemperatureSensors;
     }

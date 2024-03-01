@@ -128,7 +128,7 @@ public class DatabaseManager implements Serializable {
                 prepStatement.setNull(DatabaseAttributes.IS_SPRINKLER_ATTACHED.ordinal(), Types.NULL);
                 prepStatement.setNull(DatabaseAttributes.IS_WINTER_MODE.ordinal(), Types.NULL);
             } else {
-                System.err.println("Unknown device type!");
+                System.err.println("Unknown device type on inserting device!");
                 return;
             }
 
@@ -136,7 +136,7 @@ public class DatabaseManager implements Serializable {
 
         } catch (SQLException ex) {
             System.err.println("SQLException on inserting device!");
-            ex.printStackTrace();
+//            ex.printStackTrace();
         }
     }
 
@@ -150,35 +150,96 @@ public class DatabaseManager implements Serializable {
         try {
             Connection connection = DriverManager.getConnection(url, login, password);
             PreparedStatement statement = connection.prepareStatement(query);
-            statement.setInt(1, id);
+            statement.setInt(DatabaseAttributes.ID.ordinal(), id);
             ResultSet resultSet = statement.executeQuery();
 
             while (resultSet.next()) {
                 int idDevice = resultSet.getInt("id");
-                String type = resultSet.getString("type");
-                String manufacturer = resultSet.getString("manufacturer");
-                String model = resultSet.getString("model");
-                String powerSource = resultSet.getString("powerSource");
-                int productionYear = resultSet.getInt("productionYear");
-                int lifetime = resultSet.getInt("lifetime");
+                String type = resultSet.getString("Type");
+                String manufacturer = resultSet.getString("Manufacturer");
+                String model = resultSet.getString("Model");
+                String powerSource = resultSet.getString("PowerSource");
+                int productionYear = resultSet.getInt("ProductionYear");
+                int lifetime = resultSet.getInt("Lifetime");
                 boolean isOn = resultSet.getBoolean("isOn");
 
                 switch (type) {
                     case "Lawnmower":
-                        return new Lawnmower(idDevice, manufacturer, model, powerSource, productionYear, lifetime, isOn);
+                        int cuttingHeight = resultSet.getInt("CuttingHeight");
+                        boolean isMulchingEnabled = resultSet.getBoolean("isMulchingEnabled");
+                        return new Lawnmower(idDevice, manufacturer, model, powerSource, productionYear, lifetime, cuttingHeight, isMulchingEnabled, isOn);
 
                     case "AutoWatering":
-                        return new AutoWatering(idDevice, manufacturer, model, powerSource, productionYear, lifetime, isOn);
+                        int waterPressure = resultSet.getInt("WaterPressure");
+                        boolean isSprinklerAttached = resultSet.getBoolean("isSprinklerAttached");
+                        boolean isWinterMode = resultSet.getBoolean("isWinterMode");
+                        return new AutoWatering(idDevice, manufacturer, model, powerSource, productionYear, lifetime, waterPressure, isSprinklerAttached, isWinterMode, isOn);
 
                     case "ThermalDrive":
-                        return new ThermalDrive(idDevice, manufacturer, model, powerSource, productionYear, lifetime, isOn);
+                        int temperature = resultSet.getInt("Temperature");
+                        boolean isProtectiveFunctionOn = resultSet.getBoolean("isProtectiveFunctionOn");
+                        return new ThermalDrive(idDevice, manufacturer, model, powerSource, productionYear, lifetime, temperature, isProtectiveFunctionOn, isOn);
                 }
             }
             connection.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.err.println("SQLException on getting device!");
+//            e.printStackTrace();
         }
         return null;
+    }
+
+    public static void updateDevice(GardeningDevice device) {
+        String query = "UPDATE AllDevices SET isOn = ?, Manufacturer = ?, Model = ?, PowerSource = ?, ProductionYear = ?, Lifetime = ?, " +
+            "CuttingHeight = ?, isMulchingEnabled = ?, WaterPressure = ?, isSprinklerAttached = ?, isWinterMode = ?, Temperature = ?, isProtectiveFunctionOn = ? WHERE id = ?;";
+
+        try {
+            Connection connection = DriverManager.getConnection(url, login, password);
+            PreparedStatement prepStatement = connection.prepareStatement(query);
+
+            prepStatement.setBoolean(1, device.getIsOn());
+            prepStatement.setString(2, device.getManufacturer()); // "NEW_MANUFACTURER"
+            prepStatement.setString(3, device.getModel());
+            prepStatement.setString(4, device.getPowerSource());
+            prepStatement.setInt(5, device.getProductionYear());
+            prepStatement.setInt(6, device.getLifetime());
+            prepStatement.setInt(14, device.getId());
+
+            if (device instanceof Lawnmower) {
+                prepStatement.setInt(7, ((Lawnmower) device).getCuttingHeight());
+                prepStatement.setBoolean(8, ((Lawnmower) device).isIsMulchingEnabled());
+                prepStatement.setNull(9, Types.NULL);
+                prepStatement.setNull(10, Types.NULL);
+                prepStatement.setNull(11, Types.NULL);
+                prepStatement.setNull(12, Types.NULL);
+                prepStatement.setNull(13, Types.NULL);
+            } else if (device instanceof AutoWatering) {
+                prepStatement.setInt(9, ((AutoWatering) device).getWaterPressure());
+                prepStatement.setBoolean(10, ((AutoWatering) device).isIsSprinklerAttached());
+                prepStatement.setBoolean(11, ((AutoWatering) device).isIsWinterMode());
+                prepStatement.setNull(7, Types.NULL);
+                prepStatement.setNull(8, Types.NULL);
+                prepStatement.setNull(12, Types.NULL);
+                prepStatement.setNull(13, Types.NULL);
+            } else if (device instanceof ThermalDrive) {
+                prepStatement.setInt(12, ((ThermalDrive) device).getTemperature());
+                prepStatement.setBoolean(13, ((ThermalDrive) device).isIsProtectiveFunctionOn());
+                prepStatement.setNull(7, Types.NULL);
+                prepStatement.setNull(8, Types.NULL);
+                prepStatement.setNull(9, Types.NULL);
+                prepStatement.setNull(10, Types.NULL);
+                prepStatement.setNull(11, Types.NULL);
+            } else {
+                System.err.println("Unknown device type on updating device!");
+                return;
+            }
+
+            prepStatement.execute();
+
+        } catch (SQLException ex) {
+            System.err.println("SQLException on updating device!");
+            ex.printStackTrace();
+        }
     }
 
     public static boolean deleteDevice(int id) {

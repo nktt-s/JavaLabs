@@ -12,6 +12,7 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.Objects;
 
 public class EditAutoWatering {
     @FXML
@@ -50,19 +51,22 @@ public class EditAutoWatering {
 
     private boolean hasErrors = true;
 
-    public void start(Stage stage) {
-//        manufacturer.setText(DatabaseManager.getDevice());
+    private AutoWatering device;
 
+    public void start(Stage stage, GardeningDevice _device) {
+        device = (AutoWatering) _device;
 
-        manufacturer.setText("manufacturer");
-        model.setText("model");
-        powerSource.setText("mains power");
-        productionYear.setText("2020");
-        lifetime.setText("5");
-        waterPressure.setText("40");
-        isSprinklerAttached.setSelected(false);
-        isWinterMode.setSelected(false);
-        isOn.setSelected(false);
+        AutoWatering deviceFromDB = (AutoWatering) DatabaseManager.getDevice(_device.getId());
+
+        manufacturer.setText(Objects.requireNonNull(deviceFromDB).getManufacturer());
+        model.setText(Objects.requireNonNull(deviceFromDB).getModel());
+        powerSource.setText(Objects.requireNonNull(deviceFromDB).getPowerSource());
+        productionYear.setText(String.valueOf(Objects.requireNonNull(deviceFromDB).getProductionYear()));
+        lifetime.setText(String.valueOf(Objects.requireNonNull(deviceFromDB).getLifetime()));
+        waterPressure.setText(String.valueOf(Objects.requireNonNull(deviceFromDB).getWaterPressure()));
+        isSprinklerAttached.setSelected(deviceFromDB.isIsSprinklerAttached());
+        isWinterMode.setSelected(deviceFromDB.isIsWinterMode());
+        isOn.setSelected(deviceFromDB.isIsOn());
     }
 
     @FXML
@@ -76,6 +80,8 @@ public class EditAutoWatering {
     @FXML
     private void onApplyButtonClicked() throws IOException {
         System.out.println("Apply button clicked!");
+        int id = device.getId();
+
         String _manufacturer = manufacturer.getText();
         String _model = model.getText();
         String _powerSource = powerSource.getText();
@@ -114,36 +120,33 @@ public class EditAutoWatering {
         boolean _isWinterMode = isWinterMode.isSelected();
         boolean _isOn = isOn.isSelected();
 
-        AutoWatering autoWatering = new AutoWatering(_manufacturer, _model, _powerSource,
-            _productionYear, _lifetime, _waterPressure, _isSprinklerAttached, _isWinterMode, _isOn);
+        AutoWatering autoWatering = new AutoWatering(id, _manufacturer, _model, _powerSource, _productionYear, _lifetime, _waterPressure, _isSprinklerAttached, _isWinterMode, _isOn);
 
         if (!autoWatering.isValidYear(_productionYear)) {
-            errorMessage_productionYear.setText("Установлено недопустимое значение " +
-                "в поле 'Год производства' (" + GardeningDevice.MIN_YEAR + "-" + autoWatering.getCurrentYear() + ")");
+            errorMessage_productionYear.setText("Установлено недопустимое значение " + "в поле 'Год производства' (" + GardeningDevice.MIN_YEAR + "-" + autoWatering.getCurrentYear() + ")");
             hasErrors = true;
         } else {
             errorMessage_productionYear.setText("");
         }
         if (!autoWatering.isValidLifetime(_lifetime)) {
-            errorMessage_lifetime.setText("Установлено недопустимое значение " +
-                "в поле 'Срок службы' (3-20 лет)");
+            errorMessage_lifetime.setText("Установлено недопустимое значение " + "в поле 'Срок службы' (3-20 лет)");
             hasErrors = true;
         } else {
             errorMessage_lifetime.setText("");
         }
         if (!autoWatering.isValidWaterPressure(_waterPressure)) {
-            errorMessage_waterPressure.setText("Установлено недопустимое значение " +
-                "в поле 'Давление воды' (20-80 psi)");
+            errorMessage_waterPressure.setText("Установлено недопустимое значение " + "в поле 'Давление воды' (20-80 psi)");
             hasErrors = true;
         } else {
             errorMessage_waterPressure.setText("");
         }
 
-        if (autoWatering.isValidYear(_productionYear) && autoWatering.isValidLifetime(_lifetime)
-            && autoWatering.isValidWaterPressure(_waterPressure)) hasErrors = false;
+        if (autoWatering.isValidYear(_productionYear) && autoWatering.isValidLifetime(_lifetime) && autoWatering.isValidWaterPressure(_waterPressure))
+            hasErrors = false;
         if (!hasErrors) {
 //            System.out.println("Валидация прошла успешно: ошибок нет.");
-            DatabaseManager.addDevice(autoWatering);
+//            DatabaseManager.addDevice(autoWatering);
+            DatabaseManager.updateDevice(autoWatering);
 
             AppController appController = new AppController();
             Scene currentScene = cancelButton.getScene();

@@ -133,57 +133,6 @@ public class AppController {
 
     @FXML
     private void onEditButtonClick() {
-//        GardeningDevice selectedDevice = table.getSelectionModel().getSelectedItem();
-        ObservableList<GardeningDevice> devices = FXCollections.observableArrayList(Objects.requireNonNull(DatabaseManager.getAllDevices()));
-        table.setItems(devices);
-        System.out.println("table.getItems(): " + table.getItems());
-//        TableView.TableViewSelectionModel<GardeningDevice> selectionModel = table.getSelectionModel();
-
-        GardeningDevice selectedDevice = table.getSelectionModel().getSelectedItem();
-
-        System.out.println(selectedDevice);
-//        System.out.println(selectionModel.selectedItemProperty().toString());
-        System.out.println(table == null);
-        errorMessage_on_edit.setText("");
-        if (selectedDevice != null) {
-            Scene currentScene = editButton.getScene();
-            Stage stage = (Stage) currentScene.getWindow();;
-
-            String menuItem;
-            String itemName = selectedDevice.getType();
-            switch (itemName) {
-                case "Lawnmower" -> menuItem = "Газонокосилка";
-                case "AutoWatering" -> menuItem = "Автополив";
-                case "ThermalDrive" -> menuItem = "Термопривод";
-                default -> menuItem = "ERROR";
-            }
-
-            try {
-                FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("edit" + itemName + ".fxml"));
-                Scene scene = new Scene(fxmlLoader.load(), 1000, 600);
-                stage.setResizable(false);
-                stage.setTitle("Gardening Devices | Изменение устройства устройства - " + menuItem);
-                stage.setScene(scene);
-                Object temp_object = fxmlLoader.getController();
-                if (temp_object instanceof EditLawnmower) {
-                    EditLawnmower controller = fxmlLoader.getController();
-                    controller.start(stage);
-                } else if (temp_object instanceof EditAutoWatering) {
-                    EditAutoWatering controller = fxmlLoader.getController();
-                    controller.start(stage);
-                } else {
-                    EditThermalDrive controller = fxmlLoader.getController();
-                    controller.start(stage);
-                }
-//                stage.show();
-
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-
-        } else {
-            errorMessage_on_edit.setText("Выберите устройство для редактирования!");
-        }
     }
 
     @FXML
@@ -300,14 +249,14 @@ public class AppController {
 
         editColumn = new TableColumn<>("Edit");
         editColumn.setCellFactory(tc -> new TableCell<>() {
-            private final Button button = new Button("Edit");
+            private final Button editButton = new Button("Edit");
 
             {
-                button.setOnAction(event -> {
+                editButton.setOnAction(event -> {
                     GardeningDevice device = getTableView().getItems().get(getIndex());
                     // ЛОГИКА ПРИ НАЖАТИИ КНОПКИ
 
-                    Scene currentScene = button.getScene();
+                    Scene currentScene = editButton.getScene();
                     Stage stage = (Stage) currentScene.getWindow();
 
                     String menuItem;
@@ -323,18 +272,18 @@ public class AppController {
                         FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("edit" + itemName + ".fxml"));
                         Scene scene = new Scene(fxmlLoader.load(), 1000, 600);
                         stage.setResizable(false);
-                        stage.setTitle("Gardening Devices | Изменение устройства устройства - " + menuItem);
+                        stage.setTitle("Gardening Devices | Изменение устройства - " + menuItem);
                         stage.setScene(scene);
                         Object temp_object = fxmlLoader.getController();
                         if (temp_object instanceof EditLawnmower) {
                             EditLawnmower controller = fxmlLoader.getController();
-                            controller.start(stage);
+                            controller.start(stage, device);
                         } else if (temp_object instanceof EditAutoWatering) {
                             EditAutoWatering controller = fxmlLoader.getController();
-                            controller.start(stage);
+                            controller.start(stage, device);
                         } else {
                             EditThermalDrive controller = fxmlLoader.getController();
-                            controller.start(stage);
+                            controller.start(stage, device);
                         }
 //                        stage.show();
 
@@ -342,9 +291,8 @@ public class AppController {
                         throw new RuntimeException(e);
                     }
 
-
-
-                    System.out.println("Нажата кнопка Edit!!!!!!!!!!!!!!!!" + device.getId());
+                    System.out.println("Edit button clicked! ID = " + device.getId());
+                    updateListOfDevices(scrollPane);
                 });
             }
 
@@ -354,7 +302,7 @@ public class AppController {
                 if (empty) {
                     setGraphic(null);
                 } else {
-                    setGraphic(button);
+                    setGraphic(editButton);
                 }
             }
         });

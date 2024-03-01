@@ -8,6 +8,7 @@ module com.example.javafx_project {
 
     opens com.example.javafx_project to javafx.fxml;
     exports com.example.javafx_project;
+    exports com.example.javafx_project.devices;
     exports com.example.javafx_project.controllers;
     opens com.example.javafx_project.controllers to javafx.fxml;
 }

@@ -3,6 +3,8 @@ package com.example.javafx_project.controllers;
 import com.example.javafx_project.DatabaseManager;
 import com.example.javafx_project.devices.AutoWatering;
 import com.example.javafx_project.devices.GardeningDevice;
+import com.example.javafx_project.devices.Lawnmower;
+import com.example.javafx_project.devices.ThermalDrive;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -12,6 +14,7 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.Objects;
 
 public class EditThermalDrive {
     @FXML
@@ -34,12 +37,10 @@ public class EditThermalDrive {
     @FXML
     private TextField lifetime;
     @FXML
-    private TextField waterPressure;
+    private TextField temperature;
 
     @FXML
-    private CheckBox isSprinklerAttached;
-    @FXML
-    private CheckBox isWinterMode;
+    private CheckBox isProtectiveFunctionOn;
     @FXML
     private CheckBox isOn;
 
@@ -50,19 +51,21 @@ public class EditThermalDrive {
 
     private boolean hasErrors = true;
 
-    public void start(Stage stage) {
-//        manufacturer.setText(DatabaseManager.getDevice());
+    private ThermalDrive device;
 
+    public void start(Stage stage, GardeningDevice _device) {
+        device = (ThermalDrive) _device;
 
-        manufacturer.setText("manufacturer");
-        model.setText("model");
-        powerSource.setText("mains power");
-        productionYear.setText("2020");
-        lifetime.setText("5");
-        waterPressure.setText("40");
-        isSprinklerAttached.setSelected(false);
-        isWinterMode.setSelected(false);
-        isOn.setSelected(false);
+        ThermalDrive deviceFromDB = (ThermalDrive) DatabaseManager.getDevice(_device.getId());
+
+        manufacturer.setText(Objects.requireNonNull(deviceFromDB).getManufacturer());
+        model.setText(Objects.requireNonNull(deviceFromDB).getModel());
+        powerSource.setText(Objects.requireNonNull(deviceFromDB).getPowerSource());
+        productionYear.setText(String.valueOf(Objects.requireNonNull(deviceFromDB).getProductionYear()));
+        lifetime.setText(String.valueOf(Objects.requireNonNull(deviceFromDB).getLifetime()));
+        temperature.setText(String.valueOf(Objects.requireNonNull(deviceFromDB).getTemperature()));
+        isProtectiveFunctionOn.setSelected(deviceFromDB.isIsProtectiveFunctionOn());
+        isOn.setSelected(deviceFromDB.isIsOn());
     }
 
     @FXML
@@ -76,6 +79,8 @@ public class EditThermalDrive {
     @FXML
     private void onApplyButtonClicked() throws IOException {
         System.out.println("Apply button clicked!");
+        int id = device.getId();
+
         String _manufacturer = manufacturer.getText();
         String _model = model.getText();
         String _powerSource = powerSource.getText();
@@ -100,9 +105,9 @@ public class EditThermalDrive {
             return;
         }
 
-        int _waterPressure;
+        int _temperature;
         try {
-            _waterPressure = Integer.parseInt(waterPressure.getText());
+            _temperature = Integer.parseInt(temperature.getText());
             errorMessage_Nan.setText("");
         } catch (NumberFormatException e) {
             errorMessage_Nan.setText("Проверьте числовые значения!");
@@ -110,28 +115,28 @@ public class EditThermalDrive {
             return;
         }
 
-        boolean _isSprinklerAttached = isSprinklerAttached.isSelected();
-        boolean _isWinterMode = isWinterMode.isSelected();
+        boolean _isProtectiveFunctionOn = isProtectiveFunctionOn.isSelected();
         boolean _isOn = isOn.isSelected();
 
-        AutoWatering autoWatering = new AutoWatering(_manufacturer, _model, _powerSource,
-            _productionYear, _lifetime, _waterPressure, _isSprinklerAttached, _isWinterMode, _isOn);
+        ThermalDrive thermalDrive = new ThermalDrive(id, _manufacturer, _model, _powerSource, _productionYear, _lifetime, _temperature, _isProtectiveFunctionOn, _isOn);
+//        AutoWatering autoWatering = new AutoWatering(_manufacturer, _model, _powerSource, _productionYear, _lifetime, _waterPressure, _isSprinklerAttached, _isWinterMode, _isOn);
 
-        if (!autoWatering.isValidYear(_productionYear)) {
+        if (!thermalDrive.isValidYear(_productionYear)) {
             errorMessage_productionYear.setText("Установлено недопустимое значение " +
-                "в поле 'Год производства' (" + GardeningDevice.MIN_YEAR + "-" + autoWatering.getCurrentYear() + ")");
+                "в поле 'Год производства' (" + GardeningDevice.MIN_YEAR + "-" +
+                thermalDrive.getCurrentYear() + ")");
             hasErrors = true;
         } else {
             errorMessage_productionYear.setText("");
         }
-        if (!autoWatering.isValidLifetime(_lifetime)) {
+        if (!thermalDrive.isValidLifetime(_lifetime)) {
             errorMessage_lifetime.setText("Установлено недопустимое значение " +
                 "в поле 'Срок службы' (3-20 лет)");
             hasErrors = true;
         } else {
             errorMessage_lifetime.setText("");
         }
-        if (!autoWatering.isValidWaterPressure(_waterPressure)) {
+        if (!thermalDrive.isValidTemperature(_temperature)) {
             errorMessage_waterPressure.setText("Установлено недопустимое значение " +
                 "в поле 'Давление воды' (20-80 psi)");
             hasErrors = true;
@@ -139,11 +144,12 @@ public class EditThermalDrive {
             errorMessage_waterPressure.setText("");
         }
 
-        if (autoWatering.isValidYear(_productionYear) && autoWatering.isValidLifetime(_lifetime)
-            && autoWatering.isValidWaterPressure(_waterPressure)) hasErrors = false;
+        if (thermalDrive.isValidYear(_productionYear) && thermalDrive.isValidLifetime(_lifetime)
+            && thermalDrive.isValidTemperature(_temperature)) hasErrors = false;
         if (!hasErrors) {
 //            System.out.println("Валидация прошла успешно: ошибок нет.");
-            DatabaseManager.addDevice(autoWatering);
+//            DatabaseManager.addDevice(thermalDrive);
+            DatabaseManager.updateDevice(thermalDrive);
 
             AppController appController = new AppController();
             Scene currentScene = cancelButton.getScene();
