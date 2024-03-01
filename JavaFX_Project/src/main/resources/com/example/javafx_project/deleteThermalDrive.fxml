@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="350.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.javafx_project.controllers.DeleteThermalDrive">
+    <children>
+        <Label id="windowName" alignment="CENTER" layoutX="3.0" layoutY="1.0" prefHeight="100.0" prefWidth="600.0" text="Удаление устройства &quot;Термопривод&quot;" textAlignment="CENTER" wrapText="true">
+            <font>
+                <Font size="24.0" />
+            </font>
+        </Label>
+        <GridPane layoutX="94.0" layoutY="273.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="35.0" prefWidth="407.0">
+            <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="225.0" minWidth="10.0" prefWidth="207.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="260.0" minWidth="10.0" prefWidth="249.0" />
+            </columnConstraints>
+            <rowConstraints>
+            <RowConstraints />
+            </rowConstraints>
+            <children>
+                <Button fx:id="cancelButton" mnemonicParsing="false" onAction="#onCancelButtonClicked" prefHeight="30.0" prefWidth="145.0" text="Отмена">
+                    <font>
+                        <Font size="15.0" />
+                    </font>
+                </Button>
+
+                <Button fx:id="applyButton" mnemonicParsing="false" onAction="#onApplyButtonClicked" prefHeight="30.0" prefWidth="145.0" text="Подтвердить" GridPane.columnIndex="1" GridPane.halignment="RIGHT">
+                    <font>
+                        <Font size="15.0" />
+                    </font>
+                </Button>
+            </children>
+        </GridPane>
+        <Label fx:id="confirmationMessage" alignment="CENTER" layoutX="43.0" layoutY="129.0" prefHeight="71.0" prefWidth="524.0" style="-fx-font-weight: bold" textAlignment="CENTER" textFill="red" wrapText="true">
+            <font>
+                <Font size="20.0" />
+            </font></Label>
+    </children>
+</AnchorPane>

@@ -15,6 +15,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -22,6 +23,8 @@ import java.io.InputStream;
 import java.util.ArrayList;
 
 public class AppController {
+    double screenWidth = Screen.getPrimary().getVisualBounds().getWidth();
+    double screenHeight = Screen.getPrimary().getVisualBounds().getHeight();
     @FXML
     private Button addButton;
     @FXML
@@ -159,6 +162,10 @@ public class AppController {
 
         Scene scene = new Scene(root, 1000, 600);
         stage.setResizable(false);
+        double centerX = (screenWidth - 1000) / 2;
+        double centerY = (screenHeight - 600) / 2;
+        stage.setX(centerX);
+        stage.setY(centerY);
         stage.setTitle("Gardening Devices | Список устройств");
         InputStream iconStream = getClass().getResourceAsStream("/images/icon2.png");
         assert iconStream != null;
@@ -292,7 +299,47 @@ public class AppController {
                     int id = device.getId();
                     // ЛОГИКА ПРИ НАЖАТИИ КНОПКИ ДЛЯ ДЕЙСТВИЯ
 
-                    DatabaseManager.deleteDevice(id);
+                    Scene currentScene = deleteButton.getScene();
+                    Stage stage = (Stage) currentScene.getWindow();
+
+                    String menuItem;
+                    String itemName = device.getType();
+                    switch (itemName) {
+                        case "Lawnmower" -> menuItem = "Газонокосилка";
+                        case "AutoWatering" -> menuItem = "Автополив";
+                        case "ThermalDrive" -> menuItem = "Термопривод";
+                        default -> menuItem = "ERROR";
+                    }
+
+                    try {
+                        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("delete" + itemName + ".fxml"));
+                        Scene scene = new Scene(fxmlLoader.load(), 600, 350);
+                        stage.setResizable(false);
+                        double centerX = (screenWidth - 600) / 2;
+                        double centerY = (screenHeight - 350) / 2;
+                        stage.setX(centerX);
+                        stage.setY(centerY);
+                        stage.setTitle("Gardening Devices | Удаление устройства - " + menuItem);
+                        stage.setScene(scene);
+                        Object temp_object = fxmlLoader.getController();
+                        if (temp_object instanceof DeleteLawnmower) {
+                            DeleteLawnmower controller = fxmlLoader.getController();
+                            controller.start(stage, id);
+                        } else if (temp_object instanceof DeleteAutoWatering) {
+                            DeleteAutoWatering controller = fxmlLoader.getController();
+                            controller.start(stage, id);
+                        } else {
+                            DeleteThermalDrive controller = fxmlLoader.getController();
+                            controller.start(stage, id);
+                        }
+//                        stage.show();
+
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+
+
+
                     System.out.println("Delete button clicked! ID = " + device.getId());
                     updateListOfDevices(scrollPane);
                 });
