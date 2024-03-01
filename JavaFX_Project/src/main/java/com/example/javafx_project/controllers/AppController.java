@@ -20,7 +20,6 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Objects;
 
 public class AppController {
     @FXML
@@ -56,7 +55,7 @@ public class AppController {
     @FXML
     private TableColumn<GardeningDevice, Button> editColumn;
     @FXML
-    private TableColumn<GardeningDevice, Boolean> deleteColumn;
+    private TableColumn<GardeningDevice, Button> deleteColumn;
 
     @FXML
     private Label errorMessage_on_edit;
@@ -137,33 +136,7 @@ public class AppController {
 
     @FXML
     private void onDeleteButtonClick() {
-        GardeningDevice selectedDevice = table.getSelectionModel().getSelectedItem();
-        System.out.println(selectedDevice);
-//        errorMessage_on_edit.setText("");
-        if (selectedDevice != null) {
-            Scene currentScene = deleteButton.getScene();
-            Stage stage = (Stage) currentScene.getWindow();
 
-            String menuItem;
-            String itemName = selectedDevice.getType();
-            switch (itemName) {
-                case "Lawnmower" -> menuItem = "Газонокосилка";
-                case "AutoWatering" -> menuItem = "Автополив";
-                case "ThermalDrive" -> menuItem = "Термопривод";
-                default -> menuItem = "ERROR";
-            }
-
-            ObservableList<GardeningDevice> devicesList = table.getItems();
-            devicesList.remove(selectedDevice);
-            DatabaseManager.deleteDevice(selectedDevice);
-            System.out.println("Selected device deleted!");
-
-            System.out.println("Selected device deleted!");
-
-        } else {
-//            errorMessage_on_edit.setText("Выберите устройство для редактирования!");
-            System.out.println("Selected device is null while deleting!");
-        }
     }
 
     @FXML
@@ -219,7 +192,7 @@ public class AppController {
 
         manufacturerColumn = new TableColumn<>("Manufacturer");
         manufacturerColumn.setCellValueFactory(new PropertyValueFactory<>("manufacturer"));
-        manufacturerColumn.setPrefWidth(130.0);
+        manufacturerColumn.setPrefWidth(110.0);
         table.getColumns().add(manufacturerColumn);
 
         modelColumn = new TableColumn<>("Model");
@@ -244,7 +217,7 @@ public class AppController {
 
         isOnColumn = new TableColumn<>("Is switched on");
         isOnColumn.setCellValueFactory(new PropertyValueFactory<>("isOn"));
-        isOnColumn.setPrefWidth(135.0);
+        isOnColumn.setPrefWidth(100.0);
         table.getColumns().add(isOnColumn);
 
         editColumn = new TableColumn<>("Edit");
@@ -309,11 +282,34 @@ public class AppController {
         editColumn.setPrefWidth(50.0);
         table.getColumns().add(editColumn);
 
+        deleteColumn = new TableColumn<>("Delete");
+        deleteColumn.setCellFactory(param -> new TableCell<>() {
+            private final Button deleteButton = new Button("Delete");
 
-//        editColumn.setCellValueFactory(new PropertyValueFactory<>("Button"));
-//        editColumn.setCellFactory(new ButtonCellFactory());
-//        editColumn.setPrefWidth(50.0);
-//        table.getColumns().add(editColumn);
+            {
+                deleteButton.setOnAction(event -> {
+                    GardeningDevice device = getTableView().getItems().get(getIndex());
+                    int id = device.getId();
+                    // ЛОГИКА ПРИ НАЖАТИИ КНОПКИ ДЛЯ ДЕЙСТВИЯ
+
+                    DatabaseManager.deleteDevice(id);
+                    System.out.println("Delete button clicked! ID = " + device.getId());
+                    updateListOfDevices(scrollPane);
+                });
+            }
+
+            @Override
+            protected void updateItem(Button item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setGraphic(null);
+                } else {
+                    setGraphic(deleteButton);
+                }
+            }
+        });
+        deleteColumn.setPrefWidth(70.0);
+        table.getColumns().add(deleteColumn);
 
 
 

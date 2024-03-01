@@ -133,6 +133,7 @@ public class DatabaseManager implements Serializable {
             }
 
             prepStatement.execute();
+            connection.close();
 
         } catch (SQLException ex) {
             System.err.println("SQLException on inserting device!");
@@ -140,8 +141,21 @@ public class DatabaseManager implements Serializable {
         }
     }
 
-    public static void deleteDevice(GardeningDevice device) {
+    public static void deleteDevice(int id) {
+        String query = "DELETE FROM AllDevices WHERE id = ?";
+        System.out.println("ID = " + id);
 
+        try {
+            Connection connection = DriverManager.getConnection(url, login, password);
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setInt(1, id);
+            statement.execute();
+            connection.close();
+
+        } catch (SQLException e) {
+//            System.err.println("SQLException on deleting device!");
+            e.printStackTrace();
+        }
     }
 
     public static GardeningDevice getDevice(int id) {
@@ -235,28 +249,11 @@ public class DatabaseManager implements Serializable {
             }
 
             prepStatement.execute();
+            connection.close();
 
         } catch (SQLException ex) {
             System.err.println("SQLException on updating device!");
             ex.printStackTrace();
-        }
-    }
-
-    public static boolean deleteDevice(int id) {
-        String deleteQuery = "DELETE FROM AllDevices WHERE id = ?";
-
-        try (Connection connection = DriverManager.getConnection(url, login, password); PreparedStatement preparedStatement = connection.prepareStatement(deleteQuery)) {
-
-            preparedStatement.setInt(1, id);
-            int rowsAffected = preparedStatement.executeUpdate();
-
-            connection.close();
-            // System.out.println("Запись успешно обновлена");
-            // System.out.println("Запись не была обновлена");
-            return rowsAffected > 0;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
         }
     }
 }

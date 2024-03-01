@@ -31,15 +31,15 @@
                     <font>
                         <Font size="15.0" />
                     </font></Button>
-                <Button fx:id="editButton" mnemonicParsing="false" onAction="#onEditButtonClick" prefHeight="26.0" prefWidth="150.0" text="Изменить" GridPane.columnIndex="1">
+                <Button fx:id="editButton" mnemonicParsing="false" prefHeight="26.0" prefWidth="150.0" text="Изменить" GridPane.columnIndex="1">
                     <font>
                         <Font size="15.0" />
                     </font></Button>
-                <Button fx:id="deleteButton" mnemonicParsing="false" onAction="#onDeleteButtonClick" prefHeight="26.0" prefWidth="150.0" text="Удалить" GridPane.columnIndex="2">
+                <Button fx:id="deleteButton" mnemonicParsing="false" prefHeight="26.0" prefWidth="150.0" text="Удалить" GridPane.columnIndex="2">
                     <font>
                         <Font size="15.0" />
                     </font></Button>
-                <Button fx:id="viewButton" mnemonicParsing="false" onAction="#onViewButtonClick" prefHeight="31.0" prefWidth="150.0" text="Просмотр" GridPane.columnIndex="3">
+                <Button fx:id="viewButton" mnemonicParsing="false" prefHeight="31.0" prefWidth="150.0" text="Просмотр" GridPane.columnIndex="3">
                     <font>
                         <Font size="15.0" />
                     </font></Button>
