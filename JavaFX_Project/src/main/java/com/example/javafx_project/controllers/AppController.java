@@ -26,7 +26,6 @@ import java.util.ArrayList;
 
 public class AppController {
     private static final Logger loggerMain = LogManager.getLogger("MainLogger");
-    private static final Logger loggerDB = LogManager.getLogger("DatabaseLogger");
 
     double screenWidth = Screen.getPrimary().getVisualBounds().getWidth();
     double screenHeight = Screen.getPrimary().getVisualBounds().getHeight();
@@ -185,7 +184,7 @@ public class AppController {
     }
 
     public void updateListOfDevices(ScrollPane scrollPane) {
-        loggerDB.info("Обновлён список устройств");
+        loggerMain.info("Обновлён список устройств");
         ArrayList<GardeningDevice> devicesFromDB = DatabaseManager.getAllDevices();
 
         if (devicesFromDB == null) return;
