@@ -35,7 +35,6 @@ public class AutoWatering extends GardeningDevice {
         if (super.isOn) {
 //            logger.error("Попытка включить уже включённый автополив");
         } else {
-            setIntensity(75);
             setSprinklerAttached(true);
             setWaterPressure(40);
             setWinterMode(false);

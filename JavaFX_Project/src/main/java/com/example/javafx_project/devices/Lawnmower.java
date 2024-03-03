@@ -32,7 +32,6 @@ public class Lawnmower extends GardeningDevice {
         if (super.isOn) {
 //            logger.error("Попытка включить уже включённую газонокосилку");
         } else {
-            setIntensity(75);
             isMulchingEnabled = true;
             setCuttingHeight(40);
             super.isOn = true;
