@@ -21,10 +21,7 @@
         <Logger name="DatabaseLogger" level="info" additivity="false">-->
             <AppenderRef ref="Database"/>
         </Logger>
-        <Logger name="JsonLogger" level="info" additivity="false">-->
-            <AppenderRef ref="Files"/>
-        </Logger>
-        <Logger name="SerializationLogger" level="info" additivity="false">-->
+        <Logger name="FilesLogger" level="info" additivity="false">-->
             <AppenderRef ref="Files"/>
         </Logger>
     </Loggers>
