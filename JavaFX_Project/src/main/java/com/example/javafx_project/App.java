@@ -3,6 +3,8 @@ package com.example.javafx_project;
 import com.example.javafx_project.controllers.AppController;
 import javafx.application.Application;
 import javafx.stage.Stage;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.io.FileReader;
@@ -12,8 +14,10 @@ import java.util.HashMap;
 import java.util.Properties;
 
 public class App extends Application {
+    private static final Logger loggerMain = LogManager.getLogger("MainLogger");
     @Override
     public void start(Stage stage) throws IOException {
+        loggerMain.info("Программа запущена");
         AppController controller = new AppController();
         controller.start(stage);
     }

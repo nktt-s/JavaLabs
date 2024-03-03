@@ -6,9 +6,14 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.io.IOException;
 
 public class DeleteThermalDrive {
+    private static final Logger loggerMain = LogManager.getLogger("MainLogger");
+
     @FXML
     private Label confirmationMessage;
     @FXML
@@ -25,6 +30,7 @@ public class DeleteThermalDrive {
 
     @FXML
     private void onCancelButtonClicked() throws IOException {
+        loggerMain.info("Нажата кнопка отмены удаления термопривода с ID = " + id);
         AppController appController = new AppController();
         Scene currentScene = cancelButton.getScene();
         Stage stage = (Stage) currentScene.getWindow();
@@ -33,7 +39,7 @@ public class DeleteThermalDrive {
 
     @FXML
     private void onApplyButtonClicked() throws IOException {
-
+        loggerMain.info("Нажата кнопка отмены удаления термопривода с ID = " + id);
         DatabaseManager.deleteDevice(id);
 
         AppController appController = new AppController();

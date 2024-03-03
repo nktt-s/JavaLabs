@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="INFO">
+    <Appenders>
+        <File name="Main" fileName="C:/Users/nktt/IdeaProjects/JavaFX_Project/logs/main.log">
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} [%c] %-5level- %msg%n"/>
+        </File>
+        <File name="Database" fileName="C:/Users/nktt/IdeaProjects/JavaFX_Project/logs/database.log">
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} [%c] %-5level- %msg%n"/>
+        </File>
+        <File name="Files" fileName="C:/Users/nktt/IdeaProjects/JavaFX_Project/logs/files.log">
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} [%c] %-5level- %msg%n"/>
+        </File>
+    </Appenders>
+    <Loggers>
+        <Root level="info">
+            <AppenderRef ref="Main"/>
+        </Root>
+        <Logger name="MainLogger" level="info" additivity="false">
+            <AppenderRef ref="Main"/>
+        </Logger>
+        <Logger name="DatabaseLogger" level="info" additivity="false">-->
+            <AppenderRef ref="Database"/>
+        </Logger>
+        <Logger name="JsonLogger" level="info" additivity="false">-->
+            <AppenderRef ref="Files"/>
+        </Logger>
+        <Logger name="SerializationLogger" level="info" additivity="false">-->
+            <AppenderRef ref="Files"/>
+        </Logger>
+    </Loggers>
+</Configuration>

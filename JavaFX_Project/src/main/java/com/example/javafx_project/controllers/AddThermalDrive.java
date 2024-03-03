@@ -10,10 +10,14 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 
 public class AddThermalDrive {
+    private static final Logger loggerMain = LogManager.getLogger("MainLogger");
+
     @FXML
     private Label errorMessage_productionYear;
     @FXML
@@ -61,6 +65,7 @@ public class AddThermalDrive {
 
     @FXML
     private void onCancelButtonClicked() throws IOException {
+        loggerMain.info("Нажата кнопка отмены добавления термопривода");
         AppController appController = new AppController();
         Scene currentScene = cancelButton.getScene();
         Stage stage = (Stage) currentScene.getWindow();
@@ -69,7 +74,6 @@ public class AddThermalDrive {
 
     @FXML
     private void onApplyButtonClicked() throws IOException {
-        System.out.println("Apply button clicked!");
         String _manufacturer = manufacturer.getText();
         String _model = model.getText();
         String _powerSource = powerSource.getText();
@@ -79,6 +83,7 @@ public class AddThermalDrive {
             _productionYear = Integer.parseInt(productionYear.getText());
             errorMessage_Nan.setText("");
         } catch (NumberFormatException e) {
+            loggerMain.warn("Попытка ввести нечисловые символы в поле 'Год производства'");
             errorMessage_Nan.setText("Проверьте числовые значения!");
             hasErrors = true;
             return;
@@ -89,6 +94,7 @@ public class AddThermalDrive {
             _lifetime = Integer.parseInt(lifetime.getText());
             errorMessage_Nan.setText("");
         } catch (NumberFormatException e) {
+            loggerMain.warn("Попытка ввести нечисловые символы в поле 'Срок службы'");
             errorMessage_Nan.setText("Проверьте числовые значения!");
             hasErrors = true;
             return;
@@ -99,6 +105,7 @@ public class AddThermalDrive {
             _temperature = Integer.parseInt(temperature.getText());
             errorMessage_Nan.setText("");
         } catch (NumberFormatException e) {
+            loggerMain.warn("Попытка ввести нечисловые символы в поле 'Температура'");
             errorMessage_Nan.setText("Проверьте числовые значения!");
             hasErrors = true;
             return;
@@ -107,35 +114,34 @@ public class AddThermalDrive {
         boolean _protectiveFunction = protectiveFunction.isSelected();
         boolean _isOn = isOn.isSelected();
 
-        ThermalDrive thermalDrive = new ThermalDrive(_manufacturer, _model, _powerSource,
-            _productionYear, _lifetime, _temperature, _protectiveFunction, _isOn);
+        ThermalDrive thermalDrive = new ThermalDrive(_manufacturer, _model, _powerSource, _productionYear, _lifetime, _temperature, _protectiveFunction, _isOn);
 
         if (!thermalDrive.isValidYear(_productionYear)) {
-            errorMessage_productionYear.setText("Установлено недопустимое значение " +
-                "в поле 'Год производства' (" + GardeningDevice.MIN_YEAR + "-" + thermalDrive.getCurrentYear() + ")");
+            loggerMain.warn("Попытка ввести недопустимое значение в поле 'Год производства'");
+            errorMessage_productionYear.setText("Установлено недопустимое значение " + "в поле 'Год производства' (" + GardeningDevice.MIN_YEAR + "-" + thermalDrive.getCurrentYear() + ")");
             hasErrors = true;
         } else {
             errorMessage_productionYear.setText("");
         }
         if (!thermalDrive.isValidLifetime(_lifetime)) {
-            errorMessage_lifetime.setText("Установлено недопустимое значение " +
-                "в поле 'Срок службы' (3-20 лет)");
+            loggerMain.warn("Попытка ввести недопустимое значение в поле 'Срок службы'");
+            errorMessage_lifetime.setText("Установлено недопустимое значение " + "в поле 'Срок службы' (3-20 лет)");
             hasErrors = true;
         } else {
             errorMessage_lifetime.setText("");
         }
         if (!thermalDrive.isValidTemperature(_temperature)) {
-            errorMessage_temperature.setText("Установлено недопустимое значение " +
-                "в поле 'Установленная температура' (5-30°C)");
+            loggerMain.warn("Попытка ввести недопустимое значение в поле 'Температура'");
+            errorMessage_temperature.setText("Установлено недопустимое значение " + "в поле 'Установленная температура' (5-30°C)");
             hasErrors = true;
         } else {
             errorMessage_temperature.setText("");
         }
 
-        if (thermalDrive.isValidYear(_productionYear) && thermalDrive.isValidLifetime(_lifetime)
-            && thermalDrive.isValidTemperature(_temperature)) hasErrors = false;
+        if (thermalDrive.isValidYear(_productionYear) && thermalDrive.isValidLifetime(_lifetime) && thermalDrive.isValidTemperature(_temperature))
+            hasErrors = false;
         if (!hasErrors) {
-//            System.out.println("Валидация прошла успешно: ошибок нет.");
+            loggerMain.info("Добавлен новый термопривод с ID = " + thermalDrive.getId());
             DatabaseManager.addDevice(thermalDrive);
 
             AppController appController = new AppController();

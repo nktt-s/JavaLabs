@@ -17,12 +17,17 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 
 public class AppController {
+    private static final Logger loggerMain = LogManager.getLogger("MainLogger");
+    private static final Logger loggerDB = LogManager.getLogger("DatabaseLogger");
+
     double screenWidth = Screen.getPrimary().getVisualBounds().getWidth();
     double screenHeight = Screen.getPrimary().getVisualBounds().getHeight();
     @FXML
@@ -118,12 +123,15 @@ public class AppController {
             Object temp_object = fxmlLoader.getController();
             if (temp_object instanceof AddLawnmower) {
                 AddLawnmower controller = fxmlLoader.getController();
+                loggerMain.info("Нажата кнопка добавления газонокосилки");
                 controller.start(stage);
             } else if (temp_object instanceof AddAutoWatering) {
                 AddAutoWatering controller = fxmlLoader.getController();
+                loggerMain.info("Нажата кнопка добавления автополива");
                 controller.start(stage);
             } else {
                 AddThermalDrive controller = fxmlLoader.getController();
+                loggerMain.info("Нажата кнопка добавления термопривода");
                 controller.start(stage);
             }
 //            stage.show();
@@ -149,6 +157,7 @@ public class AppController {
 
     @FXML
     private void onExitButtonClick() {
+        loggerMain.info("Нажата кнопка выхода из программы");
         Platform.exit();
     }
 
@@ -176,6 +185,7 @@ public class AppController {
     }
 
     public void updateListOfDevices(ScrollPane scrollPane) {
+        loggerDB.info("Обновлён список устройств");
         ArrayList<GardeningDevice> devicesFromDB = DatabaseManager.getAllDevices();
 
         if (devicesFromDB == null) return;
@@ -257,12 +267,15 @@ public class AppController {
                         Object temp_object = fxmlLoader.getController();
                         if (temp_object instanceof EditLawnmower) {
                             EditLawnmower controller = fxmlLoader.getController();
+                            loggerMain.info("Нажата кнопка изменения газонокосилки с ID = " + device.getId());
                             controller.start(stage, device);
                         } else if (temp_object instanceof EditAutoWatering) {
                             EditAutoWatering controller = fxmlLoader.getController();
+                            loggerMain.info("Нажата кнопка изменения автополива с ID = " + device.getId());
                             controller.start(stage, device);
                         } else {
                             EditThermalDrive controller = fxmlLoader.getController();
+                            loggerMain.info("Нажата кнопка изменения термопривода с ID = " + device.getId());
                             controller.start(stage, device);
                         }
 //                        stage.show();
@@ -324,12 +337,15 @@ public class AppController {
                         Object temp_object = fxmlLoader.getController();
                         if (temp_object instanceof DeleteLawnmower) {
                             DeleteLawnmower controller = fxmlLoader.getController();
+                            loggerMain.info("Нажата кнопка удаления газонокосилки с ID = " + id);
                             controller.start(stage, id);
                         } else if (temp_object instanceof DeleteAutoWatering) {
                             DeleteAutoWatering controller = fxmlLoader.getController();
+                            loggerMain.info("Нажата кнопка удаления автополива с ID = " + id);
                             controller.start(stage, id);
                         } else {
                             DeleteThermalDrive controller = fxmlLoader.getController();
+                            loggerMain.info("Нажата кнопка удаления термопривода с ID = " + id);
                             controller.start(stage, id);
                         }
 //                        stage.show();
@@ -357,10 +373,6 @@ public class AppController {
         });
         deleteColumn.setPrefWidth(70.0);
         table.getColumns().add(deleteColumn);
-
-
-
-
         scrollPane.setContent(table);
     }
 }

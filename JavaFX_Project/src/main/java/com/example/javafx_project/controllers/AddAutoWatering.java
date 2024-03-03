@@ -10,10 +10,14 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 
 public class AddAutoWatering {
+    private static final Logger loggerMain = LogManager.getLogger("MainLogger");
+
     @FXML
     private Label errorMessage_productionYear;
     @FXML
@@ -64,6 +68,7 @@ public class AddAutoWatering {
 
     @FXML
     private void onCancelButtonClicked() throws IOException {
+        loggerMain.info("Нажата кнопка отмены добавления автополива");
         AppController appController = new AppController();
         Scene currentScene = cancelButton.getScene();
         Stage stage = (Stage) currentScene.getWindow();
@@ -72,7 +77,6 @@ public class AddAutoWatering {
 
     @FXML
     private void onApplyButtonClicked() throws IOException {
-        System.out.println("Apply button clicked!");
         String _manufacturer = manufacturer.getText();
         String _model = model.getText();
         String _powerSource = powerSource.getText();
@@ -82,6 +86,7 @@ public class AddAutoWatering {
             _productionYear = Integer.parseInt(productionYear.getText());
             errorMessage_Nan.setText("");
         } catch (NumberFormatException e) {
+            loggerMain.warn("Попытка ввести нечисловые символы в поле 'Год производства'");
             errorMessage_Nan.setText("Проверьте числовые значения!");
             hasErrors = true;
             return;
@@ -92,6 +97,7 @@ public class AddAutoWatering {
             _lifetime = Integer.parseInt(lifetime.getText());
             errorMessage_Nan.setText("");
         } catch (NumberFormatException e) {
+            loggerMain.warn("Попытка ввести нечисловые символы в поле 'Срок службы'");
             errorMessage_Nan.setText("Проверьте числовые значения!");
             hasErrors = true;
             return;
@@ -102,6 +108,7 @@ public class AddAutoWatering {
             _waterPressure = Integer.parseInt(waterPressure.getText());
             errorMessage_Nan.setText("");
         } catch (NumberFormatException e) {
+            loggerMain.warn("Попытка ввести нечисловые символы в поле 'Давление воды'");
             errorMessage_Nan.setText("Проверьте числовые значения!");
             hasErrors = true;
             return;
@@ -111,35 +118,34 @@ public class AddAutoWatering {
         boolean _isWinterMode = isWinterMode.isSelected();
         boolean _isOn = isOn.isSelected();
 
-        AutoWatering autoWatering = new AutoWatering(_manufacturer, _model, _powerSource,
-            _productionYear, _lifetime, _waterPressure, _isSprinklerAttached, _isWinterMode, _isOn);
+        AutoWatering autoWatering = new AutoWatering(_manufacturer, _model, _powerSource, _productionYear, _lifetime, _waterPressure, _isSprinklerAttached, _isWinterMode, _isOn);
 
         if (!autoWatering.isValidYear(_productionYear)) {
-            errorMessage_productionYear.setText("Установлено недопустимое значение " +
-                "в поле 'Год производства' (" + GardeningDevice.MIN_YEAR + "-" + autoWatering.getCurrentYear() + ")");
+            loggerMain.warn("Попытка ввести недопустимое значение в поле 'Год производства'");
+            errorMessage_productionYear.setText("Установлено недопустимое значение " + "в поле 'Год производства' (" + GardeningDevice.MIN_YEAR + "-" + autoWatering.getCurrentYear() + ")");
             hasErrors = true;
         } else {
             errorMessage_productionYear.setText("");
         }
         if (!autoWatering.isValidLifetime(_lifetime)) {
-            errorMessage_lifetime.setText("Установлено недопустимое значение " +
-                "в поле 'Срок службы' (3-20 лет)");
+            loggerMain.warn("Попытка ввести недопустимое значение в поле 'Срок службы'");
+            errorMessage_lifetime.setText("Установлено недопустимое значение " + "в поле 'Срок службы' (3-20 лет)");
             hasErrors = true;
         } else {
             errorMessage_lifetime.setText("");
         }
         if (!autoWatering.isValidWaterPressure(_waterPressure)) {
-            errorMessage_waterPressure.setText("Установлено недопустимое значение " +
-                "в поле 'Давление воды' (20-80 psi)");
+            loggerMain.warn("Попытка ввести недопустимое значение в поле 'Давление воды'");
+            errorMessage_waterPressure.setText("Установлено недопустимое значение " + "в поле 'Давление воды' (20-80 psi)");
             hasErrors = true;
         } else {
             errorMessage_waterPressure.setText("");
         }
 
-        if (autoWatering.isValidYear(_productionYear) && autoWatering.isValidLifetime(_lifetime)
-            && autoWatering.isValidWaterPressure(_waterPressure)) hasErrors = false;
+        if (autoWatering.isValidYear(_productionYear) && autoWatering.isValidLifetime(_lifetime) && autoWatering.isValidWaterPressure(_waterPressure))
+            hasErrors = false;
         if (!hasErrors) {
-//            System.out.println("Валидация прошла успешно: ошибок нет.");
+            loggerMain.info("Добавлен новый автополив с ID = " + autoWatering.getId());
             DatabaseManager.addDevice(autoWatering);
 
             AppController appController = new AppController();

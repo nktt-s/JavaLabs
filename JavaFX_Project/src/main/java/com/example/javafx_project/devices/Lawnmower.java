@@ -11,8 +11,6 @@ public class Lawnmower extends GardeningDevice {
 
     public Lawnmower(int id, String manufacturer, String model, String powerSource, int productionYear, int lifetime, boolean isOn) {
         super(id, manufacturer, model, powerSource, productionYear, lifetime);
-//        this.cuttingHeight = 40;
-//        this.isMulchingEnabled = true;
         this.isOn = isOn;
     }
 
@@ -21,44 +19,35 @@ public class Lawnmower extends GardeningDevice {
         this.cuttingHeight = cuttingHeight;
         this.isMulchingEnabled = isMulchingEnabled;
         this.isOn = isOn;
-        logger.info("Создана новая газонокосилка");
     }
     public Lawnmower(int id, String manufacturer, String model, String powerSource, int productionYear, int lifetime, int cuttingHeight, boolean isMulchingEnabled, boolean isOn) {
         super(id, manufacturer, model, powerSource, productionYear, lifetime);
         this.cuttingHeight = cuttingHeight;
         this.isMulchingEnabled = isMulchingEnabled;
         this.isOn = isOn;
-        logger.info("Создана новая газонокосилка");
     }
 
     @Override
     public void turnOn() {
         if (super.isOn) {
-            logger.error("Попытка включить уже включённую газонокосилку");
+//            logger.error("Попытка включить уже включённую газонокосилку");
         } else {
             setIntensity(75);
             isMulchingEnabled = true;
             setCuttingHeight(40);
             super.isOn = true;
-            logger.info("Включена газонокосилка");
+//            logger.info("Включена газонокосилка");
         }
     }
 
     @Override
     public void turnOff() {
         if (!super.isOn) {
-            logger.error("Попытка выключить уже выключенную газонокосилку");
+//            logger.error("Попытка выключить уже выключенную газонокосилку");
         } else {
             super.isOn = false;
-            logger.info("Выключена газонокосилка");
+//            logger.info("Выключена газонокосилка");
         }
-    }
-
-
-    // TODO НУЖНО ЛИ ЭТО ВООБЩЕ?
-    public void update(int cuttingHeight, boolean isMulchingEnabled) {
-        this.cuttingHeight = cuttingHeight;
-        this.isMulchingEnabled = isMulchingEnabled;
     }
 
     @Override
@@ -66,34 +55,16 @@ public class Lawnmower extends GardeningDevice {
         if (super.isOn) {
             cutTheGrass();
         } else {
-            logger.error("Попытка выполнить действие выключенной газонокосилки");
+//            logger.error("Попытка выполнить действие выключенной газонокосилки");
         }
     }
 
     public void cutTheGrass() {
-        logger.info("Выполняется кошение травы");
-    }
-
-    public void manageMulching() {
-        if (isMulchingEnabled) {
-            logger.info("Включена система мульчирования газонокосилки");
-        } else {
-            logger.info("Отключена система мульчирования газонокосилки");
-        }
+//        logger.info("Выполняется кошение травы");
     }
 
     public boolean isValidCuttingHeight(int height) {
         return 20 <= height && height <= 100;
-    }
-
-    public void adjustCuttingHeight(int height) {
-        if (20 <= height && height <= 100) {
-            setCuttingHeight(height);
-            logger.info("Высота среза травы для газонокосилки установлена на " + +getCuttingHeight() + "мм");
-        } else {
-            setCuttingHeight(40);
-            logger.error("Неверный ввод. Установлена высота среза травы для газонокосилки " + "по умолчанию (40 мм).");
-        }
     }
 
     public int getCuttingHeight() {

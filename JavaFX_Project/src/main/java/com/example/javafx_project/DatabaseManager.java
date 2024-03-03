@@ -2,12 +2,15 @@ package com.example.javafx_project;
 
 import com.example.javafx_project.devices.*;
 import com.example.javafx_project.devices.GardeningDevice;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.Serializable;
 import java.sql.*;
 import java.util.ArrayList;
 
 public class DatabaseManager implements Serializable {
+    private static final Logger loggerDB = LogManager.getLogger("DatabaseLogger");
     static String url = "jdbc:mysql://localhost:3307/";
     static String name;
     static String login;
@@ -21,6 +24,7 @@ public class DatabaseManager implements Serializable {
     }
 
     public static ArrayList<GardeningDevice> getAllDevices() {
+        loggerDB.info("Вызван метод получения всех устройств");
         ArrayList<GardeningDevice> devices = new ArrayList<>();
         String query = "SELECT * FROM AllDevices";
 
@@ -87,6 +91,7 @@ public class DatabaseManager implements Serializable {
     }
 
     public static void addDevice(GardeningDevice device) {
+        loggerDB.info("Вызван метод добавления устройства");
         String query = "INSERT INTO AllDevices (id, Type, isOn, Manufacturer, Model, PowerSource, ProductionYear, Lifetime, " +
             "CuttingHeight, isMulchingEnabled, WaterPressure, isSprinklerAttached, isWinterMode, Temperature, isProtectiveFunctionOn) " +
             "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
@@ -142,6 +147,7 @@ public class DatabaseManager implements Serializable {
     }
 
     public static void deleteDevice(int id) {
+        loggerDB.info("Вызван метод удаления устройства");
         String query = "DELETE FROM AllDevices WHERE id = ?";
         System.out.println("ID = " + id);
 
@@ -159,6 +165,7 @@ public class DatabaseManager implements Serializable {
     }
 
     public static GardeningDevice getDevice(int id) {
+        loggerDB.info("Вызван метод добавления одного устройства");
         String query = "SELECT * FROM AllDevices WHERE id = ?";
 
         try {
@@ -204,6 +211,7 @@ public class DatabaseManager implements Serializable {
     }
 
     public static void updateDevice(GardeningDevice device) {
+        loggerDB.info("Вызван метод изменения устройства");
         String query = "UPDATE AllDevices SET isOn = ?, Manufacturer = ?, Model = ?, PowerSource = ?, ProductionYear = ?, Lifetime = ?, " +
             "CuttingHeight = ?, isMulchingEnabled = ?, WaterPressure = ?, isSprinklerAttached = ?, isWinterMode = ?, Temperature = ?, isProtectiveFunctionOn = ? WHERE id = ?;";
 

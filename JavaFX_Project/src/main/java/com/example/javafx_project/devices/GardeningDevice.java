@@ -11,7 +11,6 @@ public abstract class GardeningDevice {
     private String manufacturer;
     private String model;
     private String powerSource;
-    private int intensity;
     public boolean isOn;
     private int lifetime;
     private int productionYear;
@@ -52,7 +51,6 @@ public abstract class GardeningDevice {
         this.productionYear = productionYear;
         this.lifetime = lifetime;
         this.isOn = false;
-        this.intensity = 0;
     }
 
     public boolean getIsOn() {
@@ -111,20 +109,6 @@ public abstract class GardeningDevice {
             this.lifetime = lifetime;
         } else {
             this.lifetime = 5;
-        }
-    }
-    public int getIntensity() {
-        return intensity;
-    }
-    public void setIntensity(int intensity) {
-        this.intensity = intensity;
-    }
-
-    public void adjustIntensity(int intensity) {
-        if (10 <= intensity && intensity <= 100) {
-            setIntensity(intensity);
-        } else {
-            setIntensity(75);
         }
     }
     public String getType() { return this.getClass().toString().substring(41);}
