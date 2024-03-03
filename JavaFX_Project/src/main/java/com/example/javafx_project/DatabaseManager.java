@@ -29,8 +29,6 @@ public class DatabaseManager implements Serializable {
         String query = "SELECT * FROM AllDevices";
 
         try {
-//            System.out.println(url + "\n" + login + "\n" + password);
-//            Class.forName("com.mysql.jdbc.Driver");
             Connection connection = DriverManager.getConnection(url, login, password);
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(query);
@@ -149,7 +147,6 @@ public class DatabaseManager implements Serializable {
     public static void deleteDevice(int id) {
         loggerDB.info("Вызван метод удаления устройства");
         String query = "DELETE FROM AllDevices WHERE id = ?";
-        System.out.println("ID = " + id);
 
         try {
             Connection connection = DriverManager.getConnection(url, login, password);
@@ -159,8 +156,8 @@ public class DatabaseManager implements Serializable {
             connection.close();
 
         } catch (SQLException e) {
-//            System.err.println("SQLException on deleting device!");
-            e.printStackTrace();
+            System.err.println("SQLException on deleting device!");
+//            e.printStackTrace();
         }
     }
 

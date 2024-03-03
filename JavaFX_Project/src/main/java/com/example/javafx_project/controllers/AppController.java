@@ -282,8 +282,6 @@ public class AppController {
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
-
-                    System.out.println("Edit button clicked! ID = " + device.getId());
                     updateListOfDevices(scrollPane);
                 });
             }
@@ -352,10 +350,6 @@ public class AppController {
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
-
-
-
-                    System.out.println("Delete button clicked! ID = " + device.getId());
                     updateListOfDevices(scrollPane);
                 });
             }
