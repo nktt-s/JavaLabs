@@ -1,4 +1,4 @@
-package com.example.javafx_project;
+package com.example.javafx_project.fileManagers;
 
 import com.example.javafx_project.devices.AutoWatering;
 import com.example.javafx_project.devices.GardeningDevice;
@@ -21,7 +21,7 @@ public class BinaryFileManager {
         return matcher.matches();
     }
 
-    public static boolean writeIntoBinaryFile(GardeningDevice device, String fileName) {
+    public static boolean writeToBinaryFile(GardeningDevice device, String fileName) {
         try (FileOutputStream fileOutputStream = new FileOutputStream(fileName); ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream)) {
             objectOutputStream.writeObject(device);
             logger.info("Успешная запись PK=" + device.getId() + " в бинарный файл: " + fileName);
