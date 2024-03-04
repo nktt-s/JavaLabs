@@ -123,5 +123,16 @@
             <font>
                 <Font size="15.0" />
         </font></Label>
+
+        <Label fx:id="fileMessage" alignment="CENTER" layoutX="742.0" layoutY="416.0" prefHeight="49.0" prefWidth="233.0" style="-fx-font-weight: bold" textAlignment="CENTER" textFill="red" wrapText="true">
+            <font>
+                <Font size="15.0" />
+            </font></Label>
+        <TextField fx:id="filename" alignment="CENTER" layoutX="771.0" layoutY="476.0" promptText="Имя файла" />
+        <Button fx:id="importButton" layoutX="773.0" layoutY="517.0" mnemonicParsing="false" onAction="#onImportButtonClicked" prefHeight="30.0" prefWidth="145.0" text="Импорт">
+            <font>
+                <Font size="15.0" />
+            </font>
+        </Button>
     </children>
 </AnchorPane>

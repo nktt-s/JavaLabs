@@ -3,6 +3,9 @@ package com.example.javafx_project.controllers;
 import com.example.javafx_project.DatabaseManager;
 import com.example.javafx_project.devices.GardeningDevice;
 import com.example.javafx_project.devices.Lawnmower;
+import com.example.javafx_project.fileManagers.BinaryFileManager;
+import com.example.javafx_project.fileManagers.FileManager;
+import com.example.javafx_project.fileManagers.JsonFileManager;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -13,6 +16,7 @@ import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.io.File;
 import java.io.IOException;
 
 public class AddLawnmower {
@@ -26,6 +30,8 @@ public class AddLawnmower {
     private Label errorMessage_cuttingHeight;
     @FXML
     private Label errorMessage_Nan;
+    @FXML
+    private Label fileMessage;
 
     @FXML
     private TextField manufacturer;
@@ -39,6 +45,8 @@ public class AddLawnmower {
     private TextField lifetime;
     @FXML
     private TextField cuttingHeight;
+    @FXML
+    private TextField filename;
 
     @FXML
     private CheckBox isMulchingEnabled;
@@ -49,6 +57,8 @@ public class AddLawnmower {
     private Button cancelButton;
     @FXML
     private Button applyButton;
+    @FXML
+    private Button importButton;
 
     private boolean hasErrors = true;
 
@@ -61,6 +71,17 @@ public class AddLawnmower {
         cuttingHeight.setText("40");
         isMulchingEnabled.setSelected(true);
         isOn.setSelected(false);
+    }
+
+    public void setFields(Lawnmower device) {
+        manufacturer.setText(device.getManufacturer());
+        model.setText(device.getModel());
+        powerSource.setText(device.getPowerSource());
+        productionYear.setText(String.valueOf(device.getProductionYear()));
+        lifetime.setText(String.valueOf(device.getLifetime()));
+        cuttingHeight.setText(String.valueOf(device.getCuttingHeight()));
+        isMulchingEnabled.setSelected(device.isIsMulchingEnabled());
+        isOn.setSelected(device.isIsOn());
     }
 
     @FXML
@@ -152,6 +173,55 @@ public class AddLawnmower {
             Scene currentScene = cancelButton.getScene();
             Stage stage = (Stage) currentScene.getWindow();
             appController.start(stage);
+        }
+    }
+
+    @FXML
+    private void onImportButtonClicked() {
+        String filenameValue = filename.getText();
+        File file = new File(filenameValue);
+        switch (FileManager.getTypeOfFile(filenameValue)) {
+            case 1:
+                fileMessage.setText("");
+                if (file.exists()) {
+                    GardeningDevice device = BinaryFileManager.readFromBinaryFile(file);
+                    if (device == null) {
+                        fileMessage.setText("Ошибка при чтении файла!");
+                    } else {
+                        if (device.getType().equals("AutoWatering")) {
+                            setFields((Lawnmower) device);
+                            loggerMain.info("Успешный импорт автополива");
+                        } else {
+                            fileMessage.setText("В файле содержится другое устройство!");
+                        }
+                    }
+                } else {
+                    fileMessage.setText("Файл не найден!");
+                }
+                break;
+
+            case 2:
+                fileMessage.setText("");
+                if (file.exists()) {
+                    GardeningDevice device = JsonFileManager.readFromJSON(file);
+                    if (device == null) {
+                        fileMessage.setText("Произошла ошибка при чтении JSON-файла");
+                    } else {
+                        if (device.getType().equals("AutoWatering")) {
+                            setFields((Lawnmower) device);
+                            loggerMain.info("Успешный импорт автополива");
+                        } else {
+                            fileMessage.setText("В файле содержится другое устройство!");
+                        }
+                    }
+                } else {
+                    fileMessage.setText("Файл не найден!");
+                }
+                break;
+
+            default:
+                fileMessage.setText("Расширение файла не соответствует .dat или .json");
+                break;
         }
     }
 }

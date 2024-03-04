@@ -3,6 +3,9 @@ package com.example.javafx_project.controllers;
 import com.example.javafx_project.DatabaseManager;
 import com.example.javafx_project.devices.GardeningDevice;
 import com.example.javafx_project.devices.ThermalDrive;
+import com.example.javafx_project.fileManagers.BinaryFileManager;
+import com.example.javafx_project.fileManagers.FileManager;
+import com.example.javafx_project.fileManagers.JsonFileManager;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -13,6 +16,7 @@ import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.io.File;
 import java.io.IOException;
 
 public class AddThermalDrive {
@@ -26,6 +30,8 @@ public class AddThermalDrive {
     private Label errorMessage_temperature;
     @FXML
     private Label errorMessage_Nan;
+    @FXML
+    private Label fileMessage;
 
     @FXML
     private TextField manufacturer;
@@ -39,6 +45,8 @@ public class AddThermalDrive {
     private TextField lifetime;
     @FXML
     private TextField temperature;
+    @FXML
+    private TextField filename;
 
     @FXML
     private CheckBox protectiveFunction;
@@ -49,6 +57,8 @@ public class AddThermalDrive {
     private Button cancelButton;
     @FXML
     private Button applyButton;
+    @FXML
+    private Button importButton;
 
     private boolean hasErrors = true;
 
@@ -61,6 +71,17 @@ public class AddThermalDrive {
         temperature.setText("20");
         protectiveFunction.setSelected(true);
         isOn.setSelected(false);
+    }
+
+    public void setFields(ThermalDrive device) {
+        manufacturer.setText(device.getManufacturer());
+        model.setText(device.getModel());
+        powerSource.setText(device.getPowerSource());
+        productionYear.setText(String.valueOf(device.getProductionYear()));
+        lifetime.setText(String.valueOf(device.getLifetime()));
+        temperature.setText(String.valueOf(device.getTemperature()));
+        protectiveFunction.setSelected(device.isIsProtectiveFunctionOn());
+        isOn.setSelected(device.isIsOn());
     }
 
     @FXML
@@ -148,6 +169,55 @@ public class AddThermalDrive {
             Scene currentScene = cancelButton.getScene();
             Stage stage = (Stage) currentScene.getWindow();
             appController.start(stage);
+        }
+    }
+
+    @FXML
+    private void onImportButtonClicked() {
+        String filenameValue = filename.getText();
+        File file = new File(filenameValue);
+        switch (FileManager.getTypeOfFile(filenameValue)) {
+            case 1:
+                fileMessage.setText("");
+                if (file.exists()) {
+                    GardeningDevice device = BinaryFileManager.readFromBinaryFile(file);
+                    if (device == null) {
+                        fileMessage.setText("Ошибка при чтении файла!");
+                    } else {
+                        if (device.getType().equals("AutoWatering")) {
+                            setFields((ThermalDrive) device);
+                            loggerMain.info("Успешный импорт автополива");
+                        } else {
+                            fileMessage.setText("В файле содержится другое устройство!");
+                        }
+                    }
+                } else {
+                    fileMessage.setText("Файл не найден!");
+                }
+                break;
+
+            case 2:
+                fileMessage.setText("");
+                if (file.exists()) {
+                    GardeningDevice device = JsonFileManager.readFromJSON(file);
+                    if (device == null) {
+                        fileMessage.setText("Произошла ошибка при чтении JSON-файла");
+                    } else {
+                        if (device.getType().equals("AutoWatering")) {
+                            setFields((ThermalDrive) device);
+                            loggerMain.info("Успешный импорт автополива");
+                        } else {
+                            fileMessage.setText("В файле содержится другое устройство!");
+                        }
+                    }
+                } else {
+                    fileMessage.setText("Файл не найден!");
+                }
+                break;
+
+            default:
+                fileMessage.setText("Расширение файла не соответствует .dat или .json");
+                break;
         }
     }
 }

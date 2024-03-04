@@ -3,6 +3,9 @@ package com.example.javafx_project.controllers;
 import com.example.javafx_project.DatabaseManager;
 import com.example.javafx_project.devices.AutoWatering;
 import com.example.javafx_project.devices.GardeningDevice;
+import com.example.javafx_project.fileManagers.BinaryFileManager;
+import com.example.javafx_project.fileManagers.FileManager;
+import com.example.javafx_project.fileManagers.JsonFileManager;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -13,6 +16,7 @@ import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.io.File;
 import java.io.IOException;
 
 public class AddAutoWatering {
@@ -26,6 +30,8 @@ public class AddAutoWatering {
     private Label errorMessage_waterPressure;
     @FXML
     private Label errorMessage_Nan;
+    @FXML
+    private Label fileMessage;
 
     @FXML
     private TextField manufacturer;
@@ -39,6 +45,8 @@ public class AddAutoWatering {
     private TextField lifetime;
     @FXML
     private TextField waterPressure;
+    @FXML
+    private TextField filename;
 
     @FXML
     private CheckBox isSprinklerAttached;
@@ -51,6 +59,8 @@ public class AddAutoWatering {
     private Button cancelButton;
     @FXML
     private Button applyButton;
+    @FXML
+    private Button importButton;
 
     private boolean hasErrors = true;
 
@@ -64,6 +74,18 @@ public class AddAutoWatering {
         isSprinklerAttached.setSelected(false);
         isWinterMode.setSelected(false);
         isOn.setSelected(false);
+    }
+
+    public void setFields(AutoWatering device) {
+        manufacturer.setText(device.getManufacturer());
+        model.setText(device.getModel());
+        powerSource.setText(device.getPowerSource());
+        productionYear.setText(String.valueOf(device.getProductionYear()));
+        lifetime.setText(String.valueOf(device.getLifetime()));
+        waterPressure.setText(String.valueOf(device.getWaterPressure()));
+        isSprinklerAttached.setSelected(device.isIsSprinklerAttached());
+        isWinterMode.setSelected(device.isIsWinterMode());
+        isOn.setSelected(device.isIsOn());
     }
 
     @FXML
@@ -152,6 +174,55 @@ public class AddAutoWatering {
             Scene currentScene = cancelButton.getScene();
             Stage stage = (Stage) currentScene.getWindow();
             appController.start(stage);
+        }
+    }
+
+    @FXML
+    private void onImportButtonClicked() {
+        String filenameValue = filename.getText();
+        File file = new File(filenameValue);
+        switch (FileManager.getTypeOfFile(filenameValue)) {
+            case 1:
+                fileMessage.setText("");
+                if (file.exists()) {
+                    GardeningDevice device = BinaryFileManager.readFromBinaryFile(file);
+                    if (device == null) {
+                        fileMessage.setText("Ошибка при чтении файла!");
+                    } else {
+                        if (device.getType().equals("AutoWatering")) {
+                            setFields((AutoWatering) device);
+                            loggerMain.info("Успешный импорт автополива");
+                        } else {
+                            fileMessage.setText("В файле содержится другое устройство!");
+                        }
+                    }
+                } else {
+                    fileMessage.setText("Файл не найден!");
+                }
+                break;
+
+            case 2:
+                fileMessage.setText("");
+                if (file.exists()) {
+                    GardeningDevice device = JsonFileManager.readFromJSON(file);
+                    if (device == null) {
+                        fileMessage.setText("Произошла ошибка при чтении JSON-файла");
+                    } else {
+                        if (device.getType().equals("AutoWatering")) {
+                            setFields((AutoWatering) device);
+                            loggerMain.info("Успешный импорт автополива");
+                        } else {
+                            fileMessage.setText("В файле содержится другое устройство!");
+                        }
+                    }
+                } else {
+                    fileMessage.setText("Файл не найден!");
+                }
+                break;
+
+            default:
+                fileMessage.setText("Расширение файла не соответствует .dat или .json");
+                break;
         }
     }
 }
