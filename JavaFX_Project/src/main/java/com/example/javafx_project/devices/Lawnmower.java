@@ -12,6 +12,7 @@ public class Lawnmower extends GardeningDevice {
     public Lawnmower(int id, String manufacturer, String model, String powerSource, int productionYear, int lifetime, boolean isOn) {
         super(id, manufacturer, model, powerSource, productionYear, lifetime);
         this.isOn = isOn;
+        this.setType();
     }
 
     public Lawnmower(String manufacturer, String model, String powerSource, int productionYear, int lifetime, int cuttingHeight, boolean isMulchingEnabled, boolean isOn) {
@@ -19,12 +20,14 @@ public class Lawnmower extends GardeningDevice {
         this.cuttingHeight = cuttingHeight;
         this.isMulchingEnabled = isMulchingEnabled;
         this.isOn = isOn;
+        this.setType();
     }
     public Lawnmower(int id, String manufacturer, String model, String powerSource, int productionYear, int lifetime, int cuttingHeight, boolean isMulchingEnabled, boolean isOn) {
         super(id, manufacturer, model, powerSource, productionYear, lifetime);
         this.cuttingHeight = cuttingHeight;
         this.isMulchingEnabled = isMulchingEnabled;
         this.isOn = isOn;
+        this.setType();
     }
 
     @Override
@@ -88,5 +91,9 @@ public class Lawnmower extends GardeningDevice {
 
     public boolean isIsOn() {
         return isOn;
+    }
+
+    private void setType() {
+        this.type = "Lawnmower";
     }
 }

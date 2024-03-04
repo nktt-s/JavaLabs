@@ -9,9 +9,11 @@ public class AutoWatering extends GardeningDevice {
     private int waterPressure;
     private boolean isWinterMode;
 
+
     public AutoWatering(int id, String manufacturer, String model, String powerSource, int productionYear, int lifetime, boolean isOn) {
         super(id, manufacturer, model, powerSource, productionYear, lifetime);
         this.isOn = isOn;
+        this.setType();
     }
 
     public AutoWatering(String manufacturer, String model, String powerSource, int productionYear, int lifetime, int waterPressure, boolean isSprinklerAttached, boolean isWinterMode, boolean isOn) {
@@ -20,6 +22,7 @@ public class AutoWatering extends GardeningDevice {
         this.isSprinklerAttached = isSprinklerAttached;
         this.isWinterMode = isWinterMode;
         this.isOn = isOn;
+        this.setType();
     }
 
     public AutoWatering(int id, String manufacturer, String model, String powerSource, int productionYear, int lifetime, int waterPressure, boolean isSprinklerAttached, boolean isWinterMode, boolean isOn) {
@@ -28,6 +31,7 @@ public class AutoWatering extends GardeningDevice {
         this.isSprinklerAttached = isSprinklerAttached;
         this.isWinterMode = isWinterMode;
         this.isOn = isOn;
+        this.setType();
     }
 
     @Override
@@ -101,5 +105,9 @@ public class AutoWatering extends GardeningDevice {
 
     public void switchOff() {
         isOn = false;
+    }
+
+    private void setType() {
+        this.type = "AutoWatering";
     }
 }

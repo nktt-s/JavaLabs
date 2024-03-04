@@ -9,7 +9,7 @@ import java.io.Serializable;
 import java.sql.*;
 import java.util.ArrayList;
 
-public class DatabaseManager implements Serializable {
+public class DatabaseManager {
     private static final Logger loggerDB = LogManager.getLogger("DatabaseLogger");
     static String url = "jdbc:mysql://localhost:3307/";
     static String name;

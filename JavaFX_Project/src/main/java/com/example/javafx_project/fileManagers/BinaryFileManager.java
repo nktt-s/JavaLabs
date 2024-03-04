@@ -24,7 +24,7 @@ public class BinaryFileManager {
     public static boolean writeToBinaryFile(GardeningDevice device, String fileName) {
         try (FileOutputStream fileOutputStream = new FileOutputStream(fileName); ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream)) {
             objectOutputStream.writeObject(device);
-            logger.info("Успешная запись PK=" + device.getId() + " в бинарный файл: " + fileName);
+            logger.info("Успешная запись устройства с ID = " + device.getId() + " в бинарный файл: " + fileName);
             return true;
         } catch (Exception e) {
             logger.error("Error when writing into binary file!");

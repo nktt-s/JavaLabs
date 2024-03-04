@@ -13,6 +13,7 @@ public class ThermalDrive extends GardeningDevice {
     public ThermalDrive(int id, String manufacturer, String model, String powerSource, int productionYear, int lifetime, boolean isOn) {
         super(id, manufacturer, model, powerSource, productionYear, lifetime);
         this.isOn = isOn;
+        this.setType();
     }
 
     public ThermalDrive(String manufacturer, String model, String powerSource, int productionYear, int lifetime, int temperature, boolean isProtectiveFunctionOn, boolean isOn) {
@@ -20,6 +21,7 @@ public class ThermalDrive extends GardeningDevice {
         this.temperature = temperature;
         this.isProtectiveFunctionOn = isProtectiveFunctionOn;
         this.isOn = isOn;
+        this.setType();
     }
 
     public ThermalDrive(int id, String manufacturer, String model, String powerSource, int productionYear, int lifetime, int temperature, boolean isProtectiveFunctionOn, boolean isOn) {
@@ -27,6 +29,7 @@ public class ThermalDrive extends GardeningDevice {
         this.temperature = temperature;
         this.isProtectiveFunctionOn = isProtectiveFunctionOn;
         this.isOn = isOn;
+        this.setType();
     }
 
     @Override
@@ -99,5 +102,9 @@ public class ThermalDrive extends GardeningDevice {
 
     public void switchOff() {
         isOn = false;
+    }
+
+    private void setType() {
+        this.type = "ThermalDrive";
     }
 }

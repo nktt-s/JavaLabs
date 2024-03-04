@@ -124,7 +124,7 @@
                 <Font size="15.0" />
         </font></Label>
 
-        <Label fx:id="fileMessage" alignment="CENTER" layoutX="742.0" layoutY="416.0" prefHeight="49.0" prefWidth="233.0" style="-fx-font-weight: bold" textAlignment="CENTER" textFill="red" wrapText="true">
+        <Label fx:id="fileMessage" alignment="CENTER" layoutX="742.0" layoutY="416.0" prefHeight="49.0" prefWidth="210.0" style="-fx-font-weight: bold" textAlignment="CENTER" textFill="red" wrapText="true">
             <font>
                 <Font size="15.0" />
             </font></Label>

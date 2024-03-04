@@ -3,6 +3,7 @@ package com.example.javafx_project.devices;
 import com.example.javafx_project.DatabaseManager;
 import javafx.beans.property.IntegerProperty;
 
+import java.io.Serializable;
 import java.time.Year;
 import java.util.ArrayList;
 
@@ -14,6 +15,7 @@ public abstract class GardeningDevice {
     public boolean isOn;
     private int lifetime;
     private int productionYear;
+    protected String type;
 
     private int id;
     private static int nextId = 1;
@@ -111,7 +113,10 @@ public abstract class GardeningDevice {
             this.lifetime = 5;
         }
     }
-    public String getType() { return this.getClass().toString().substring(41);}
+    public String getType() {
+        return this.type;
+//        return this.getClass().toString().substring(41);
+    }
     public int getCurrentYear() {
         return CURRENT_YEAR;
     }
