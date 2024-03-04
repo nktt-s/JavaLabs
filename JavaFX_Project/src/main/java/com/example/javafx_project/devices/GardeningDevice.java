@@ -7,7 +7,7 @@ import java.io.Serializable;
 import java.time.Year;
 import java.util.ArrayList;
 
-public abstract class GardeningDevice {
+public abstract class GardeningDevice implements Serializable {
 
     private String manufacturer;
     private String model;
