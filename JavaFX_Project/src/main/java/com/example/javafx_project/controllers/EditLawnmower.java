@@ -3,6 +3,9 @@ package com.example.javafx_project.controllers;
 import com.example.javafx_project.DatabaseManager;
 import com.example.javafx_project.devices.GardeningDevice;
 import com.example.javafx_project.devices.Lawnmower;
+import com.example.javafx_project.fileManagers.BinaryFileManager;
+import com.example.javafx_project.fileManagers.FileManager;
+import com.example.javafx_project.fileManagers.JsonFileManager;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -27,6 +30,8 @@ public class EditLawnmower {
     private Label errorMessage_cuttingHeight;
     @FXML
     private Label errorMessage_Nan;
+    @FXML
+    private Label fileMessage;
 
     @FXML
     private TextField manufacturer;
@@ -40,6 +45,8 @@ public class EditLawnmower {
     private TextField lifetime;
     @FXML
     private TextField cuttingHeight;
+    @FXML
+    private TextField filename;
 
     @FXML
     private CheckBox isMulchingEnabled;
@@ -50,6 +57,8 @@ public class EditLawnmower {
     private Button cancelButton;
     @FXML
     private Button applyButton;
+    @FXML
+    private Button exportButton;
 
     private boolean hasErrors = true;
 
@@ -159,4 +168,37 @@ public class EditLawnmower {
             appController.start(stage);
         }
     }
+
+    @FXML
+    public void onExportButtonClicked() {
+        loggerMain.info("Нажата кнопка экспорта газонокосилки");
+        fileMessage.setText("");
+        String filenameValue = filename.getText();
+        switch (FileManager.getTypeOfFile(filenameValue)) {
+            case 1:
+                if (BinaryFileManager.writeToBinaryFile(device, filenameValue)) {
+                    fileMessage.setText("Файл успешно записан!");
+                    loggerMain.info("Успешный экспорт газонокосилки");
+                } else {
+                    fileMessage.setText("Произошла ошибка!");
+                    loggerMain.error("Ошибка при экспорте газонокосилки");
+                }
+                break;
+
+            case 2:
+                if (JsonFileManager.writeToJSON(device, filenameValue)) {
+                    fileMessage.setText("Файл успешно записан");
+                    loggerMain.info("Успешный экспорт газонокосилки с ID = " + device.getId());
+                } else {
+                    fileMessage.setText("Произошла ошибка!");
+                    loggerMain.error("Ошибка при экспорте газонокосилки");
+                }
+                break;
+
+            default:
+                fileMessage.setText("Расширение файла не соответствует .dat или .json");
+                break;
+        }
+    }
+
 }

@@ -5,6 +5,9 @@ import com.example.javafx_project.devices.AutoWatering;
 import com.example.javafx_project.devices.GardeningDevice;
 import com.example.javafx_project.devices.Lawnmower;
 import com.example.javafx_project.devices.ThermalDrive;
+import com.example.javafx_project.fileManagers.BinaryFileManager;
+import com.example.javafx_project.fileManagers.FileManager;
+import com.example.javafx_project.fileManagers.JsonFileManager;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -29,6 +32,8 @@ public class EditThermalDrive {
     private Label errorMessage_waterPressure;
     @FXML
     private Label errorMessage_Nan;
+    @FXML
+    private Label fileMessage;
 
     @FXML
     private TextField manufacturer;
@@ -42,6 +47,8 @@ public class EditThermalDrive {
     private TextField lifetime;
     @FXML
     private TextField temperature;
+    @FXML
+    private TextField filename;
 
     @FXML
     private CheckBox isProtectiveFunctionOn;
@@ -52,6 +59,8 @@ public class EditThermalDrive {
     private Button cancelButton;
     @FXML
     private Button applyButton;
+    @FXML
+    private Button exportButton;
 
     private boolean hasErrors = true;
 
@@ -161,4 +170,37 @@ public class EditThermalDrive {
             appController.start(stage);
         }
     }
+
+    @FXML
+    public void onExportButtonClicked() {
+        loggerMain.info("Нажата кнопка экспорта термопривода");
+        fileMessage.setText("");
+        String filenameValue = filename.getText();
+        switch (FileManager.getTypeOfFile(filenameValue)) {
+            case 1:
+                if (BinaryFileManager.writeToBinaryFile(device, filenameValue)) {
+                    fileMessage.setText("Файл успешно записан!");
+                    loggerMain.info("Успешный экспорт термопривода");
+                } else {
+                    fileMessage.setText("Произошла ошибка!");
+                    loggerMain.error("Ошибка при экспорте термопривода");
+                }
+                break;
+
+            case 2:
+                if (JsonFileManager.writeToJSON(device, filenameValue)) {
+                    fileMessage.setText("Файл успешно записан");
+                    loggerMain.info("Успешный экспорт термопривода с ID = " + device.getId());
+                } else {
+                    fileMessage.setText("Произошла ошибка!");
+                    loggerMain.error("Ошибка при экспорте термопривода");
+                }
+                break;
+
+            default:
+                fileMessage.setText("Расширение файла не соответствует .dat или .json");
+                break;
+        }
+    }
+
 }

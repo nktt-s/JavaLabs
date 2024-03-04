@@ -3,6 +3,9 @@ package com.example.javafx_project.controllers;
 import com.example.javafx_project.DatabaseManager;
 import com.example.javafx_project.devices.AutoWatering;
 import com.example.javafx_project.devices.GardeningDevice;
+import com.example.javafx_project.fileManagers.BinaryFileManager;
+import com.example.javafx_project.fileManagers.FileManager;
+import com.example.javafx_project.fileManagers.JsonFileManager;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -13,6 +16,7 @@ import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Objects;
 
@@ -27,6 +31,8 @@ public class EditAutoWatering {
     private Label errorMessage_waterPressure;
     @FXML
     private Label errorMessage_Nan;
+    @FXML
+    private Label fileMessage;
 
     @FXML
     private TextField manufacturer;
@@ -40,6 +46,8 @@ public class EditAutoWatering {
     private TextField lifetime;
     @FXML
     private TextField waterPressure;
+    @FXML
+    private TextField filename;
 
     @FXML
     private CheckBox isSprinklerAttached;
@@ -52,6 +60,8 @@ public class EditAutoWatering {
     private Button cancelButton;
     @FXML
     private Button applyButton;
+    @FXML
+    private Button exportButton;
 
     private boolean hasErrors = true;
 
@@ -161,6 +171,38 @@ public class EditAutoWatering {
             Scene currentScene = cancelButton.getScene();
             Stage stage = (Stage) currentScene.getWindow();
             appController.start(stage);
+        }
+    }
+
+    @FXML
+    public void onExportButtonClicked() {
+        loggerMain.info("Нажата кнопка экспорта автополива");
+        fileMessage.setText("");
+        String filenameValue = filename.getText();
+        switch (FileManager.getTypeOfFile(filenameValue)) {
+            case 1:
+                if (BinaryFileManager.writeToBinaryFile(device, filenameValue)) {
+                    fileMessage.setText("Файл успешно записан!");
+                    loggerMain.info("Успешный экспорт автополива");
+                } else {
+                    fileMessage.setText("Произошла ошибка!");
+                    loggerMain.error("Ошибка при экспорте автополива");
+                }
+                break;
+
+            case 2:
+                if (JsonFileManager.writeToJSON(device, filenameValue)) {
+                    fileMessage.setText("Файл успешно записан");
+                    loggerMain.info("Успешный экспорт автополива с ID = " + device.getId());
+                } else {
+                    fileMessage.setText("Произошла ошибка!");
+                    loggerMain.error("Ошибка при экспорте автополива");
+                }
+                break;
+
+            default:
+                fileMessage.setText("Расширение файла не соответствует .dat или .json");
+                break;
         }
     }
 }
