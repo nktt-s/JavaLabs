@@ -179,11 +179,12 @@ public class AddAutoWatering {
 
     @FXML
     private void onImportButtonClicked() {
+        loggerMain.info("Нажата кнопка импорта автополива");
+        fileMessage.setText("");
         String filenameValue = filename.getText();
         File file = new File(filenameValue);
         switch (FileManager.getTypeOfFile(filenameValue)) {
             case 1:
-                fileMessage.setText("");
                 if (file.exists()) {
                     GardeningDevice device = BinaryFileManager.readFromBinaryFile(file);
                     if (device == null) {
@@ -202,7 +203,6 @@ public class AddAutoWatering {
                 break;
 
             case 2:
-                fileMessage.setText("");
                 if (file.exists()) {
                     GardeningDevice device = JsonFileManager.readFromJSON(file);
                     if (device == null) {

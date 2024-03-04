@@ -178,19 +178,20 @@ public class AddLawnmower {
 
     @FXML
     private void onImportButtonClicked() {
+        loggerMain.info("Нажата кнопка импорта газонокосилки");
+        fileMessage.setText("");
         String filenameValue = filename.getText();
         File file = new File(filenameValue);
         switch (FileManager.getTypeOfFile(filenameValue)) {
             case 1:
-                fileMessage.setText("");
                 if (file.exists()) {
                     GardeningDevice device = BinaryFileManager.readFromBinaryFile(file);
                     if (device == null) {
                         fileMessage.setText("Ошибка при чтении файла!");
                     } else {
-                        if (device.getType().equals("AutoWatering")) {
+                        if (device.getType().equals("Lawnmower")) {
                             setFields((Lawnmower) device);
-                            loggerMain.info("Успешный импорт автополива");
+                            loggerMain.info("Успешный импорт газонокосилки");
                         } else {
                             fileMessage.setText("В файле содержится другое устройство!");
                         }
@@ -201,15 +202,14 @@ public class AddLawnmower {
                 break;
 
             case 2:
-                fileMessage.setText("");
                 if (file.exists()) {
                     GardeningDevice device = JsonFileManager.readFromJSON(file);
                     if (device == null) {
                         fileMessage.setText("Произошла ошибка при чтении JSON-файла");
                     } else {
-                        if (device.getType().equals("AutoWatering")) {
+                        if (device.getType().equals("Lawnmower")) {
                             setFields((Lawnmower) device);
-                            loggerMain.info("Успешный импорт автополива");
+                            loggerMain.info("Успешный импорт газонокосилки");
                         } else {
                             fileMessage.setText("В файле содержится другое устройство!");
                         }
