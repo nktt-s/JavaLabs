@@ -32,12 +32,6 @@ public class AppController {
     @FXML
     private Button addButton;
     @FXML
-    private Button editButton;
-    @FXML
-    private Button deleteButton;
-    @FXML
-    private Button viewButton;
-    @FXML
     private Button exitButton;
     @FXML
     private ScrollPane scrollPane;
@@ -138,20 +132,6 @@ public class AppController {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    @FXML
-    private void onEditButtonClick() {
-    }
-
-    @FXML
-    private void onDeleteButtonClick() {
-
-    }
-
-    @FXML
-    private void onViewButtonClick() {
-
     }
 
     @FXML
