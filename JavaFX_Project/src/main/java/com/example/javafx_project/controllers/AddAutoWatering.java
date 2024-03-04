@@ -182,7 +182,7 @@ public class AddAutoWatering {
         loggerMain.info("Нажата кнопка импорта автополива");
         fileMessage.setText("");
         String filenameValue = filename.getText();
-        File file = new File(filenameValue);
+        File file = new File("C:/Users/nktt/IdeaProjects/JavaFX_Project/data/" + filenameValue);
         switch (FileManager.getTypeOfFile(filenameValue)) {
             case 1:
                 if (file.exists()) {

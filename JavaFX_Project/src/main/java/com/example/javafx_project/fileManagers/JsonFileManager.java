@@ -10,9 +10,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonParseException;
-
 import java.io.*;
-import java.time.LocalDate;
 
 public class JsonFileManager {
     private static final Logger logger = LogManager.getLogger("FilesLogger");
@@ -28,8 +26,9 @@ public class JsonFileManager {
     }
 
     public static boolean writeToJSON(GardeningDevice device, String filename) {
+        File file = new File("C:/Users/nktt/IdeaProjects/JavaFX_Project/data/" + filename);
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        try (FileWriter writer = new FileWriter(filename)) {
+        try (FileWriter writer = new FileWriter(file)) {
             gson.toJson(device, writer);
             logger.info("Успешная запись устройства с ID = " + device.getId() + "в JSON-файл: " + filename);
             return true;

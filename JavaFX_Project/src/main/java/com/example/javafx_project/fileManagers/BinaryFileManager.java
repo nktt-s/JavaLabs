@@ -22,11 +22,13 @@ public class BinaryFileManager {
     }
 
     public static boolean writeToBinaryFile(GardeningDevice device, String fileName) {
-        try (FileOutputStream fileOutputStream = new FileOutputStream(fileName); ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream)) {
+        File file = new File("C:/Users/nktt/IdeaProjects/JavaFX_Project/data/" + fileName);
+        try (FileOutputStream fileOutputStream = new FileOutputStream(file); ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream)) {
             objectOutputStream.writeObject(device);
             logger.info("Успешная запись устройства с ID = " + device.getId() + " в бинарный файл: " + fileName);
             return true;
-        } catch (Exception e) {
+        } catch (IOException e) {
+            e.printStackTrace();
             logger.error("Error when writing into binary file!");
         }
         return false;
