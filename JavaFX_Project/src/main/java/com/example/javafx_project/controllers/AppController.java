@@ -15,8 +15,10 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
+import javafx.scene.layout.GridPane;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+import javafx.util.converter.IntegerStringConverter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -32,7 +34,7 @@ public class AppController {
     @FXML
     private Button addButton;
     @FXML
-    private Button exitButton;
+    private Button viewButton;
     @FXML
     private ScrollPane scrollPane;
     @FXML
@@ -63,13 +65,17 @@ public class AppController {
 
     @FXML
     private void initialize() {
-        ContextMenu contextMenu = createContextMenu();
-        addButton.setContextMenu(contextMenu);
-        addButton.setOnAction(event -> showContextMenu());
+        ContextMenu contextMenu_add = createContextMenu_add();
+        addButton.setContextMenu(contextMenu_add);
+        addButton.setOnAction(event -> showContextMenu_add());
+
+        ContextMenu contextMenu_view = createContextMenu_view();
+        viewButton.setContextMenu(contextMenu_view);
+        viewButton.setOnAction(event -> showContextMenu_view());
     }
 
     @FXML
-    private ContextMenu createContextMenu() {
+    private ContextMenu createContextMenu_add() {
         ContextMenu contextMenu = new ContextMenu();
 
         contextMenu.setStyle("-fx-font-size: 15");
@@ -86,7 +92,7 @@ public class AppController {
         return contextMenu;
     }
 
-    private void showContextMenu() {
+    private void showContextMenu_add() {
         // Получаем положение кнопки на экране
         Bounds bounds = addButton.localToScreen(addButton.getBoundsInLocal());
 
@@ -132,6 +138,128 @@ public class AppController {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @FXML
+    private ContextMenu createContextMenu_view() {
+        loggerMain.info("Нажата кнопка просмотра устройства");
+        ContextMenu contextMenu = new ContextMenu();
+
+        contextMenu.setStyle("-fx-font-size: 15");
+        MenuItem item = new MenuItem("Ввести ID");
+        item.setOnAction(event -> showIDInputDialog());
+        contextMenu.getItems().add(item);
+
+        return contextMenu;
+    }
+
+    private void showIDInputDialog() {
+        TextInputDialog dialog = new TextInputDialog();
+        dialog.setTitle("Введите ID");
+        dialog.setHeaderText(null);
+        dialog.setContentText("Пожалуйста, введите ID:");
+
+        // Создаем текстовое поле для ввода ID
+        TextField idField = new TextField();
+
+        // Создаем лейбл для отображения ошибки
+        Label errorLabel = new Label();
+        errorLabel.setStyle("-fx-text-fill: red");
+
+        // Устанавливаем фильтр для текстового поля, чтобы разрешить только ввод цифр
+        idField.setTextFormatter(new TextFormatter<>(new IntegerStringConverter(), null,
+                change -> {
+                    String newText = change.getControlNewText();
+                    if (newText.matches("\\d*")) {
+                        return change;
+                    }
+                    return null;
+                }));
+
+        // Добавляем текстовое поле и лейбл в сетку
+        GridPane grid = new GridPane();
+        grid.add(idField, 0, 0);
+        grid.add(errorLabel, 0, 1);
+
+        // Устанавливаем сетку в качестве контента диалогового окна
+        dialog.getDialogPane().setContent(grid);
+
+        // Устанавливаем результат как ButtonType.OK, чтобы при нажатии Enter окно закрывалось
+        dialog.setResultConverter(dialogButton -> {
+            if (dialogButton == ButtonType.OK) {
+                return idField.getText();
+            }
+            return null;
+        });
+
+        // Показываем диалоговое окно и обрабатываем результат
+        dialog.showAndWait().ifPresent(id -> {
+            // Здесь можно обработать введенный ID
+            GardeningDevice device = null;
+            if (id.isEmpty()) {
+                loggerMain.error("Введена пустая строка в поле ID устройства");
+            }
+            else if ((device = DatabaseManager.getDevice(Integer.parseInt(id))) != null) {
+                loggerMain.info("Введён ID существующего устройства");
+
+                String itemName = device.getType();
+                String menuItem;
+                switch (itemName) {
+                    case "Lawnmower" -> menuItem = "Газонокосилка";
+                    case "AutoWatering" -> menuItem = "Автополив";
+                    case "ThermalDrive" -> menuItem = "Термопривод";
+                    default -> menuItem = "ERROR";
+                }
+
+                Scene currentScene = viewButton.getScene();
+                Stage stage = (Stage) currentScene.getWindow();
+
+                try {
+                    FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("view" + itemName + ".fxml"));
+                    Scene scene = new Scene(fxmlLoader.load(), 1000, 600);
+                    stage.setResizable(false);
+
+                    stage.setTitle("Gardening Devices | Просмотр устройства - " + menuItem);
+                    stage.setScene(scene);
+                    Object temp_object = fxmlLoader.getController();
+                    if (temp_object instanceof ViewLawnmower) {
+                        ViewLawnmower controller = fxmlLoader.getController();
+                        loggerMain.info("Нажата кнопка просмотра газонокосилки");
+                        controller.start(stage, device);
+                    } else if (temp_object instanceof EditAutoWatering) {
+                        EditAutoWatering controller = fxmlLoader.getController();
+                        loggerMain.info("Нажата кнопка просмотра автополива");
+                        controller.start(stage, device);
+                    } else {
+                        EditThermalDrive controller = fxmlLoader.getController();
+                        loggerMain.info("Нажата кнопка просмотра термопривода");
+                        controller.start(stage, device);
+                    }
+        //            stage.show();
+
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+
+
+
+            } else {
+                loggerMain.error("Введён ID несуществующего устройства");
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Ошибка");
+                alert.setHeaderText("Возникла ошибка!");
+                alert.setContentText("Устройство с ID = " + id + " не найдено!");
+                alert.showAndWait();
+            }
+        });
+    }
+
+    private void showContextMenu_view() {
+        // Получаем положение кнопки на экране
+        Bounds bounds = viewButton.localToScreen(viewButton.getBoundsInLocal());
+
+        // Отображаем контекстное меню по указанным координатам
+        viewButton.getContextMenu().show(viewButton, bounds.getMinX(), bounds.getMaxY());
     }
 
     @FXML
@@ -288,7 +416,7 @@ public class AppController {
                     GardeningDevice device = getTableView().getItems().get(getIndex());
                     int id = device.getId();
                     // ЛОГИКА ПРИ НАЖАТИИ КНОПКИ ДЛЯ ДЕЙСТВИЯ
-
+                    // TODO: Переписать окно на Alert (Dialog confirmation)
                     Scene currentScene = deleteButton.getScene();
                     Stage stage = (Stage) currentScene.getWindow();
 
