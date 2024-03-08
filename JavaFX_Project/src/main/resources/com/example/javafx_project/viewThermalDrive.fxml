@@ -4,19 +4,20 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.javafx_project.controllers.ViewLawnmower">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.javafx_project.controllers.ViewThermalDrive">
     <children>
-        <Label id="windowName" layoutX="284.0" layoutY="14.0" text="Просмотр устройства &quot;Газонокосилка&quot;">
+        <Label id="windowName" layoutX="312.0" layoutY="14.0" text="Просмотр устройства &quot;Термопривод&quot;">
             <font>
                 <Font size="24.0" />
             </font>
         </Label>
-        <GridPane layoutX="110.0" layoutY="160.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="357.0" prefWidth="456.0">
+        <GridPane layoutX="110.0" layoutY="160.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="394.0" prefWidth="456.0">
             <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="225.0" minWidth="10.0" prefWidth="207.0" />
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="260.0" minWidth="10.0" prefWidth="249.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="228.0" minWidth="10.0" prefWidth="228.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="260.0" minWidth="10.0" prefWidth="228.0" />
             </columnConstraints>
             <rowConstraints>
+            <RowConstraints />
             <RowConstraints />
             <RowConstraints />
             <RowConstraints />
@@ -48,15 +49,15 @@
                     <font>
                         <Font size="15.0" />
                     </font></Label>
-                <Label prefHeight="40.0" text="Высота среза (мм)" GridPane.rowIndex="5">
+                <Label prefHeight="40.0" text="Установленная температура (°C)" GridPane.rowIndex="5">
                     <font>
                         <Font size="15.0" />
                     </font></Label>
-                <Label prefHeight="40.0" text="Функция мульчирования" GridPane.rowIndex="6">
+                <Label prefHeight="40.0" text="Функция защиты" GridPane.rowIndex="6">
                     <font>
                         <Font size="15.0" />
                     </font></Label>
-                <Label prefHeight="40.0" text="Устройство включено" GridPane.rowIndex="7">
+                <Label prefHeight="40.0" text="Устройство включено" GridPane.rowIndex="8">
                     <font>
                         <Font size="15.0" />
                     </font>
@@ -81,19 +82,20 @@
                     <font>
                         <Font size="15.0" />
                     </font></TextField>
-                <TextField fx:id="cuttingHeight" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                <TextField fx:id="temperature" maxHeight="-Infinity" GridPane.columnIndex="1" GridPane.rowIndex="5">
                     <font>
                         <Font size="15.0" />
                     </font>
                 </TextField>
-                <CheckBox fx:id="isMulchingEnabled" prefHeight="40.0" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-                <CheckBox fx:id="isOn" prefHeight="40.0" GridPane.columnIndex="1" GridPane.rowIndex="7" />
-                <Button fx:id="backButton" mnemonicParsing="false" onAction="#onBackButtonClicked" prefHeight="30.0" prefWidth="145.0" text="Назад" GridPane.rowIndex="8">
+                <CheckBox fx:id="isProtectiveFunctionOn" prefHeight="40.0" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                <CheckBox fx:id="isOn" prefHeight="40.0" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+                <Button fx:id="backButton" mnemonicParsing="false" onAction="#onBackButtonClicked" prefHeight="30.0" prefWidth="145.0" text="Назад" GridPane.rowIndex="9">
                     <font>
                         <Font size="15.0" />
                     </font>
                 </Button>
-                <Button fx:id="startButton" mnemonicParsing="false" onAction="#onStartDeviceButtonClicked" prefHeight="30.0" prefWidth="145.0" text="Запустить" GridPane.columnIndex="1" GridPane.rowIndex="8">
+
+                <Button fx:id="startButton" mnemonicParsing="false" onAction="#onStartDeviceButtonClicked" prefHeight="30.0" prefWidth="145.0" text="Запустить" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="9">
                     <font>
                         <Font size="15.0" />
                     </font>
@@ -110,5 +112,6 @@
                   <Font size="15.0" />
               </font>
         </Label>
+
     </children>
 </AnchorPane>

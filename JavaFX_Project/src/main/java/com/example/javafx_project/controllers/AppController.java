@@ -226,12 +226,12 @@ public class AppController {
                         ViewLawnmower controller = fxmlLoader.getController();
                         loggerMain.info("Нажата кнопка просмотра газонокосилки");
                         controller.start(stage, device);
-                    } else if (temp_object instanceof EditAutoWatering) {
-                        EditAutoWatering controller = fxmlLoader.getController();
+                    } else if (temp_object instanceof ViewAutoWatering) {
+                        ViewAutoWatering controller = fxmlLoader.getController();
                         loggerMain.info("Нажата кнопка просмотра автополива");
                         controller.start(stage, device);
                     } else {
-                        EditThermalDrive controller = fxmlLoader.getController();
+                        ViewThermalDrive controller = fxmlLoader.getController();
                         loggerMain.info("Нажата кнопка просмотра термопривода");
                         controller.start(stage, device);
                     }

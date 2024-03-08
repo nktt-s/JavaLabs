@@ -1,8 +1,8 @@
 package com.example.javafx_project.controllers;
 
 import com.example.javafx_project.DatabaseManager;
+import com.example.javafx_project.devices.AutoWatering;
 import com.example.javafx_project.devices.GardeningDevice;
-import com.example.javafx_project.devices.Lawnmower;
 import javafx.animation.FadeTransition;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
@@ -18,7 +18,7 @@ import org.apache.logging.log4j.Logger;
 import java.io.IOException;
 import java.util.Objects;
 
-public class ViewLawnmower {
+public class ViewAutoWatering {
     private static final Logger loggerMain = LogManager.getLogger("MainLogger");
 
     @FXML
@@ -32,10 +32,12 @@ public class ViewLawnmower {
     @FXML
     private TextField lifetime;
     @FXML
-    private TextField cuttingHeight;
+    private TextField waterPressure;
 
     @FXML
-    private CheckBox isMulchingEnabled;
+    private CheckBox isSprinklerAttached;
+    @FXML
+    private CheckBox isWinterMode;
     @FXML
     private CheckBox isOn;
 
@@ -49,21 +51,22 @@ public class ViewLawnmower {
     @FXML
     private Label statusMessage;
 
-    private Lawnmower device;
+    private AutoWatering device;
 
     public void start(Stage stage, GardeningDevice _device) {
         errorMessage.setText("");
-        device = (Lawnmower) _device;
+        device = (AutoWatering) _device;
 
-        Lawnmower deviceFromDB = (Lawnmower) DatabaseManager.getDevice(_device.getId());
+        AutoWatering deviceFromDB = (AutoWatering) DatabaseManager.getDevice(_device.getId());
 
         manufacturer.setText(Objects.requireNonNull(deviceFromDB).getManufacturer());
         model.setText(Objects.requireNonNull(deviceFromDB).getModel());
         powerSource.setText(Objects.requireNonNull(deviceFromDB).getPowerSource());
         productionYear.setText(String.valueOf(Objects.requireNonNull(deviceFromDB).getProductionYear()));
         lifetime.setText(String.valueOf(Objects.requireNonNull(deviceFromDB).getLifetime()));
-        cuttingHeight.setText(String.valueOf(Objects.requireNonNull(deviceFromDB).getCuttingHeight()));
-        isMulchingEnabled.setSelected(deviceFromDB.isIsMulchingEnabled());
+        waterPressure.setText(String.valueOf(Objects.requireNonNull(deviceFromDB).getWaterPressure()));
+        isSprinklerAttached.setSelected(deviceFromDB.isIsSprinklerAttached());
+        isWinterMode.setSelected(deviceFromDB.isIsWinterMode());
         isOn.setSelected(deviceFromDB.isIsOn());
         disableFields();
     }
@@ -73,7 +76,7 @@ public class ViewLawnmower {
 
         if (device.isIsOn()) {
             errorMessage.setText("");
-            statusMessage.setText("Газонокосилка запущена!\nИдёт кошение травы...");
+            statusMessage.setText("Автополив запущен!\nИдёт полив растений...");
             backButton.setDisable(true);
             startButton.setDisable(true);
             addBlinkAnimation(startButton);
@@ -91,7 +94,7 @@ public class ViewLawnmower {
         fadeTransition.setAutoReverse(true);
         fadeTransition.play();
         fadeTransition.setOnFinished(event -> {
-            statusMessage.setText("Кошение завершено!");
+            statusMessage.setText("Полив завершён!");
             backButton.setDisable(false);
             startButton.setDisable(false);
             startButton.setText("Запустить");
@@ -113,8 +116,9 @@ public class ViewLawnmower {
         powerSource.setDisable(true);
         productionYear.setDisable(true);
         lifetime.setDisable(true);
-        cuttingHeight.setDisable(true);
-        isMulchingEnabled.setDisable(true);
+        waterPressure.setDisable(true);
+        isSprinklerAttached.setDisable(true);
+        isWinterMode.setDisable(true);
         isOn.setDisable(true);
     }
 }
