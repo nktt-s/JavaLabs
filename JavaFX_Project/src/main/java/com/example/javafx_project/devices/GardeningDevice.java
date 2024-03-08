@@ -1,7 +1,6 @@
 package com.example.javafx_project.devices;
 
 import com.example.javafx_project.DatabaseManager;
-import javafx.beans.property.IntegerProperty;
 
 import java.io.Serializable;
 import java.time.Year;
@@ -58,11 +57,6 @@ public abstract class GardeningDevice implements Serializable {
     public boolean getIsOn() {
         return isOn;
     }
-
-    public abstract void turnOn();
-    public abstract void turnOff();
-
-    public abstract void performAction();
     public boolean isValidYear(int productionYear) {
         return MIN_YEAR <= productionYear && productionYear <= CURRENT_YEAR;
     }

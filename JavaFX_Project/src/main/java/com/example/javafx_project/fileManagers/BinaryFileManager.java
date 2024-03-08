@@ -28,7 +28,6 @@ public class BinaryFileManager {
             logger.info("Успешная запись устройства с ID = " + device.getId() + " в бинарный файл: " + fileName);
             return true;
         } catch (IOException e) {
-            e.printStackTrace();
             logger.error("Error when writing into binary file!");
         }
         return false;

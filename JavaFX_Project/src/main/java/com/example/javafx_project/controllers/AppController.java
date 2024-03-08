@@ -29,8 +29,8 @@ import java.util.ArrayList;
 public class AppController {
     private static final Logger loggerMain = LogManager.getLogger("MainLogger");
 
-    double screenWidth = Screen.getPrimary().getVisualBounds().getWidth();
-    double screenHeight = Screen.getPrimary().getVisualBounds().getHeight();
+    final double screenWidth = Screen.getPrimary().getVisualBounds().getWidth();
+    final double screenHeight = Screen.getPrimary().getVisualBounds().getHeight();
     @FXML
     private Button addButton;
     @FXML

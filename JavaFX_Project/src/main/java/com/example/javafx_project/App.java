@@ -40,7 +40,7 @@ public class App extends Application {
             configInfo.put("databasePassword", properties.getProperty("databasePassword"));
 
         } catch (IOException e) {
-            e.printStackTrace();
+            loggerMain.error("Error in configureDB() method");
         }
         DatabaseManager.setValuesForConnection(configInfo.get("databaseName"), configInfo.get("databaseUser"), configInfo.get("databasePassword"));
     }

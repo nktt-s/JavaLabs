@@ -258,7 +258,6 @@ public class DatabaseManager {
 
         } catch (SQLException ex) {
             System.err.println("SQLException on updating device!");
-            ex.printStackTrace();
         }
     }
 }
