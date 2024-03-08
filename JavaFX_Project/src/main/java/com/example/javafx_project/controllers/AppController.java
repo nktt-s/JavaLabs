@@ -195,7 +195,7 @@ public class AppController {
         // Показываем диалоговое окно и обрабатываем результат
         dialog.showAndWait().ifPresent(id -> {
             // Здесь можно обработать введенный ID
-            GardeningDevice device = null;
+            GardeningDevice device;
             if (id.isEmpty()) {
                 loggerMain.error("Введена пустая строка в поле ID устройства");
             }
