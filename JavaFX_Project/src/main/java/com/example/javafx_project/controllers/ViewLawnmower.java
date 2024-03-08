@@ -3,6 +3,8 @@ package com.example.javafx_project.controllers;
 import com.example.javafx_project.DatabaseManager;
 import com.example.javafx_project.devices.GardeningDevice;
 import com.example.javafx_project.devices.Lawnmower;
+import javafx.animation.FadeTransition;
+import javafx.animation.Timeline;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -10,6 +12,7 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -46,6 +49,10 @@ public class ViewLawnmower {
 
     @FXML
     private Label errorMessage;
+    @FXML
+    private Label statusMessage;
+    @FXML
+    private Label loadingMessage;
 
     private Lawnmower device;
 
@@ -71,11 +78,29 @@ public class ViewLawnmower {
 
         if (device.isIsOn()) {
             errorMessage.setText("");
+            statusMessage.setText("Газонокосилка запущена!\nИдёт кошение травы");
+            startDeviceButton.setDisable(true);
+            addBlinkAnimation(startDeviceButton);
+
             // TODO: Добавить имитацию функционала
 
         } else {
             errorMessage.setText("Устройство ещё не включено!");
         }
+    }
+
+    private void addBlinkAnimation(Button button) {
+        startDeviceButton.setText("Запущено");
+        FadeTransition fadeTransition = new FadeTransition(Duration.seconds(0.5), button);
+        fadeTransition.setFromValue(1.0);
+        fadeTransition.setToValue(0.2);
+        fadeTransition.setCycleCount(10);
+        fadeTransition.setAutoReverse(true);
+        fadeTransition.play();
+        fadeTransition.setOnFinished(event -> {
+            startDeviceButton.setText("Запустить");
+            statusMessage.setText("Кошение завершено!");
+        });
     }
 
     @FXML
