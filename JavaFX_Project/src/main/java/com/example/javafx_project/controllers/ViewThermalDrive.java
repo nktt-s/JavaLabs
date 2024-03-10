@@ -71,12 +71,15 @@ public class ViewThermalDrive {
     @FXML
     private void onStartDeviceButtonClicked() {
         if (device.isIsOn()) {
+            loggerMain.info("Запущен термопривод с ID = " + device.getId());
             errorMessage.setText("");
             statusMessage.setText("Термопривод запущен!\nТемпература регулируется...");
             backButton.setDisable(true);
             startButton.setDisable(true);
             addBlinkAnimation(startButton);
+            loggerMain.info("Завершена работа термопривода с ID = " + device.getId());
         } else {
+            loggerMain.error("Попытка запуска невключённого термопривода" + device.getId());
             errorMessage.setText("Устройство ещё не включено!");
         }
     }

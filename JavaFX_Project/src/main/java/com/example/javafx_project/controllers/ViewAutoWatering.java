@@ -73,14 +73,16 @@ public class ViewAutoWatering {
 
     @FXML
     private void onStartDeviceButtonClicked() {
-
         if (device.isIsOn()) {
+            loggerMain.info("Запущен автополив с ID = " + device.getId());
             errorMessage.setText("");
             statusMessage.setText("Автополив запущен!\nИдёт полив растений...");
             backButton.setDisable(true);
             startButton.setDisable(true);
             addBlinkAnimation(startButton);
+            loggerMain.info("Завершена работа газонокосилки с ID = " + device.getId());
         } else {
+            loggerMain.error("Попытка запуска невключённого автополива с ID = " + device.getId());
             errorMessage.setText("Устройство ещё не включено!");
         }
     }

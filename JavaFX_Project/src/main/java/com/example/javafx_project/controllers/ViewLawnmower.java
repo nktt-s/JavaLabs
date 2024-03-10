@@ -70,14 +70,16 @@ public class ViewLawnmower {
 
     @FXML
     private void onStartDeviceButtonClicked() {
-
         if (device.isIsOn()) {
+            loggerMain.info("Запущена газонокосилка с ID = " + device.getId());
             errorMessage.setText("");
             statusMessage.setText("Газонокосилка запущена!\nИдёт кошение травы...");
             backButton.setDisable(true);
             startButton.setDisable(true);
             addBlinkAnimation(startButton);
+            loggerMain.info("Завершена работа автополива с ID = " + device.getId());
         } else {
+            loggerMain.error("Попытка запуска невключённой газонокосилки" + device.getId());
             errorMessage.setText("Устройство ещё не включено!");
         }
     }
