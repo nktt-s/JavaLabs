@@ -25,6 +25,7 @@ import org.apache.logging.log4j.Logger;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Optional;
 
 public class AppController {
     private static final Logger loggerMain = LogManager.getLogger("MainLogger");
@@ -59,9 +60,6 @@ public class AppController {
     private TableColumn<GardeningDevice, Button> editColumn;
     @FXML
     private TableColumn<GardeningDevice, Button> deleteColumn;
-
-    @FXML
-    private Label errorMessage_on_edit;
 
     @FXML
     private void initialize() {
@@ -415,11 +413,6 @@ public class AppController {
                 deleteButton.setOnAction(event -> {
                     GardeningDevice device = getTableView().getItems().get(getIndex());
                     int id = device.getId();
-                    // ЛОГИКА ПРИ НАЖАТИИ КНОПКИ ДЛЯ ДЕЙСТВИЯ
-                    // TODO: Переписать окно на Alert (Dialog confirmation)
-                    Scene currentScene = deleteButton.getScene();
-                    Stage stage = (Stage) currentScene.getWindow();
-
                     String menuItem;
                     String itemName = device.getType();
                     switch (itemName) {
@@ -429,36 +422,21 @@ public class AppController {
                         default -> menuItem = "ERROR";
                     }
 
-                    try {
-                        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("delete" + itemName + ".fxml"));
-                        Scene scene = new Scene(fxmlLoader.load(), 600, 350);
-                        stage.setResizable(false);
-                        double centerX = (screenWidth - 600) / 2;
-                        double centerY = (screenHeight - 350) / 2;
-                        stage.setX(centerX);
-                        stage.setY(centerY);
-                        stage.setTitle("Gardening Devices | Удаление устройства - " + menuItem);
-                        stage.setScene(scene);
-                        Object temp_object = fxmlLoader.getController();
-                        if (temp_object instanceof DeleteLawnmower) {
-                            DeleteLawnmower controller = fxmlLoader.getController();
-                            loggerMain.info("Нажата кнопка удаления газонокосилки с ID = " + id);
-                            controller.start(stage, id);
-                        } else if (temp_object instanceof DeleteAutoWatering) {
-                            DeleteAutoWatering controller = fxmlLoader.getController();
-                            loggerMain.info("Нажата кнопка удаления автополива с ID = " + id);
-                            controller.start(stage, id);
-                        } else {
-                            DeleteThermalDrive controller = fxmlLoader.getController();
-                            loggerMain.info("Нажата кнопка удаления термопривода с ID = " + id);
-                            controller.start(stage, id);
-                        }
-//                        stage.show();
-
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
+                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                    Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+                    stage.getIcons().add(new Image("/images/icon2.png"));
+                    alert.setTitle("Подтверждение удаления устройства");
+                    alert.setHeaderText("Удаление устройства '" + menuItem + "'");
+                    alert.setContentText("Вы действительно хотите безвозвратно удалить устройство с ID = " + id + "?");
+                    Optional<ButtonType> result = alert.showAndWait();
+                    if (result.isPresent() && result.get() == ButtonType.OK) {
+                        loggerMain.info("Удаление устройства с ID = " + id);
+                        DatabaseManager.deleteDevice(id);
+                        updateListOfDevices(scrollPane);
+                    } else {
+                        loggerMain.info("Отмена удаления устройства с ID = " + id);
+                        alert.close();
                     }
-                    updateListOfDevices(scrollPane);
                 });
             }
 
