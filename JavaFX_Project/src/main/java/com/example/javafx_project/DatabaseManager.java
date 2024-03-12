@@ -5,7 +5,6 @@ import com.example.javafx_project.devices.GardeningDevice;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.Serializable;
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -106,33 +105,38 @@ public class DatabaseManager {
             prepStatement.setInt(DatabaseAttributes.PRODUCTION_YEAR.ordinal(), device.getProductionYear());
             prepStatement.setInt(DatabaseAttributes.LIFETIME.ordinal(), device.getLifetime());
 
-            if (device instanceof Lawnmower) {
-                prepStatement.setInt(DatabaseAttributes.CUTTING_HEIGHT.ordinal(), ((Lawnmower) device).getCuttingHeight());
-                prepStatement.setBoolean(DatabaseAttributes.IS_MULCHING_ENABLED.ordinal(), ((Lawnmower) device).isIsMulchingEnabled());
-                prepStatement.setNull(DatabaseAttributes.WATER_PRESSURE.ordinal(), Types.NULL);
-                prepStatement.setNull(DatabaseAttributes.IS_SPRINKLER_ATTACHED.ordinal(), Types.NULL);
-                prepStatement.setNull(DatabaseAttributes.IS_WINTER_MODE.ordinal(), Types.NULL);
-                prepStatement.setNull(DatabaseAttributes.TEMPERATURE.ordinal(), Types.NULL);
-                prepStatement.setNull(DatabaseAttributes.IS_PROTECTIVE_FUNCTION_ON.ordinal(), Types.NULL);
-            } else if (device instanceof AutoWatering) {
-                prepStatement.setInt(DatabaseAttributes.WATER_PRESSURE.ordinal(), ((AutoWatering) device).getWaterPressure());
-                prepStatement.setBoolean(DatabaseAttributes.IS_SPRINKLER_ATTACHED.ordinal(), ((AutoWatering) device).isIsSprinklerAttached());
-                prepStatement.setBoolean(DatabaseAttributes.IS_WINTER_MODE.ordinal(), ((AutoWatering) device).isIsWinterMode());
-                prepStatement.setNull(DatabaseAttributes.CUTTING_HEIGHT.ordinal(), Types.NULL);
-                prepStatement.setNull(DatabaseAttributes.IS_MULCHING_ENABLED.ordinal(), Types.NULL);
-                prepStatement.setNull(DatabaseAttributes.TEMPERATURE.ordinal(), Types.NULL);
-                prepStatement.setNull(DatabaseAttributes.IS_PROTECTIVE_FUNCTION_ON.ordinal(), Types.NULL);
-            } else if (device instanceof ThermalDrive) {
-                prepStatement.setInt(DatabaseAttributes.TEMPERATURE.ordinal(), ((ThermalDrive) device).getTemperature());
-                prepStatement.setBoolean(DatabaseAttributes.IS_PROTECTIVE_FUNCTION_ON.ordinal(), ((ThermalDrive) device).isIsProtectiveFunctionOn());
-                prepStatement.setNull(DatabaseAttributes.CUTTING_HEIGHT.ordinal(), Types.NULL);
-                prepStatement.setNull(DatabaseAttributes.IS_MULCHING_ENABLED.ordinal(), Types.NULL);
-                prepStatement.setNull(DatabaseAttributes.WATER_PRESSURE.ordinal(), Types.NULL);
-                prepStatement.setNull(DatabaseAttributes.IS_SPRINKLER_ATTACHED.ordinal(), Types.NULL);
-                prepStatement.setNull(DatabaseAttributes.IS_WINTER_MODE.ordinal(), Types.NULL);
-            } else {
-                System.err.println("Unknown device type on inserting device!");
-                return;
+            switch (device) {
+                case Lawnmower lawnmower -> {
+                    prepStatement.setInt(DatabaseAttributes.CUTTING_HEIGHT.ordinal(), lawnmower.getCuttingHeight());
+                    prepStatement.setBoolean(DatabaseAttributes.IS_MULCHING_ENABLED.ordinal(), lawnmower.isIsMulchingEnabled());
+                    prepStatement.setNull(DatabaseAttributes.WATER_PRESSURE.ordinal(), Types.NULL);
+                    prepStatement.setNull(DatabaseAttributes.IS_SPRINKLER_ATTACHED.ordinal(), Types.NULL);
+                    prepStatement.setNull(DatabaseAttributes.IS_WINTER_MODE.ordinal(), Types.NULL);
+                    prepStatement.setNull(DatabaseAttributes.TEMPERATURE.ordinal(), Types.NULL);
+                    prepStatement.setNull(DatabaseAttributes.IS_PROTECTIVE_FUNCTION_ON.ordinal(), Types.NULL);
+                }
+                case AutoWatering autoWatering -> {
+                    prepStatement.setInt(DatabaseAttributes.WATER_PRESSURE.ordinal(), autoWatering.getWaterPressure());
+                    prepStatement.setBoolean(DatabaseAttributes.IS_SPRINKLER_ATTACHED.ordinal(), autoWatering.isIsSprinklerAttached());
+                    prepStatement.setBoolean(DatabaseAttributes.IS_WINTER_MODE.ordinal(), autoWatering.isIsWinterMode());
+                    prepStatement.setNull(DatabaseAttributes.CUTTING_HEIGHT.ordinal(), Types.NULL);
+                    prepStatement.setNull(DatabaseAttributes.IS_MULCHING_ENABLED.ordinal(), Types.NULL);
+                    prepStatement.setNull(DatabaseAttributes.TEMPERATURE.ordinal(), Types.NULL);
+                    prepStatement.setNull(DatabaseAttributes.IS_PROTECTIVE_FUNCTION_ON.ordinal(), Types.NULL);
+                }
+                case ThermalDrive thermalDrive -> {
+                    prepStatement.setInt(DatabaseAttributes.TEMPERATURE.ordinal(), thermalDrive.getTemperature());
+                    prepStatement.setBoolean(DatabaseAttributes.IS_PROTECTIVE_FUNCTION_ON.ordinal(), thermalDrive.isIsProtectiveFunctionOn());
+                    prepStatement.setNull(DatabaseAttributes.CUTTING_HEIGHT.ordinal(), Types.NULL);
+                    prepStatement.setNull(DatabaseAttributes.IS_MULCHING_ENABLED.ordinal(), Types.NULL);
+                    prepStatement.setNull(DatabaseAttributes.WATER_PRESSURE.ordinal(), Types.NULL);
+                    prepStatement.setNull(DatabaseAttributes.IS_SPRINKLER_ATTACHED.ordinal(), Types.NULL);
+                    prepStatement.setNull(DatabaseAttributes.IS_WINTER_MODE.ordinal(), Types.NULL);
+                }
+                default -> {
+                    System.err.println("Unknown device type on inserting device!");
+                    return;
+                }
             }
 
             prepStatement.execute();
@@ -224,33 +228,38 @@ public class DatabaseManager {
             prepStatement.setInt(6, device.getLifetime());
             prepStatement.setInt(14, device.getId());
 
-            if (device instanceof Lawnmower) {
-                prepStatement.setInt(7, ((Lawnmower) device).getCuttingHeight());
-                prepStatement.setBoolean(8, ((Lawnmower) device).isIsMulchingEnabled());
-                prepStatement.setNull(9, Types.NULL);
-                prepStatement.setNull(10, Types.NULL);
-                prepStatement.setNull(11, Types.NULL);
-                prepStatement.setNull(12, Types.NULL);
-                prepStatement.setNull(13, Types.NULL);
-            } else if (device instanceof AutoWatering) {
-                prepStatement.setInt(9, ((AutoWatering) device).getWaterPressure());
-                prepStatement.setBoolean(10, ((AutoWatering) device).isIsSprinklerAttached());
-                prepStatement.setBoolean(11, ((AutoWatering) device).isIsWinterMode());
-                prepStatement.setNull(7, Types.NULL);
-                prepStatement.setNull(8, Types.NULL);
-                prepStatement.setNull(12, Types.NULL);
-                prepStatement.setNull(13, Types.NULL);
-            } else if (device instanceof ThermalDrive) {
-                prepStatement.setInt(12, ((ThermalDrive) device).getTemperature());
-                prepStatement.setBoolean(13, ((ThermalDrive) device).isIsProtectiveFunctionOn());
-                prepStatement.setNull(7, Types.NULL);
-                prepStatement.setNull(8, Types.NULL);
-                prepStatement.setNull(9, Types.NULL);
-                prepStatement.setNull(10, Types.NULL);
-                prepStatement.setNull(11, Types.NULL);
-            } else {
-                System.err.println("Unknown device type on updating device!");
-                return;
+            switch (device) {
+                case Lawnmower lawnmower -> {
+                    prepStatement.setInt(7, lawnmower.getCuttingHeight());
+                    prepStatement.setBoolean(8, lawnmower.isIsMulchingEnabled());
+                    prepStatement.setNull(9, Types.NULL);
+                    prepStatement.setNull(10, Types.NULL);
+                    prepStatement.setNull(11, Types.NULL);
+                    prepStatement.setNull(12, Types.NULL);
+                    prepStatement.setNull(13, Types.NULL);
+                }
+                case AutoWatering autoWatering -> {
+                    prepStatement.setInt(9, autoWatering.getWaterPressure());
+                    prepStatement.setBoolean(10, autoWatering.isIsSprinklerAttached());
+                    prepStatement.setBoolean(11, autoWatering.isIsWinterMode());
+                    prepStatement.setNull(7, Types.NULL);
+                    prepStatement.setNull(8, Types.NULL);
+                    prepStatement.setNull(12, Types.NULL);
+                    prepStatement.setNull(13, Types.NULL);
+                }
+                case ThermalDrive thermalDrive -> {
+                    prepStatement.setInt(12, thermalDrive.getTemperature());
+                    prepStatement.setBoolean(13, thermalDrive.isIsProtectiveFunctionOn());
+                    prepStatement.setNull(7, Types.NULL);
+                    prepStatement.setNull(8, Types.NULL);
+                    prepStatement.setNull(9, Types.NULL);
+                    prepStatement.setNull(10, Types.NULL);
+                    prepStatement.setNull(11, Types.NULL);
+                }
+                default -> {
+                    System.err.println("Unknown device type on updating device!");
+                    return;
+                }
             }
 
             prepStatement.execute();
