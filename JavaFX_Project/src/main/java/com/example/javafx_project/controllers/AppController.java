@@ -16,7 +16,6 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
-import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.util.converter.IntegerStringConverter;
 import org.apache.logging.log4j.LogManager;
@@ -30,8 +29,6 @@ import java.util.Optional;
 public class AppController {
     private static final Logger loggerMain = LogManager.getLogger("MainLogger");
 
-    final double screenWidth = Screen.getPrimary().getVisualBounds().getWidth();
-    final double screenHeight = Screen.getPrimary().getVisualBounds().getHeight();
     @FXML
     private Button addButton;
     @FXML
@@ -276,10 +273,6 @@ public class AppController {
 
         Scene scene = new Scene(root, 1000, 600);
         stage.setResizable(false);
-        double centerX = (screenWidth - 1000) / 2;
-        double centerY = (screenHeight - 600) / 2;
-        stage.setX(centerX);
-        stage.setY(centerY);
         stage.setTitle("Gardening Devices | Список устройств");
         InputStream iconStream = getClass().getResourceAsStream("/images/icon2.png");
         assert iconStream != null;
