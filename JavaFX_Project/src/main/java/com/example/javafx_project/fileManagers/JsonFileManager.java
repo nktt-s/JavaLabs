@@ -11,6 +11,10 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonParseException;
 import java.io.*;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 public class JsonFileManager {
     private static final Logger logger = LogManager.getLogger("FilesLogger");
@@ -26,14 +30,25 @@ public class JsonFileManager {
     }
 
     public static boolean writeToJSON(GardeningDevice device, String filename) {
+        ExecutorService executorService = Executors.newFixedThreadPool(1);
         File file = new File("C:/Users/nktt/IdeaProjects/JavaFX_Project/data/" + filename);
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        try (FileWriter writer = new FileWriter(file)) {
-            gson.toJson(device, writer);
-            logger.info("Успешная запись устройства с ID = " + device.getId() + "в JSON-файл: " + filename);
+        try {
+            Future<Void> jsonFuture = executorService.submit(() -> {
+                try (FileWriter writer = new FileWriter(file)) {
+                    gson.toJson(device, writer);
+                    logger.info("Успешная запись устройства с ID = " + device.getId() + "в JSON-файл: " + filename);
+                } catch (IOException e) {
+                    logger.error("Ошибка при записи в JSON-файл");
+                }
+                return null;
+            });
+            jsonFuture.get();
             return true;
-        } catch (IOException e) {
-            logger.error("Ошибка при записи в JSON-файл");
+        } catch (InterruptedException | ExecutionException e) {
+            logger.error("Ошибка при выполнении записи в JSON-файл");
+        } finally {
+            executorService.shutdown();
         }
         return false;
     }
