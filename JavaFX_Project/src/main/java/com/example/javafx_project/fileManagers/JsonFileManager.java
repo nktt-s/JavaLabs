@@ -30,7 +30,7 @@ public class JsonFileManager {
     }
 
     public static boolean writeToJSON(GardeningDevice device, String filename) {
-        ExecutorService executorService = Executors.newFixedThreadPool(1);
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
         File file = new File("C:/Users/nktt/IdeaProjects/JavaFX_Project/data/" + filename);
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         try {

@@ -7,6 +7,8 @@ import org.apache.logging.log4j.Logger;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class DatabaseManager {
     private static final Logger loggerDB = LogManager.getLogger("DatabaseLogger");
@@ -89,63 +91,70 @@ public class DatabaseManager {
 
     public static void addDevice(GardeningDevice device) {
         loggerDB.info("Вызван метод добавления устройства");
-        String query = "INSERT INTO AllDevices (id, Type, isOn, Manufacturer, Model, PowerSource, ProductionYear, Lifetime, " +
-            "CuttingHeight, isMulchingEnabled, WaterPressure, isSprinklerAttached, isWinterMode, Temperature, isProtectiveFunctionOn) " +
-            "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
-        try {
-            Connection connection = DriverManager.getConnection(url, login, password);
-            PreparedStatement prepStatement = connection.prepareStatement(query);
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
 
-            prepStatement.setInt(DatabaseAttributes.ID.ordinal(), device.getId());
-            prepStatement.setString(DatabaseAttributes.TYPE.ordinal(), device.getType());
-            prepStatement.setBoolean(DatabaseAttributes.IS_ON.ordinal(), device.getIsOn());
-            prepStatement.setString(DatabaseAttributes.MANUFACTURER.ordinal(), device.getManufacturer());
-            prepStatement.setString(DatabaseAttributes.MODEL.ordinal(), device.getModel());
-            prepStatement.setString(DatabaseAttributes.POWER_SOURCE.ordinal(), device.getPowerSource());
-            prepStatement.setInt(DatabaseAttributes.PRODUCTION_YEAR.ordinal(), device.getProductionYear());
-            prepStatement.setInt(DatabaseAttributes.LIFETIME.ordinal(), device.getLifetime());
+        executorService.submit(() -> {
+            String query = "INSERT INTO AllDevices (id, Type, isOn, Manufacturer, Model, PowerSource, ProductionYear, Lifetime, " +
+                "CuttingHeight, isMulchingEnabled, WaterPressure, isSprinklerAttached, isWinterMode, Temperature, isProtectiveFunctionOn) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+            try {
+                Connection connection = DriverManager.getConnection(url, login, password);
+                PreparedStatement prepStatement = connection.prepareStatement(query);
 
-            switch (device) {
-                case Lawnmower lawnmower -> {
-                    prepStatement.setInt(DatabaseAttributes.CUTTING_HEIGHT.ordinal(), lawnmower.getCuttingHeight());
-                    prepStatement.setBoolean(DatabaseAttributes.IS_MULCHING_ENABLED.ordinal(), lawnmower.isIsMulchingEnabled());
-                    prepStatement.setNull(DatabaseAttributes.WATER_PRESSURE.ordinal(), Types.NULL);
-                    prepStatement.setNull(DatabaseAttributes.IS_SPRINKLER_ATTACHED.ordinal(), Types.NULL);
-                    prepStatement.setNull(DatabaseAttributes.IS_WINTER_MODE.ordinal(), Types.NULL);
-                    prepStatement.setNull(DatabaseAttributes.TEMPERATURE.ordinal(), Types.NULL);
-                    prepStatement.setNull(DatabaseAttributes.IS_PROTECTIVE_FUNCTION_ON.ordinal(), Types.NULL);
+                prepStatement.setInt(DatabaseAttributes.ID.ordinal(), device.getId());
+                prepStatement.setString(DatabaseAttributes.TYPE.ordinal(), device.getType());
+                prepStatement.setBoolean(DatabaseAttributes.IS_ON.ordinal(), device.getIsOn());
+                prepStatement.setString(DatabaseAttributes.MANUFACTURER.ordinal(), device.getManufacturer());
+                prepStatement.setString(DatabaseAttributes.MODEL.ordinal(), device.getModel());
+                prepStatement.setString(DatabaseAttributes.POWER_SOURCE.ordinal(), device.getPowerSource());
+                prepStatement.setInt(DatabaseAttributes.PRODUCTION_YEAR.ordinal(), device.getProductionYear());
+                prepStatement.setInt(DatabaseAttributes.LIFETIME.ordinal(), device.getLifetime());
+
+                switch (device) {
+                    case Lawnmower lawnmower -> {
+                        prepStatement.setInt(DatabaseAttributes.CUTTING_HEIGHT.ordinal(), lawnmower.getCuttingHeight());
+                        prepStatement.setBoolean(DatabaseAttributes.IS_MULCHING_ENABLED.ordinal(), lawnmower.isIsMulchingEnabled());
+                        prepStatement.setNull(DatabaseAttributes.WATER_PRESSURE.ordinal(), Types.NULL);
+                        prepStatement.setNull(DatabaseAttributes.IS_SPRINKLER_ATTACHED.ordinal(), Types.NULL);
+                        prepStatement.setNull(DatabaseAttributes.IS_WINTER_MODE.ordinal(), Types.NULL);
+                        prepStatement.setNull(DatabaseAttributes.TEMPERATURE.ordinal(), Types.NULL);
+                        prepStatement.setNull(DatabaseAttributes.IS_PROTECTIVE_FUNCTION_ON.ordinal(), Types.NULL);
+                    }
+                    case AutoWatering autoWatering -> {
+                        prepStatement.setInt(DatabaseAttributes.WATER_PRESSURE.ordinal(), autoWatering.getWaterPressure());
+                        prepStatement.setBoolean(DatabaseAttributes.IS_SPRINKLER_ATTACHED.ordinal(), autoWatering.isIsSprinklerAttached());
+                        prepStatement.setBoolean(DatabaseAttributes.IS_WINTER_MODE.ordinal(), autoWatering.isIsWinterMode());
+                        prepStatement.setNull(DatabaseAttributes.CUTTING_HEIGHT.ordinal(), Types.NULL);
+                        prepStatement.setNull(DatabaseAttributes.IS_MULCHING_ENABLED.ordinal(), Types.NULL);
+                        prepStatement.setNull(DatabaseAttributes.TEMPERATURE.ordinal(), Types.NULL);
+                        prepStatement.setNull(DatabaseAttributes.IS_PROTECTIVE_FUNCTION_ON.ordinal(), Types.NULL);
+                    }
+                    case ThermalDrive thermalDrive -> {
+                        prepStatement.setInt(DatabaseAttributes.TEMPERATURE.ordinal(), thermalDrive.getTemperature());
+                        prepStatement.setBoolean(DatabaseAttributes.IS_PROTECTIVE_FUNCTION_ON.ordinal(), thermalDrive.isIsProtectiveFunctionOn());
+                        prepStatement.setNull(DatabaseAttributes.CUTTING_HEIGHT.ordinal(), Types.NULL);
+                        prepStatement.setNull(DatabaseAttributes.IS_MULCHING_ENABLED.ordinal(), Types.NULL);
+                        prepStatement.setNull(DatabaseAttributes.WATER_PRESSURE.ordinal(), Types.NULL);
+                        prepStatement.setNull(DatabaseAttributes.IS_SPRINKLER_ATTACHED.ordinal(), Types.NULL);
+                        prepStatement.setNull(DatabaseAttributes.IS_WINTER_MODE.ordinal(), Types.NULL);
+                    }
+                    default -> {
+                        loggerDB.error("Неизвестный тип устройства при добавлении");
+                        return;
+                    }
                 }
-                case AutoWatering autoWatering -> {
-                    prepStatement.setInt(DatabaseAttributes.WATER_PRESSURE.ordinal(), autoWatering.getWaterPressure());
-                    prepStatement.setBoolean(DatabaseAttributes.IS_SPRINKLER_ATTACHED.ordinal(), autoWatering.isIsSprinklerAttached());
-                    prepStatement.setBoolean(DatabaseAttributes.IS_WINTER_MODE.ordinal(), autoWatering.isIsWinterMode());
-                    prepStatement.setNull(DatabaseAttributes.CUTTING_HEIGHT.ordinal(), Types.NULL);
-                    prepStatement.setNull(DatabaseAttributes.IS_MULCHING_ENABLED.ordinal(), Types.NULL);
-                    prepStatement.setNull(DatabaseAttributes.TEMPERATURE.ordinal(), Types.NULL);
-                    prepStatement.setNull(DatabaseAttributes.IS_PROTECTIVE_FUNCTION_ON.ordinal(), Types.NULL);
-                }
-                case ThermalDrive thermalDrive -> {
-                    prepStatement.setInt(DatabaseAttributes.TEMPERATURE.ordinal(), thermalDrive.getTemperature());
-                    prepStatement.setBoolean(DatabaseAttributes.IS_PROTECTIVE_FUNCTION_ON.ordinal(), thermalDrive.isIsProtectiveFunctionOn());
-                    prepStatement.setNull(DatabaseAttributes.CUTTING_HEIGHT.ordinal(), Types.NULL);
-                    prepStatement.setNull(DatabaseAttributes.IS_MULCHING_ENABLED.ordinal(), Types.NULL);
-                    prepStatement.setNull(DatabaseAttributes.WATER_PRESSURE.ordinal(), Types.NULL);
-                    prepStatement.setNull(DatabaseAttributes.IS_SPRINKLER_ATTACHED.ordinal(), Types.NULL);
-                    prepStatement.setNull(DatabaseAttributes.IS_WINTER_MODE.ordinal(), Types.NULL);
-                }
-                default -> {
-                    System.err.println("Unknown device type on inserting device!");
-                    return;
-                }
+
+                prepStatement.execute();
+                connection.close();
+
+            } catch (SQLException ex) {
+                loggerDB.error("Ошибка при установлении соединения с БД при добавлении");
+                System.err.println("SQLException on inserting device!");
+//            ex.printStackTrace();
             }
 
-            prepStatement.execute();
-            connection.close();
-
-        } catch (SQLException ex) {
-            System.err.println("SQLException on inserting device!");
-//            ex.printStackTrace();
-        }
+        });
+        executorService.shutdown();
     }
 
     public static void deleteDevice(int id) {

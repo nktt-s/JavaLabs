@@ -8,6 +8,10 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.*;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -22,15 +26,27 @@ public class BinaryFileManager {
     }
 
     public static boolean writeToBinaryFile(GardeningDevice device, String fileName) {
-        File file = new File("C:/Users/nktt/IdeaProjects/JavaFX_Project/data/" + fileName);
-        try (FileOutputStream fileOutputStream = new FileOutputStream(file); ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream)) {
-            objectOutputStream.writeObject(device);
-            logger.info("Успешная запись устройства с ID = " + device.getId() + " в бинарный файл: " + fileName);
-            return true;
-        } catch (IOException e) {
-            logger.error("Error when writing into binary file!");
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        Future<Boolean> result = executorService.submit(() -> {
+            File file = new File("C:/Users/nktt/IdeaProjects/JavaFX_Project/data/" + fileName);
+            try (FileOutputStream fileOutputStream = new FileOutputStream(file); ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream)) {
+                objectOutputStream.writeObject(device);
+                logger.info("Успешная запись устройства с ID = " + device.getId() + " в бинарный файл: " + fileName);
+                return true;
+            } catch (IOException e) {
+                logger.error("Ошибка при записи в бинарный файл");
+                return false;
+            }
+        });
+
+        try {
+            return result.get();
+        } catch (InterruptedException | ExecutionException e) {
+            logger.error("Ошибка при записи в бинарный файл");
+            return false;
+        } finally {
+            executorService.shutdown();
         }
-        return false;
     }
 
         public static GardeningDevice readFromBinaryFile(File file) {
