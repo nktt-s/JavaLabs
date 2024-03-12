@@ -4,6 +4,7 @@ import com.example.javafx_project.DatabaseManager;
 import com.example.javafx_project.devices.AutoWatering;
 import com.example.javafx_project.devices.GardeningDevice;
 import javafx.animation.FadeTransition;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -54,6 +55,7 @@ public class ViewAutoWatering {
     private AutoWatering device;
 
     public void start(Stage stage, GardeningDevice _device) {
+
         errorMessage.setText("");
         device = (AutoWatering) _device;
 
@@ -74,13 +76,15 @@ public class ViewAutoWatering {
     @FXML
     private void onStartDeviceButtonClicked() {
         if (device.isIsOn()) {
-            loggerMain.info("Запущен автополив с ID = " + device.getId());
-            errorMessage.setText("");
-            statusMessage.setText("Автополив запущен!\nИдёт полив растений...");
-            backButton.setDisable(true);
-            startButton.setDisable(true);
-            addBlinkAnimation(startButton);
-            loggerMain.info("Завершена работа газонокосилки с ID = " + device.getId());
+            new Thread(() -> Platform.runLater(() -> {
+                loggerMain.info("Запущен автополив с ID = " + device.getId());
+                errorMessage.setText("");
+                statusMessage.setText("Автополив запущен!\nИдёт полив растений...");
+                backButton.setDisable(true);
+                startButton.setDisable(true);
+                addBlinkAnimation(startButton);
+                loggerMain.info("Завершена работа газонокосилки с ID = " + device.getId());
+            })).start();
         } else {
             loggerMain.error("Попытка запуска невключённого автополива с ID = " + device.getId());
             errorMessage.setText("Устройство ещё не включено!");

@@ -4,6 +4,7 @@ import com.example.javafx_project.DatabaseManager;
 import com.example.javafx_project.devices.GardeningDevice;
 import com.example.javafx_project.devices.ThermalDrive;
 import javafx.animation.FadeTransition;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -71,13 +72,15 @@ public class ViewThermalDrive {
     @FXML
     private void onStartDeviceButtonClicked() {
         if (device.isIsOn()) {
-            loggerMain.info("Запущен термопривод с ID = " + device.getId());
-            errorMessage.setText("");
-            statusMessage.setText("Термопривод запущен!\nТемпература регулируется...");
-            backButton.setDisable(true);
-            startButton.setDisable(true);
-            addBlinkAnimation(startButton);
-            loggerMain.info("Завершена работа термопривода с ID = " + device.getId());
+            new Thread(() -> Platform.runLater(() -> {
+                loggerMain.info("Запущен термопривод с ID = " + device.getId());
+                errorMessage.setText("");
+                statusMessage.setText("Термопривод запущен!\nТемпература регулируется...");
+                backButton.setDisable(true);
+                startButton.setDisable(true);
+                addBlinkAnimation(startButton);
+                loggerMain.info("Завершена работа термопривода с ID = " + device.getId());
+            })).start();
         } else {
             loggerMain.error("Попытка запуска невключённого термопривода" + device.getId());
             errorMessage.setText("Устройство ещё не включено!");
