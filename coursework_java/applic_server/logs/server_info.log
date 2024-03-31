@@ -1,0 +1,4 @@
+00:15:12.106 [JavaFX Application Thread] INFO  server_info -- Server was initialized
+00:15:40.901 [Thread-4] INFO  server_info -- New client was connected
+00:15:40.902 [Thread-6] INFO  server_info -- New client's name was received
+00:19:24.390 [Thread-6] INFO  server_info -- Socket, output and input streams were closed
