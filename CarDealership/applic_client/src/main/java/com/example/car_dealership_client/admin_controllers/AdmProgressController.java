@@ -40,7 +40,7 @@ public class AdmProgressController {
 
     public void update_applications(ActionEvent accept_clicked) throws IOException {
         Stage stage = (Stage)((Node)accept_clicked.getSource()).getScene().getWindow();
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/car_dealership_client/adm_views/myOrders.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/car_dealership_client/myOrders.fxml"));
         Parent root = loader.load();
         Scene scene = new Scene(root);
         AdmProgressController controller = loader.getController();

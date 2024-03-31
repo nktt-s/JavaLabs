@@ -1,5 +1,7 @@
 package com.example.car_dealership_client.client_controllers;
 
+import com.example.car_dealership_client.Main;
+import com.example.car_dealership_client.admin_controllers.AdmMainController;
 import com.example.car_dealership_client.controllers.NameEnterController;
 import com.example.car_dealership_client.models.*;
 import javafx.event.ActionEvent;
@@ -95,13 +97,28 @@ public class ClientMainController {
 
     public void onShowMyOrdersButtonClicked(ActionEvent button_clicked) throws IOException {
         stage = (Stage) ((Node) button_clicked.getSource()).getScene().getWindow();
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/car_dealership_client/myOrders.fxml"));
+        FXMLLoader loader = new FXMLLoader(Main.class.getResource("myOrders.fxml"));
+//        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/car_dealership_client/myOrders.fxml"));
         Parent root = loader.load();
         Scene scene = new Scene(root);
         ClientProgressController controller = loader.getController();
         controller.prepare_applications(client, progress_applics);
         stage.setScene(scene);
         stage.show();
+    }
+
+    public void switchToMainMenu(ActionEvent go_back_clicked) throws IOException {
+        Stage stage = (Stage)((Node)go_back_clicked.getSource()).getScene().getWindow();
+
+        FXMLLoader menuLoader = new FXMLLoader(getClass().getResource("/com/example/car_dealership_client/adm_views/ser-main.fxml"));
+        Parent menuRoot = menuLoader.load();
+        Scene menuScene = new Scene(menuRoot);
+        ClientMainController menuController = menuLoader.getController();
+//        menuController.prepare_main_menu(name, client);
+
+        stage.setScene(menuScene);
+        stage.show();
+
     }
 
     public void onForSaleButtonClicked(ActionEvent button_clicked) throws IOException {

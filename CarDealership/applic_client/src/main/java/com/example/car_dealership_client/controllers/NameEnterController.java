@@ -259,8 +259,6 @@ public class NameEnterController {
         signing_up = true;
         pass_label_auth.setVisible(true);
         user_password_confirmation.setVisible(true);
-//        AnchorPane.setTopAnchor(user_password_confirmation, 300.0);
-//        AnchorPane.setTopAnchor(signup_button, 370.0);
 
         nameEnterAnchor.setCenterShape(true);
         nameEnterAnchor.getChildren().addAll(pass_label, user_password, pass_label_auth, user_password_confirmation, signup_button);
@@ -270,7 +268,6 @@ public class NameEnterController {
     public void loadAdminLoginForm() {
         signing_up = false;
         clearForm();
-//        AnchorPane.setTopAnchor(signup_button, 280.0);
         nameEnterAnchor.getChildren().addAll(pass_label, user_password, login_button);
 
 
