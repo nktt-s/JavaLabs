@@ -12,12 +12,12 @@ import java.util.Map;
 //TODO Applications controller render
 //TODO Applications controller reject/accept(two another arrays)
 import com.example.applic_server.models.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class SerMainController {
-    private static final Logger file_logger = LoggerFactory.getLogger("file_data");
-    private static final Logger applic_logger = LoggerFactory.getLogger("applications");
+    private static final Logger file_logger = LogManager.getLogger("FilesLogger");
+    private static final Logger applic_logger = LogManager.getLogger("ApplicationsLogger");
     private Stage stage;
     Server server;
     private static DataBaseHandler db_handler = new DataBaseHandler();
@@ -142,7 +142,7 @@ public class SerMainController {
             if (app.get_id().equals(application.get_id())) {
                 app.set_status(application.get_status());
                 app.set_worker(application.get_worker());
-                //TODO make this function of worker
+                // TODO make this function of worker
 //                    app.set_worker(application.get_worker());
             }
         });

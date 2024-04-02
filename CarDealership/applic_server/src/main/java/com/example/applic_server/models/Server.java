@@ -1,8 +1,8 @@
 package com.example.applic_server.models;
 
 import com.example.applic_server.models.handlers.LoginHandler;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.*;
 import java.net.ServerSocket;
@@ -10,7 +10,7 @@ import java.net.Socket;
 import java.util.*;
 
 public class Server implements Runnable {
-    private static final Logger server_logger = LoggerFactory.getLogger("server_info");
+    private static final Logger server_logger = LogManager.getLogger("MainLogger");
     private List<ApplicationData> waiting_applics;
     private ServerSocket serverSocket;
     //    private Socket socket;
@@ -27,49 +27,23 @@ public class Server implements Runnable {
 
     @Override
     public void run() {
-            while (!serverSocket.isClosed()) {
-                Thread thread;
-                Socket socket = new Socket();
-                try {
-                    socket = serverSocket.accept();
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-                LoginHandler loginHandler = new LoginHandler(socket, ois, oos, serverSocket);
-                thread = new Thread(loginHandler);
-                thread.start();
-
+        while (!serverSocket.isClosed()) {
+            Thread thread;
+            Socket socket = new Socket();
+            try {
+                socket = serverSocket.accept();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
             }
+            LoginHandler loginHandler = new LoginHandler(socket, ois, oos, serverSocket);
+            thread = new Thread(loginHandler);
+            thread.start();
+
+        }
     }
 
 
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+}
 
 
 //    public void closeServerSocket(){

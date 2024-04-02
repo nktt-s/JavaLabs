@@ -1,6 +1,7 @@
 package com.example.applic_server.models.handlers;
 
-import org.slf4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
@@ -11,7 +12,7 @@ import java.util.ArrayList;
 import com.example.applic_server.models.ListToApplicationConverter;
 
 abstract public class UserHandler implements Runnable {
-    protected static final Logger server_logger = LoggerFactory.getLogger("server_info");
+    protected static final Logger server_logger = LogManager.getLogger("MainLogger");
     ListToApplicationConverter converter = new ListToApplicationConverter();
     public static ArrayList<UserHandler> userHandlers = new ArrayList<>();
     protected ObjectOutputStream oos;

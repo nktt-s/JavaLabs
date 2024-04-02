@@ -4,6 +4,7 @@ target/
 !**/src/test/**/target/
 passwords.json
 users.json
+**/logs
 
 ### IntelliJ IDEA ###
 .idea/modules.xml

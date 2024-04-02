@@ -2,6 +2,7 @@ module com.example.applic_server {
     requires javafx.controls;
     requires javafx.fxml;
 
+    requires org.apache.logging.log4j;
     requires com.dlsc.formsfx;
     requires java.sql;
     requires mysql.connector.j;

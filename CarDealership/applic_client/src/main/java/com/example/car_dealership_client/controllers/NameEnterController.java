@@ -151,7 +151,7 @@ public class NameEnterController {
 
     public void load_client(ActionEvent enterNameClicked, String inp_name, Socket socket, ObjectInputStream ois, ObjectOutputStream oos) throws IOException {
         stage = (Stage) ((Node) enterNameClicked.getSource()).getScene().getWindow();
-        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("/com/example/car_dealership_client/ser-main.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("ser-main.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 1000, 600);
         ClientMainController menuController = fxmlLoader.getController();
         menuController.prepare_main_menu(inp_name, client);
@@ -163,7 +163,7 @@ public class NameEnterController {
 
     public void load_admin(ActionEvent enterNameClicked, String inp_name, Socket socket, ObjectInputStream ois, ObjectOutputStream oos) throws IOException {
         stage = (Stage) ((Node) enterNameClicked.getSource()).getScene().getWindow();
-        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("/com/example/car_dealership_client/adm_views/adm-main.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("adm_views/adm-main.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 1000, 600);
         AdmMainController controller = fxmlLoader.getController();
         controller.prepare_main_menu(inp_name, admin);
