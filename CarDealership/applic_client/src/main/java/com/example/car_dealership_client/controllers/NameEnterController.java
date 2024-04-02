@@ -5,8 +5,8 @@ import com.example.car_dealership_client.admin_controllers.AdmMainController;
 import com.example.car_dealership_client.client_controllers.ClientMainController;
 import com.example.car_dealership_client.models.Client;
 import com.example.car_dealership_client.models.Admin;
-import com.example.car_dealership_client.models.Worker;
-import com.example.car_dealership_client.seller_controllers.WorkerMainController;
+import com.example.car_dealership_client.models.Seller;
+import com.example.car_dealership_client.seller_controllers.SellerMainController;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -39,7 +39,7 @@ public class NameEnterController {
     private Stage stage;
     private Client client;
     private Admin admin;
-    private Worker worker;
+    private Seller seller;
     @FXML
     Label pass_label;
     @FXML
@@ -151,7 +151,7 @@ public class NameEnterController {
 
     public void load_client(ActionEvent enterNameClicked, String inp_name, Socket socket, ObjectInputStream ois, ObjectOutputStream oos) throws IOException {
         stage = (Stage) ((Node) enterNameClicked.getSource()).getScene().getWindow();
-        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("ser-main.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("client_main.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 1000, 600);
         ClientMainController menuController = fxmlLoader.getController();
         menuController.prepare_main_menu(inp_name, client);
@@ -163,7 +163,7 @@ public class NameEnterController {
 
     public void load_admin(ActionEvent enterNameClicked, String inp_name, Socket socket, ObjectInputStream ois, ObjectOutputStream oos) throws IOException {
         stage = (Stage) ((Node) enterNameClicked.getSource()).getScene().getWindow();
-        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("adm_views/adm-main.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("adm_main.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 1000, 600);
         AdmMainController controller = fxmlLoader.getController();
         controller.prepare_main_menu(inp_name, admin);
@@ -175,18 +175,15 @@ public class NameEnterController {
 
 
     public void load_seller(ActionEvent enterNameClicked, String inp_name, Socket socket, ObjectInputStream ois, ObjectOutputStream oos) throws IOException {
-//        System.out.println("Beginning of load_worker");
         stage = (Stage) ((Node) enterNameClicked.getSource()).getScene().getWindow();
-        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("/com/example/car_dealership_client/seller_views/work-main.fxml"));
+        stage.setTitle("OCDS: Online Car Dealership System | Seller page");
+        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("seller_main.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 1000, 600);
-        WorkerMainController controller = fxmlLoader.getController();
-        controller.prepare_main_menu(inp_name, worker);
-//        System.out.println("Before connect in load_worker");
+        SellerMainController controller = fxmlLoader.getController();
+        controller.prepare_main_menu(inp_name, seller);
         controller.connect(socket, ois, oos);
         stage.setScene(scene);
-        stage.setTitle("OCDS: Online Car Dealership System | Seller page");
         stage.show();
-//        System.out.println("Beginning of load_worker");
     }
 
     public void prepare_form_elements() {
@@ -283,7 +280,7 @@ public class NameEnterController {
                 load_user(event, name, createSocket, ois, oos);
                 break;
             case "Incorrect":
-                enterNameLabel.setText("Incorrect password or name!");
+                enterNameLabel.setText("Incorrect login or password!");
                 enterNameLabel.setTextFill(Paint.valueOf("red"));
                 break;
             case "Created":
@@ -292,6 +289,7 @@ public class NameEnterController {
             case "Exist":
                 enterNameLabel.setText("This account already exists!");
                 enterNameLabel.setTextFill(Paint.valueOf("red"));
+                loadUserLoginForm();
                 break;
         }
 //        close_everything(createSocket, oos, ois);

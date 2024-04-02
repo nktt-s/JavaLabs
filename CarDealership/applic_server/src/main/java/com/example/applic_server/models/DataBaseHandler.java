@@ -28,7 +28,7 @@ public class DataBaseHandler {
 
         try {
             Connection connection = DriverManager.getConnection(url, login, password);
-//            System.out.println(connection);
+            System.out.println(connection);
         } catch (SQLException e) {
             e.printStackTrace();
         }

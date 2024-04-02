@@ -1,7 +1,7 @@
 package com.example.car_dealership_client.models;
 
 //import com.example.applic_client.admin_controllers.AdmMainController;
-import com.example.car_dealership_client.seller_controllers.WorkerMainController;
+import com.example.car_dealership_client.seller_controllers.SellerMainController;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -9,12 +9,12 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.List;
 
-public class Worker extends User{
+public class Seller extends User{
     Integer total_id;
 
 
-    public Worker(Socket socket, ObjectInputStream ois, ObjectOutputStream oos) throws IOException {
-        super(socket, "Worker", ois, oos);
+    public Seller(Socket socket, ObjectInputStream ois, ObjectOutputStream oos) throws IOException {
+        super(socket, "Seller", ois, oos);
     }
 
 
@@ -27,7 +27,7 @@ public class Worker extends User{
                 List<String> applicationsString = (List<String>) ois.readObject();
                 applicationsFromServer = converter.list_to_application(applicationsString);
 //                sortIncomingApplications(applicationsFromServer);
-                WorkerMainController.update_all_applications(applicationsFromServer);
+                SellerMainController.update_all_applications(applicationsFromServer);
             } catch (IOException e) {
                 close_everything(socket,oos,ois);
                 break;
@@ -82,6 +82,6 @@ public class Worker extends User{
 
     public void sortIncomingApplications(List<ApplicationData> inc_applics) {
 //        List<ApplicationData> progress = new ArrayList<>();
-//        WorkerMainController.update_all_applications(progress);
+//        SellerMainController.update_all_applications(progress);
     }
 }

@@ -26,7 +26,7 @@ public class ClientProgressController {
     public void switchToMainMenu(ActionEvent go_back_clicked) throws IOException {
         Stage stage = (Stage)((Node)go_back_clicked.getSource()).getScene().getWindow();
 
-        FXMLLoader menuLoader = new FXMLLoader(getClass().getResource("/com/example/car_dealership_client/ser-main.fxml"));
+        FXMLLoader menuLoader = new FXMLLoader(getClass().getResource("/com/example/car_dealership_client/client_main.fxml"));
         Parent menuRoot = menuLoader.load();
         Scene menuScene = new Scene(menuRoot);
         ClientMainController menuController = menuLoader.getController();

@@ -1,6 +1,7 @@
 package com.example.car_dealership_client.client_controllers;
 
 import com.example.car_dealership_client.Main;
+import com.example.car_dealership_client.admin_controllers.AdmApplicController;
 import com.example.car_dealership_client.admin_controllers.AdmMainController;
 import com.example.car_dealership_client.controllers.NameEnterController;
 import com.example.car_dealership_client.models.*;
@@ -84,9 +85,9 @@ public class ClientMainController {
 //       set_header_name();
     }
 
-    public void onLogOutButtonClicked1(ActionEvent applications_clicked) throws IOException {
+    public void switchToApplications(ActionEvent applications_clicked) throws IOException {
         stage = (Stage) ((Node) applications_clicked.getSource()).getScene().getWindow();
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/car_dealership_client/apply.fxml"));
+        FXMLLoader loader = new FXMLLoader(Main.class.getResource("apply.fxml"));
         Parent root = loader.load();
         Scene scene = new Scene(root);
         ClientApplyController controller = loader.getController();
@@ -95,10 +96,24 @@ public class ClientMainController {
         stage.show();
     }
 
+    // TODO
+    public void onInStockButtonClicked(ActionEvent applications_clicked) throws IOException {
+        stage = (Stage) ((Node) applications_clicked.getSource()).getScene().getWindow();
+        stage.setTitle("OCDS: Online Car Dealership System | Cars in stock page");
+        FXMLLoader loader = new FXMLLoader(Main.class.getResource("cars_in_stock.fxml"));
+        Parent root = loader.load();
+        Scene scene = new Scene(root);
+        ClientApplyController controller = loader.getController();
+        controller.prepare_applications(client, name);
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    // TODO
     public void onShowMyOrdersButtonClicked(ActionEvent button_clicked) throws IOException {
         stage = (Stage) ((Node) button_clicked.getSource()).getScene().getWindow();
-        FXMLLoader loader = new FXMLLoader(Main.class.getResource("myOrders.fxml"));
-//        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/car_dealership_client/myOrders.fxml"));
+        stage.setTitle("OCDS: Online Car Dealership System | My active orders page");
+        FXMLLoader loader = new FXMLLoader(Main.class.getResource("my_orders.fxml"));
         Parent root = loader.load();
         Scene scene = new Scene(root);
         ClientProgressController controller = loader.getController();
@@ -107,23 +122,24 @@ public class ClientMainController {
         stage.show();
     }
 
+    // TODO
     public void switchToMainMenu(ActionEvent go_back_clicked) throws IOException {
-        Stage stage = (Stage)((Node)go_back_clicked.getSource()).getScene().getWindow();
-
-        FXMLLoader menuLoader = new FXMLLoader(getClass().getResource("/com/example/car_dealership_client/adm_views/ser-main.fxml"));
+        Stage stage = (Stage) ((Node) go_back_clicked.getSource()).getScene().getWindow();
+        stage.setTitle("OCDS: Online Car Dealership System | Client page");
+        FXMLLoader menuLoader = new FXMLLoader(Main.class.getResource("client_main.fxml"));
         Parent menuRoot = menuLoader.load();
         Scene menuScene = new Scene(menuRoot);
         ClientMainController menuController = menuLoader.getController();
-//        menuController.prepare_main_menu(name, client);
-
         stage.setScene(menuScene);
         stage.show();
 
     }
 
-    public void onForSaleButtonClicked(ActionEvent button_clicked) throws IOException {
+    // TODO
+    public void onCompletedOrdersButtonClicked(ActionEvent button_clicked) throws IOException {
         stage = (Stage) ((Node) button_clicked.getSource()).getScene().getWindow();
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/car_dealership_client/forSale.fxml"));
+        stage.setTitle("OCDS: Online Car Dealership System | Cars sold page");
+        FXMLLoader loader = new FXMLLoader(Main.class.getResource("cars_sold.fxml")); // TODO Создать отдельный FXML
         Parent root = loader.load();
         Scene scene = new Scene(root);
         ClientClosedController controller = loader.getController();
@@ -135,30 +151,24 @@ public class ClientMainController {
         controller.prepare_applications(client, closed);
         stage.setScene(scene);
         stage.show();
-
-
     }
 
 
     public void onLogOutButtonClicked(ActionEvent quit_clicked) throws IOException {
         stage = (Stage) ((Node) quit_clicked.getSource()).getScene().getWindow();
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/car_dealership_client/name-enter.fxml"));
+        stage.setTitle("OCDS: Online Car Dealership System | Login page");
+        FXMLLoader loader = new FXMLLoader(Main.class.getResource("login_page.fxml"));
         Parent root = loader.load();
         Scene scene = new Scene(root);
         NameEnterController controller = loader.getController();
-//        System.out.println("Here are closed: " + finished_applics + rejected_applics + cancelled_applics);
         controller.prepare_enter_name();
         stage.setScene(scene);
         stage.show();
-
-//        client.stop_connection();
-//        Platform.exit();
-//        System.exit(0);
+        client.stop_connection();
     }
 
     public static void remove_applications(List<ApplicationData> waiting_applics_in, List<ApplicationData> applics) {
         waiting_applics.addAll(applics);
-//        System.out.println(waiting_applics);
     }
 
     public static void clear_all_applics() {
@@ -172,7 +182,6 @@ public class ClientMainController {
     public static void update_all_applics(List<ApplicationData> wait, List<ApplicationData> progress, List<ApplicationData> rejected, List<ApplicationData> finished, List<ApplicationData> cancelled) {
         clear_all_applics();
         waiting_applics = wait;
-//        System.out.println("Progress applics in update_all_applics in CMC - " + progress);
         progress_applics = progress;
         rejected_applics = rejected;
         finished_applics = finished;
@@ -190,16 +199,13 @@ public class ClientMainController {
     }
 
     public void save() throws IOException {
-        if (shadow_data.isEmpty()) {
-            load_shadow_data();
-        }
+        if (shadow_data.isEmpty()) load_shadow_data();
         List<ApplicationData> all_applics = get_all_applications();
         all_applics.addAll(shadow_data);
         FileOutputStream fos = new FileOutputStream("applics.ser");
         ObjectOutputStream oos = new ObjectOutputStream(fos);
         oos.writeObject(all_applics);
         oos.close();
-
     }
 
     public void load_shadow_data() {
@@ -238,7 +244,6 @@ public class ClientMainController {
     public void load() {
         shadow_data.clear();
         clear_all_applics();
-//        System.out.println("Loaded");
         try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream("applics.ser"))) {
             List<ApplicationData> applics = (List<ApplicationData>) ois.readObject();
 //            file_logger.info("Devices were Deserialized");

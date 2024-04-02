@@ -33,9 +33,9 @@ public class ClientApplyController {
     String name;
 
     public void switchToMainMenu(ActionEvent go_back_clicked) throws IOException {
-        Stage stage = (Stage)((Node)go_back_clicked.getSource()).getScene().getWindow();
+        Stage stage = (Stage) ((Node) go_back_clicked.getSource()).getScene().getWindow();
 
-        FXMLLoader menuLoader = new FXMLLoader(getClass().getResource("/com/example/car_dealership_client/ser-main.fxml"));
+        FXMLLoader menuLoader = new FXMLLoader(getClass().getResource("/com/example/car_dealership_client/client_main.fxml"));
         Parent menuRoot = menuLoader.load();
         Scene menuScene = new Scene(menuRoot);
         ClientMainController menuController = menuLoader.getController();
@@ -48,26 +48,23 @@ public class ClientApplyController {
 
     public void onSubmitClicked(ActionEvent onsubmcliked) throws IOException {
 
-        if(type_choice.getValue() == null){
-           error_label.setText("Choose the type");
-        }
-        else if(applic_text.getText().isEmpty()){
+        if (type_choice.getValue() == null) {
+            error_label.setText("Choose the type");
+        } else if (applic_text.getText().isEmpty()) {
             error_label.setText("Enter application itself");
-        }
-        else if(applic_text.getText().length() > 38){
+        } else if (applic_text.getText().length() > 38) {
             error_label.setText("Be concise - enter shorter text");
-        }
-        else {
-           ApplicationData submitted_application = new ApplicationData(-1, "On Wait", name,
-                   type_choice.getValue(), "Today", applic_text.getText(), null);
+        } else {
+            ApplicationData submitted_application = new ApplicationData(-1, "On Wait", name,
+                type_choice.getValue(), "Today", applic_text.getText(), null);
             client.sendApplicationToServer(submitted_application);
-           switchToMainMenu(onsubmcliked);
+            switchToMainMenu(onsubmcliked);
 
         }
 
     }
 
-    public void prepare_applications(Client client, String name){
+    public void prepare_applications(Client client, String name) {
         this.client = client;
         this.name = name;
         types.addAll("ResidentialConstruction", "CommercialConstruction", "Renovation", "InteriorDesign", "Landscaping", "ElectricalWork", "Plumbing", "Roofing", "Painting", "FoundationRepair", "Materials");
@@ -75,7 +72,6 @@ public class ClientApplyController {
         type_choice.setValue("Other");
         applic_text.requestFocus();
     }
-
 
 
 }

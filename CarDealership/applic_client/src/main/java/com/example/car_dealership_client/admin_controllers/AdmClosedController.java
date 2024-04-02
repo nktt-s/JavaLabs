@@ -27,7 +27,7 @@ public class AdmClosedController {
     public void switchToMainMenu(ActionEvent go_back_clicked) throws IOException {
         Stage stage = (Stage)((Node)go_back_clicked.getSource()).getScene().getWindow();
 
-        FXMLLoader menuLoader = new FXMLLoader(getClass().getResource("/com/example/car_dealership_client/adm_views/adm-main.fxml"));
+        FXMLLoader menuLoader = new FXMLLoader(getClass().getResource("/com/example/car_dealership_client/adm_main.fxml"));
         Parent menuRoot = menuLoader.load();
         Scene menuScene = new Scene(menuRoot);
 //        SerMainController menuController = menuLoader.getController();
@@ -41,7 +41,7 @@ public class AdmClosedController {
 
     public void update_applications(ActionEvent accept_clicked) throws IOException {
         Stage stage = (Stage)((Node)accept_clicked.getSource()).getScene().getWindow();
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/car_dealership_client/adm_views/forSale.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/car_dealership_client/cars_sold.fxml"));
         Parent root = loader.load();
         Scene scene = new Scene(root);
         AdmClosedController controller = loader.getController();

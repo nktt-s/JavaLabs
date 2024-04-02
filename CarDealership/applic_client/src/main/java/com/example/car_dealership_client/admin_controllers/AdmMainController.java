@@ -1,8 +1,9 @@
 package com.example.car_dealership_client.admin_controllers;
 
+import com.example.car_dealership_client.Main;
+import com.example.car_dealership_client.controllers.NameEnterController;
 import com.example.car_dealership_client.models.ApplicationData;
 import com.example.car_dealership_client.models.Admin;
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -22,7 +23,7 @@ public class AdmMainController {
     private static String name;
     @FXML
     Label adminNameHeader;
-//    Server server;
+    //    Server server;
 //    DataBaseHandler db_handler = new DataBaseHandler();
     private static List<ApplicationData> waiting_applics = new ArrayList<>();
     private static List<ApplicationData> progress_applics = new ArrayList<>();
@@ -31,8 +32,7 @@ public class AdmMainController {
     private static List<String> workers = new ArrayList<>();
 
 
-
-        public void connect(Socket socket, ObjectInputStream ois, ObjectOutputStream oos) {
+    public void connect(Socket socket, ObjectInputStream ois, ObjectOutputStream oos) {
         try {
             admin = new Admin(socket, ois, oos);
             Thread adminThread = new Thread(admin);
@@ -43,21 +43,21 @@ public class AdmMainController {
     }
 
 
-
-    public void refresh(){
-        try{
+    public void refresh() {
+        try {
             admin.getApplicationsFromServer();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
-    public static void clear_all_applics(){
+
+    public static void clear_all_applics() {
         waiting_applics = new ArrayList<>();
         progress_applics = new ArrayList<>();
         closed_applics = new ArrayList<>();
-
     }
-    public static void update_all_applics(List<ApplicationData> wait, List<ApplicationData> progress, List<ApplicationData> rejected, List<ApplicationData> finished, List<ApplicationData> cancelled){
+
+    public static void update_all_applics(List<ApplicationData> wait, List<ApplicationData> progress, List<ApplicationData> rejected, List<ApplicationData> finished, List<ApplicationData> cancelled) {
         clear_all_applics();
         waiting_applics = wait;
         progress_applics = progress;
@@ -66,13 +66,11 @@ public class AdmMainController {
         closed_applics.addAll(cancelled);
     }
 
-    public static void update_workers(List<String> new_workers){
+    public static void update_workers(List<String> new_workers) {
         workers = new_workers;
-
-
     }
 
-   //TODO Pass three lists of applications here
+    //TODO Pass three lists of applications here
     // Then make this prepare for other controllers
 //    public void connect(){
 //        try{
@@ -85,7 +83,7 @@ public class AdmMainController {
 //        }
 //    }
 
-    public static void send(ApplicationData applic){
+    public static void send(ApplicationData applic) {
 //        progress_applics.forEach(ApplicationData::print);
 //            client.sendApplicationsToServer(applic);
 //        System.out.println("Right before here");
@@ -96,31 +94,31 @@ public class AdmMainController {
 //   public void prepare_main_menu(List<ApplicationData> waiting_applics, List<ApplicationData> rejected_applics, List<ApplicationData> finished_applics){
 //   }
 
-    public void prepare_main_menu(String name, Admin admin_inp){
+    public void prepare_main_menu(String name, Admin admin_inp) {
         admin = admin_inp;
 //        this.name = name;
         AdmMainController.name = name;
         adminNameHeader.setText("Admin");
     }
-    public void switchToApplications(ActionEvent applications_clicked) throws IOException {
-        stage = (Stage)((Node)applications_clicked.getSource()).getScene().getWindow();
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/car_dealership_client/adm_views/applications.fxml"));
+
+    // TODO
+    public void onInStockButtonClicked(ActionEvent applications_clicked) throws IOException {
+        stage = (Stage) ((Node) applications_clicked.getSource()).getScene().getWindow();
+        stage.setTitle("OCDS: Online Car Dealership System | Cars in stock page");
+        FXMLLoader loader = new FXMLLoader(Main.class.getResource("cars_in_stock.fxml"));
         Parent root = loader.load();
         Scene scene = new Scene(root);
         AdmApplicController controller = loader.getController();
-//        System.out.println(waiting_applics);
         controller.prepare_applications(waiting_applics, name, admin);
-
-
         stage.setScene(scene);
         stage.show();
-
-
     }
 
-    public void switchToProgress(ActionEvent button_clicked) throws IOException {
-        stage = (Stage)((Node)button_clicked.getSource()).getScene().getWindow();
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/car_dealership_client/myOrders.fxml"));
+    // TODO
+    public void onInProgressButtonClicked(ActionEvent button_clicked) throws IOException {
+        stage = (Stage) ((Node) button_clicked.getSource()).getScene().getWindow();
+        stage.setTitle("OCDS: Online Car Dealership System | Cars in progress of selling page");
+        FXMLLoader loader = new FXMLLoader(Main.class.getResource("cars_in_progress.fxml"));
         Parent root = loader.load();
         Scene scene = new Scene(root);
         AdmProgressController controller = loader.getController();
@@ -129,9 +127,11 @@ public class AdmMainController {
         stage.show();
     }
 
-    public void switchToClosed(ActionEvent button_clicked) throws IOException {
-        stage = (Stage)((Node)button_clicked.getSource()).getScene().getWindow();
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/car_dealership_client/adm_views/forSale.fxml"));
+    // TODO
+    public void onSoldButtonClicked(ActionEvent button_clicked) throws IOException {
+        stage = (Stage) ((Node) button_clicked.getSource()).getScene().getWindow();
+        stage.setTitle("OCDS: Online Car Dealership System | Cars sold page");
+        FXMLLoader loader = new FXMLLoader(Main.class.getResource("cars_sold.fxml"));
         Parent root = loader.load();
         Scene scene = new Scene(root);
         AdmClosedController controller = loader.getController();
@@ -139,28 +139,39 @@ public class AdmMainController {
         stage.setScene(scene);
         stage.show();
     }
-    public void quit(ActionEvent quit_clicked) throws IOException{
-        Platform.exit();
+
+    public void onLogOutButtonClicked(ActionEvent quit_clicked) throws IOException {
+        stage = (Stage) ((Node) quit_clicked.getSource()).getScene().getWindow();
+        stage.setTitle("OCDS: Online Car Dealership System | Login page");
+        FXMLLoader loader = new FXMLLoader(Main.class.getResource("login_page.fxml"));
+        Parent root = loader.load();
+        Scene scene = new Scene(root);
+        NameEnterController controller = loader.getController();
+        controller.prepare_enter_name();
+        stage.setScene(scene);
+        stage.show();
+        admin.stop_connection();
     }
 
-    public static void add_waiting_application(ApplicationData applic){
-            waiting_applics.add(applic);
+    public static void add_waiting_application(ApplicationData applic) {
+        waiting_applics.add(applic);
     }
 
 
-    public static void add_progress_application(ApplicationData applic){
-            progress_applics.add(applic);
+    public static void add_progress_application(ApplicationData applic) {
+        progress_applics.add(applic);
 //            System.out.println("This is progress - " + progress_applics);
     }
 
-    public static void add_closed_application(ApplicationData applic){
-            closed_applics.add(applic);
+    public static void add_closed_application(ApplicationData applic) {
+        closed_applics.add(applic);
     }
 
-    public static void update_closed_applications(List<ApplicationData> applics){
+    public static void update_closed_applications(List<ApplicationData> applics) {
         closed_applics = applics;
     }
-    public static List<ApplicationData> get_all_applications(){
+
+    public static List<ApplicationData> get_all_applications() {
         List<ApplicationData> all_applics = new ArrayList<>();
         all_applics.addAll(waiting_applics);
         all_applics.addAll(progress_applics);
@@ -192,10 +203,11 @@ public class AdmMainController {
             }
         }
     }
-    public void load(){
-        try(ObjectInputStream ois = new ObjectInputStream(new FileInputStream("devs.ser"))){
+
+    public void load() {
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream("devs.ser"))) {
             List<ApplicationData> applics = (List<ApplicationData>) ois.readObject();
-        sort_users_applic(applics);
+            sort_users_applic(applics);
         } catch (ClassNotFoundException | ClassCastException e) {
             System.exit(228);
             throw new RuntimeException(e);
@@ -204,8 +216,8 @@ public class AdmMainController {
         }
     }
 
-    public static List<String> get_workers_list(){
-       return workers;
+    public static List<String> get_workers_list() {
+        return workers;
     }
 
 

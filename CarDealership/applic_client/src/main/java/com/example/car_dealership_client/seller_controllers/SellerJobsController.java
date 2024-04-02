@@ -1,7 +1,7 @@
 package com.example.car_dealership_client.seller_controllers;
 
 import com.example.car_dealership_client.models.ApplicationData;
-import com.example.car_dealership_client.models.Worker;
+import com.example.car_dealership_client.models.Seller;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -24,39 +24,39 @@ public class SellerJobsController {
     AnchorPane applics_anchor;
     private List<ApplicationData> progress_applics;
     private String name;
-    private Worker worker;
+    private Seller seller;
 
 
     public void switchToMainMenu(ActionEvent go_back_clicked) throws IOException {
         Stage stage = (Stage)((Node)go_back_clicked.getSource()).getScene().getWindow();
 
-        FXMLLoader menuLoader = new FXMLLoader(getClass().getResource("/com/example/car_dealership_client/seller_views/work-main.fxml"));
+        FXMLLoader menuLoader = new FXMLLoader(getClass().getResource("/com/example/car_dealership_client/seller_main.fxml"));
         Parent menuRoot = menuLoader.load();
         Scene menuScene = new Scene(menuRoot);
-        WorkerMainController menuController = menuLoader.getController();
+        SellerMainController menuController = menuLoader.getController();
 //        menuController.connect();
-        menuController.prepare_main_menu(worker, jobs_applics);
+        menuController.prepare_main_menu(seller, jobs_applics);
 
         stage.setScene(menuScene);
         stage.show();
 
     }
-    public void prepare_jobs(List<ApplicationData> progress_applics, String name, Worker worker){
+    public void prepare_jobs(List<ApplicationData> progress_applics, String name, Seller seller){
         this.jobs_applics = progress_applics;
 //        System.out.println("Progress applics inflitrated: " + this.jobs_applics);
         this.name = name;
-        this.worker = worker;
+        this.seller = seller;
         render_applications();
     }
 
 
         public void update_applications(ActionEvent event) throws IOException {
             Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/car_dealership_client/seller_views/work-jobs.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/car_dealership_client/work_jobs.fxml"));
             Parent root = loader.load();
             Scene scene = new Scene(root);
             SellerJobsController applicController = loader.getController();
-            applicController.prepare_jobs(jobs_applics, name, worker);
+            applicController.prepare_jobs(jobs_applics, name, seller);
 
             stage.setScene(scene);
             stage.show();
@@ -131,10 +131,10 @@ public class SellerJobsController {
         int acc_app_num = Integer.parseInt(acc_id.substring(acc_id.length() - 1));
         jobs_applics.get(acc_app_num).set_status("Finished");
 //        System.out.println("Job about to finish: " + jobs_applics.get(acc_app_num).get_status());
-        worker.sendApplicationToServer(jobs_applics.get(acc_app_num));
+        seller.sendApplicationToServer(jobs_applics.get(acc_app_num));
         jobs_applics.remove(acc_app_num);
-//        WorkerMainController.update_all_applications(jobs_applics);
-//        WorkerMainController.delete_application(acc_app_num);
+//        SellerMainController.update_all_applications(jobs_applics);
+//        SellerMainController.delete_application(acc_app_num);
         update_applications(accept_clicked);
     }
 
