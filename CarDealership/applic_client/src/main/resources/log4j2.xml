@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="INFO">
+    <Appenders>
+        <File name="Main" fileName="C:/Users/nktt/IdeaProjects/CarDealership/applic_client/logs/main.log">
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} [%c] %-5level- %msg%n"/>
+        </File>
+        <File name="Application" fileName="C:/Users/nktt/IdeaProjects/CarDealership/applic_client/logs/applications.log">
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} [%c] %-5level- %msg%n"/>
+        </File>
+        <File name="Files" fileName="C:/Users/nktt/IdeaProjects/CarDealership/applic_client/logs/files.log">
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} [%c] %-5level- %msg%n"/>
+        </File>
+    </Appenders>
+    <Loggers>
+        <Root level="info">
+            <AppenderRef ref="Main"/>
+        </Root>
+        <Logger name="MainLogger" level="info" additivity="false">
+            <AppenderRef ref="Main"/>
+        </Logger>
+        <Logger name="ApplicationsLogger" level="info" additivity="false">-->
+            <AppenderRef ref="Application"/>
+        </Logger>
+        <Logger name="FilesLogger" level="info" additivity="false">-->
+            <AppenderRef ref="Files"/>
+        </Logger>
+    </Loggers>
+</Configuration>

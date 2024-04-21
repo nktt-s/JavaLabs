@@ -11,7 +11,7 @@ import java.util.List;
 
 public class DataBaseHandler {
     private static final Logger loggerDB = LogManager.getLogger("FilesLogger");
-//    PropertiesReader props = new PropertiesReader();
+    //    PropertiesReader props = new PropertiesReader();
 //    String url = props.getMySqlUrl();
 //    String username = props.getMySqlUsername();
 //    String password = props.getMySqlPass();
@@ -20,7 +20,7 @@ public class DataBaseHandler {
     static String login;
     static String password;
 
-    public static void serValuesForConnection(String databaseName, String databaseLogin, String databasePassword) {
+    public static void setValuesForConnection(String databaseName, String databaseLogin, String databasePassword) {
         url += databaseName;
         name = databaseName;
         login = databaseLogin;
@@ -28,9 +28,11 @@ public class DataBaseHandler {
 
         try {
             Connection connection = DriverManager.getConnection(url, login, password);
-            System.out.println(connection);
+//            System.out.println(connection);
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println("SQLException on connection.");
+            loggerDB.error("Error on getting connection");
+//            e.printStackTrace();
         }
     }
 
@@ -53,7 +55,8 @@ public class DataBaseHandler {
             }
             loggerDB.info("Applications were inserted into database");
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println("Error on updating DB");
+//            e.printStackTrace();
         }
 //        catch (ClassNotFoundException e) {
 //            throw new RuntimeException(e);

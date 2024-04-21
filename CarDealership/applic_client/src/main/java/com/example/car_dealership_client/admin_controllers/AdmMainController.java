@@ -12,6 +12,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.*;
 import java.net.Socket;
@@ -19,18 +21,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AdmMainController {
+    private static final Logger loggerMain = LogManager.getLogger("MainLogger");
     private Stage stage;
     private static String name;
     @FXML
     Label adminNameHeader;
-    //    Server server;
-//    DataBaseHandler db_handler = new DataBaseHandler();
     private static List<ApplicationData> waiting_applics = new ArrayList<>();
     private static List<ApplicationData> progress_applics = new ArrayList<>();
     private static List<ApplicationData> closed_applics = new ArrayList<>();
     private static Admin admin;
     private static List<String> workers = new ArrayList<>();
-
 
     public void connect(Socket socket, ObjectInputStream ois, ObjectOutputStream oos) {
         try {
@@ -101,17 +101,13 @@ public class AdmMainController {
         adminNameHeader.setText("Admin");
     }
 
-    // TODO
     public void onInStockButtonClicked(ActionEvent applications_clicked) throws IOException {
+        loggerMain.info("Нажата кнопка получения автомобилей в наличии от имени Администратора");
         stage = (Stage) ((Node) applications_clicked.getSource()).getScene().getWindow();
-        stage.setTitle("OCDS: Online Car Dealership System | Cars in stock page");
-        FXMLLoader loader = new FXMLLoader(Main.class.getResource("cars_in_stock.fxml"));
-        Parent root = loader.load();
-        Scene scene = new Scene(root);
-        AdmApplicController controller = loader.getController();
-        controller.prepare_applications(waiting_applics, name, admin);
-        stage.setScene(scene);
-        stage.show();
+        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("cars_in_stock.fxml"));
+        fxmlLoader.load();
+        AdminInStockController controller = fxmlLoader.getController();
+        controller.start(stage);
     }
 
     // TODO

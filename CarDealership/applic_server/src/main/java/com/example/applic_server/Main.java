@@ -47,6 +47,6 @@ public class Main extends Application {
             loggerMain.error("Ошибка в методе configureDB()");
             e.printStackTrace();
         }
-        DataBaseHandler.serValuesForConnection(configInfo.get("databaseName"), configInfo.get("databaseUser"), configInfo.get("databasePassword"));
+        DataBaseHandler.setValuesForConnection(configInfo.get("databaseName"), configInfo.get("databaseUser"), configInfo.get("databasePassword"));
     }
 }

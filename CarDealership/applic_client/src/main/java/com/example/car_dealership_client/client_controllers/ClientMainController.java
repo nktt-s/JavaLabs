@@ -1,8 +1,6 @@
 package com.example.car_dealership_client.client_controllers;
 
 import com.example.car_dealership_client.Main;
-import com.example.car_dealership_client.admin_controllers.AdmApplicController;
-import com.example.car_dealership_client.admin_controllers.AdmMainController;
 import com.example.car_dealership_client.controllers.NameEnterController;
 import com.example.car_dealership_client.models.*;
 import javafx.event.ActionEvent;

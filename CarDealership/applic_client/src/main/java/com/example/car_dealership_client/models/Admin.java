@@ -1,4 +1,5 @@
 package com.example.car_dealership_client.models;
+
 import com.example.car_dealership_client.admin_controllers.AdmMainController;
 
 import java.io.*;
@@ -6,7 +7,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Admin extends User{
+public class Admin extends User {
     Integer total_id;
 
 
@@ -16,24 +17,24 @@ public class Admin extends User{
 
 
     @Override
-    public void run(){
-           while(socket.isConnected()){
-               List<ApplicationData> applicationsFromServer;
-               try {
-                   List<String> workersFromServer = (List<String>) ois.readObject();
-                   List<String> applicationsString = (List<String>) ois.readObject();
-                   applicationsFromServer = converter.list_to_application(applicationsString);
-                   sortIncomingApplications(applicationsFromServer);
-                   AdmMainController.update_workers(workersFromServer);
-               } catch (IOException e) {
-                   close_everything(socket,oos,ois);
-                   break;
-               } catch (ClassNotFoundException e) {
-                   throw new RuntimeException(e);
-               }
+    public void run() {
+        while (socket.isConnected()) {
+            List<ApplicationData> applicationsFromServer;
+            try {
+                List<String> workersFromServer = (List<String>) ois.readObject();
+                List<String> applicationsString = (List<String>) ois.readObject();
+                applicationsFromServer = converter.list_to_application(applicationsString);
+                sortIncomingApplications(applicationsFromServer);
+                AdmMainController.update_workers(workersFromServer);
+            } catch (IOException e) {
+                close_everything(socket, oos, ois);
+                break;
+            } catch (ClassNotFoundException e) {
+                throw new RuntimeException(e);
+            }
 
-           }
-       }
+        }
+    }
 
 
     public void sendApplicationToServer(ApplicationData applic) {
@@ -48,7 +49,7 @@ public class Admin extends User{
         }
     }
 
-    public void getApplicationsFromServer(){
+    public void getApplicationsFromServer() {
 //        try {
 //            Object b = ois.readObject();
 //            oos.writeObject("Gimme");
@@ -66,16 +67,17 @@ public class Admin extends User{
 //            throw new RuntimeException(e);
 //        }
     }
-   public void sendNameToServer(String name) throws IOException {
-       try {
-           oos.writeObject(name);
-           oos.flush();
 
-       } catch (IOException e) {
-           e.printStackTrace();
-           close_everything(socket, oos, ois);
-       }
-   }
+    public void sendNameToServer(String name) throws IOException {
+        try {
+            oos.writeObject(name);
+            oos.flush();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            close_everything(socket, oos, ois);
+        }
+    }
 
     public void sortIncomingApplications(List<ApplicationData> inc_applics) {
         List<ApplicationData> wait = new ArrayList<>();
@@ -94,12 +96,10 @@ public class Admin extends User{
             }
         }
 //            System.out.println("In sort incoming_applic = " + wait);
-            AdmMainController.update_all_applics(wait, progress, rejected, finished, cancelled);
+        AdmMainController.update_all_applics(wait, progress, rejected, finished, cancelled);
 
 
-        }
-
-
+    }
 
 
 }

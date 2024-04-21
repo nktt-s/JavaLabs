@@ -6,7 +6,6 @@ module com.example.applic_server {
     requires com.dlsc.formsfx;
     requires java.sql;
     requires mysql.connector.j;
-    requires org.slf4j;
     requires com.google.gson;
     requires jbcrypt;
 
