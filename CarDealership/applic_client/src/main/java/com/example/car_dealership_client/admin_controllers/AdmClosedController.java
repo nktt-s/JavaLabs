@@ -131,7 +131,7 @@ public class AdmClosedController {
         closed_applics.get(acc_app_num).set_status("Cleared");
         admin.sendApplicationToServer(closed_applics.get(acc_app_num));
         closed_applics.remove(acc_app_num);
-        AdmMainController.update_closed_applications(closed_applics);
+        AdminMainController.update_closed_applications(closed_applics);
         update_applications(accept_clicked);
     }
 

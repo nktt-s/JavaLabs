@@ -1,6 +1,6 @@
 package com.example.car_dealership_client.models;
 
-//import com.example.applic_client.admin_controllers.AdmMainController;
+//import com.example.applic_client.admin_controllers.AdminMainController;
 import com.example.car_dealership_client.seller_controllers.SellerMainController;
 
 import java.io.IOException;

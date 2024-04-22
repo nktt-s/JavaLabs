@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AdmProgressController {
+public class AdminInProgressController {
     @FXML
     AnchorPane applics_anchor;
     List<ApplicationData> progress_applics;
@@ -43,7 +43,7 @@ public class AdmProgressController {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/car_dealership_client/cars_in_progress.fxml"));
         Parent root = loader.load();
         Scene scene = new Scene(root);
-        AdmProgressController controller = loader.getController();
+        AdminInProgressController controller = loader.getController();
         controller.prepare_applications(progress_applics, admin);
 
         stage.setScene(scene);
@@ -173,7 +173,7 @@ public class AdmProgressController {
     public void finish_application(ActionEvent accept_clicked, String acc_id) throws IOException {
         int acc_app_num = Integer.parseInt(acc_id.substring(acc_id.length() - 1));
         progress_applics.get(acc_app_num).set_status("Finished");
-        AdmMainController.add_closed_application(progress_applics.get(acc_app_num));
+        AdminMainController.add_closed_application(progress_applics.get(acc_app_num));
         admin.sendApplicationToServer(progress_applics.get(acc_app_num));
         progress_applics.remove(acc_app_num);
         update_applications(accept_clicked);
@@ -182,7 +182,7 @@ public class AdmProgressController {
     public void cancel_application(ActionEvent cancel_clicked, String acc_id) throws IOException{
         int acc_app_num = Integer.parseInt(acc_id.substring(acc_id.length() - 1));
         progress_applics.get(acc_app_num).set_status("Cancelled");
-        AdmMainController.add_closed_application(progress_applics.get(acc_app_num));
+        AdminMainController.add_closed_application(progress_applics.get(acc_app_num));
         admin.sendApplicationToServer(progress_applics.get(acc_app_num));
         progress_applics.remove(acc_app_num);
         update_applications(cancel_clicked);

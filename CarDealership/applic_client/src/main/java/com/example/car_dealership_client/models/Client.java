@@ -1,7 +1,7 @@
 package com.example.car_dealership_client.models;
 //package com.example.applic_server.models;
 
-import com.example.car_dealership_client.admin_controllers.AdmMainController;
+import com.example.car_dealership_client.admin_controllers.AdminMainController;
 import com.example.car_dealership_client.client_controllers.ClientMainController;
 
 import java.io.*;
@@ -99,7 +99,7 @@ public class Client extends User {
             }
         }
 //            System.out.println("In sort incoming_applic = " + wait);
-        AdmMainController.update_all_applics(wait, progress, rejected, finished, cancelled);
+        AdminMainController.update_all_applics(wait, progress, rejected, finished, cancelled);
         ClientMainController.update_all_applics(wait, progress, rejected, finished, cancelled);
     }
 }

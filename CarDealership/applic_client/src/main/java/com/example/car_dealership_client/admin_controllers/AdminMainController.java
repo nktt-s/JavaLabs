@@ -20,7 +20,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AdmMainController {
+public class AdminMainController {
     private static final Logger loggerMain = LogManager.getLogger("MainLogger");
     private Stage stage;
     private static String name;
@@ -97,13 +97,13 @@ public class AdmMainController {
     public void prepare_main_menu(String name, Admin admin_inp) {
         admin = admin_inp;
 //        this.name = name;
-        AdmMainController.name = name;
+        AdminMainController.name = name;
         adminNameHeader.setText("Admin");
     }
 
-    public void onInStockButtonClicked(ActionEvent applications_clicked) throws IOException {
+    public void onInStockButtonClicked(ActionEvent inStockClicked) throws IOException {
         loggerMain.info("Нажата кнопка получения автомобилей в наличии от имени Администратора");
-        stage = (Stage) ((Node) applications_clicked.getSource()).getScene().getWindow();
+        stage = (Stage) ((Node) inStockClicked.getSource()).getScene().getWindow();
         FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("cars_in_stock.fxml"));
         fxmlLoader.load();
         AdminInStockController controller = fxmlLoader.getController();
@@ -111,16 +111,14 @@ public class AdmMainController {
     }
 
     // TODO
-    public void onInProgressButtonClicked(ActionEvent button_clicked) throws IOException {
-        stage = (Stage) ((Node) button_clicked.getSource()).getScene().getWindow();
-        stage.setTitle("OCDS: Online Car Dealership System | Cars in progress of selling page");
-        FXMLLoader loader = new FXMLLoader(Main.class.getResource("cars_in_progress.fxml"));
-        Parent root = loader.load();
-        Scene scene = new Scene(root);
-        AdmProgressController controller = loader.getController();
+    public void onInProgressButtonClicked(ActionEvent inProgressClicked) throws IOException {
+        loggerMain.info("Нажата кнопка получения автомобилей в процессе продажи от имени Администратора");
+        stage = (Stage) ((Node) inProgressClicked.getSource()).getScene().getWindow();
+//        stage.setTitle("OCDS: Online Car Dealership System | Cars in progress of selling page");
+        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("cars_in_progress.fxml"));
+        fxmlLoader.load();
+        AdminInProgressController controller = fxmlLoader.getController();
         controller.prepare_applications(progress_applics, admin);
-        stage.setScene(scene);
-        stage.show();
     }
 
     // TODO

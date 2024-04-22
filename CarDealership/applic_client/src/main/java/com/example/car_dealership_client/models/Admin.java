@@ -1,6 +1,6 @@
 package com.example.car_dealership_client.models;
 
-import com.example.car_dealership_client.admin_controllers.AdmMainController;
+import com.example.car_dealership_client.admin_controllers.AdminMainController;
 
 import java.io.*;
 import java.net.Socket;
@@ -25,7 +25,7 @@ public class Admin extends User {
                 List<String> applicationsString = (List<String>) ois.readObject();
                 applicationsFromServer = converter.list_to_application(applicationsString);
                 sortIncomingApplications(applicationsFromServer);
-                AdmMainController.update_workers(workersFromServer);
+                AdminMainController.update_workers(workersFromServer);
             } catch (IOException e) {
                 close_everything(socket, oos, ois);
                 break;
@@ -96,7 +96,7 @@ public class Admin extends User {
             }
         }
 //            System.out.println("In sort incoming_applic = " + wait);
-        AdmMainController.update_all_applics(wait, progress, rejected, finished, cancelled);
+        AdminMainController.update_all_applics(wait, progress, rejected, finished, cancelled);
 
 
     }

@@ -1,7 +1,7 @@
 package com.example.car_dealership_client.controllers;
 
 import com.example.car_dealership_client.Main;
-import com.example.car_dealership_client.admin_controllers.AdmMainController;
+import com.example.car_dealership_client.admin_controllers.AdminMainController;
 import com.example.car_dealership_client.client_controllers.ClientMainController;
 import com.example.car_dealership_client.models.Client;
 import com.example.car_dealership_client.models.Admin;
@@ -165,7 +165,7 @@ public class NameEnterController {
         stage = (Stage) ((Node) enterNameClicked.getSource()).getScene().getWindow();
         FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("adm_main.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 1000, 600);
-        AdmMainController controller = fxmlLoader.getController();
+        AdminMainController controller = fxmlLoader.getController();
         controller.prepare_main_menu(inp_name, admin);
         controller.connect(socket, ois, oos);
         stage.setScene(scene);
