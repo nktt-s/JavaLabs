@@ -8,6 +8,7 @@ public class Car implements Serializable {
     private String model;
     private String color;
     private String seller;
+    private String buyer = null;
     private int productionYear;
 
     private int id;
@@ -17,9 +18,10 @@ public class Car implements Serializable {
         this.id = nextId++;
     }
 
-    public Car(int id, String seller, String manufacturer, String model, String color, int productionYear) {
+    public Car(int id, String seller, String buyer, String manufacturer, String model, String color, int productionYear) {
         this.id = id;
         this.seller = seller;
+        this.buyer = buyer;
         this.manufacturer = manufacturer;
         this.model = model;
         this.color = color;
@@ -50,6 +52,10 @@ public class Car implements Serializable {
         return color;
     }
 
+    public String getBuyer() {
+        return buyer;
+    }
+
     public boolean isValidYear(int productionYear) {
         return MIN_YEAR <= productionYear && productionYear <= CURRENT_YEAR;
     }
@@ -58,7 +64,6 @@ public class Car implements Serializable {
         return CURRENT_YEAR;
     }
 
-
 //    public void setUniqueId() {
 //        ArrayList<Car> devicesFromDB = DatabaseManager.getAllDevices();
 //        if (devicesFromDB != null) {
@@ -66,8 +71,9 @@ public class Car implements Serializable {
 //        } else {
 //            this.id = 1;
 //        }
-//    }
 
+    //    }
     public static final int MIN_YEAR = 1950;
+
     public static final int CURRENT_YEAR = Year.now().getValue();
 }

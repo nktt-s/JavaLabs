@@ -20,10 +20,10 @@ public class DatabaseManager {
         password = databasePassword;
     }
 
-    public static ArrayList<Car> getAllStockCars() {
+    public static ArrayList<Car> getAllCars(String tableName) {
         loggerDB.info("Вызван метод получения всех автомобилей");
         ArrayList<Car> cars = new ArrayList<>();
-        String query = "SELECT * FROM AllStockCars";
+        String query = "SELECT * FROM " + tableName;
 
         try {
             Connection connection = DriverManager.getConnection(url, login, password);
@@ -33,12 +33,18 @@ public class DatabaseManager {
             while (resultSet.next()) {
                 int id = resultSet.getInt("id");
                 String seller = resultSet.getString("seller");
+                String buyer;
+                if (tableName.equals("AllStockCars")) {
+                    buyer = null;
+                } else {
+                    buyer = resultSet.getString("buyer");
+                }
                 String manufacturer = resultSet.getString("manufacturer");
                 String model = resultSet.getString("model");
                 String color = resultSet.getString("color");
                 int productionYear = resultSet.getInt("productionYear");
 
-                Car car = new Car(id, seller, manufacturer, model, color, productionYear);
+                Car car = new Car(id, seller, buyer, manufacturer, model, color, productionYear);
                 cars.add(car);
             }
             connection.close();
@@ -72,9 +78,9 @@ public class DatabaseManager {
         }
     }
 
-    public static Car getCar(int id) {
+    public static Car getCar(int id, String tableName) {
         loggerDB.info("Вызван метод добавления одного автомобиля");
-        String query = "SELECT * FROM AllStockCars WHERE id = ?";
+        String query = "SELECT * FROM " + tableName + " WHERE id = ?";
 
         try {
             Connection connection = DriverManager.getConnection(url, login, password);
@@ -85,11 +91,12 @@ public class DatabaseManager {
             while (resultSet.next()) {
                 int idCar = resultSet.getInt("id");
                 String seller = resultSet.getString("seller");
+                String buyer = resultSet.getString("buyer");
                 String manufacturer = resultSet.getString("manufacturer");
                 String model = resultSet.getString("model");
                 String color = resultSet.getString("color");
                 int productionYear = resultSet.getInt("productionYear");
-                return new Car(idCar, seller, manufacturer, model, color, productionYear);
+                return new Car(idCar, seller, buyer, manufacturer, model, color, productionYear);
             }
             connection.close();
         } catch (SQLException e) {
@@ -99,20 +106,21 @@ public class DatabaseManager {
         return null;
     }
 
-    public static void updateCar(Car car) {
+    public static void updateCar(Car car, String tableName) {
         loggerDB.info("Вызван метод изменения автомобиля");
-        String query = "UPDATE AllStockCars SET seller = ?, manufacturer = ?, model = ?, color = ?, productionYear = ? WHERE id = ?;";
+        String query = "UPDATE " + tableName + " SET seller = ?, buyer = ?, manufacturer = ?, model = ?, color = ?, productionYear = ? WHERE id = ?;";
 
         try {
             Connection connection = DriverManager.getConnection(url, login, password);
             PreparedStatement prepStatement = connection.prepareStatement(query);
 
             prepStatement.setString(1, car.getSeller());
-            prepStatement.setString(2, car.getManufacturer());
-            prepStatement.setString(3, car.getModel());
-            prepStatement.setString(4, car.getColor());
-            prepStatement.setInt(5, car.getProductionYear());
-            prepStatement.setInt(6, car.getId());
+            prepStatement.setString(2, car.getBuyer());
+            prepStatement.setString(3, car.getManufacturer());
+            prepStatement.setString(4, car.getModel());
+            prepStatement.setString(5, car.getColor());
+            prepStatement.setInt(6, car.getProductionYear());
+            prepStatement.setInt(7, car.getId());
 
             prepStatement.execute();
             connection.close();

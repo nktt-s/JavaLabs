@@ -114,11 +114,10 @@ public class AdminMainController {
     public void onInProgressButtonClicked(ActionEvent inProgressClicked) throws IOException {
         loggerMain.info("Нажата кнопка получения автомобилей в процессе продажи от имени Администратора");
         stage = (Stage) ((Node) inProgressClicked.getSource()).getScene().getWindow();
-//        stage.setTitle("OCDS: Online Car Dealership System | Cars in progress of selling page");
         FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("cars_in_progress.fxml"));
         fxmlLoader.load();
         AdminInProgressController controller = fxmlLoader.getController();
-        controller.prepare_applications(progress_applics, admin);
+        controller.start(stage);
     }
 
     // TODO

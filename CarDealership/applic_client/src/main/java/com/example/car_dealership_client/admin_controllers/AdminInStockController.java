@@ -49,6 +49,8 @@ public class AdminInStockController {
     @FXML
     Button backButton;
 
+    String tableName = "AllStockCars";
+
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("cars_in_stock.fxml"));
         Parent root = fxmlLoader.load();
@@ -79,8 +81,8 @@ public class AdminInStockController {
     }
 
     public void update_cars(ScrollPane scrollPane) {
-        loggerMain.info("Запущен метод обновления таблицы автомобилей");
-        ArrayList<Car> carsFromDB = DatabaseManager.getAllStockCars();
+        loggerMain.info("Запущен метод обновления таблицы автомобилей в наличии");
+        ArrayList<Car> carsFromDB = DatabaseManager.getAllCars(tableName);
 
         if (carsFromDB == null) return;
         ObservableList<Car> cars = FXCollections.observableArrayList(carsFromDB);
@@ -139,7 +141,7 @@ public class AdminInStockController {
                         stage.setScene(scene);
                         EditCar controller = fxmlLoader.getController();
                         loggerMain.info("Нажата кнопка изменения газонокосилки с ID = {}", car.getId());
-                        controller.start(stage, car);
+                        controller.start(stage, car, tableName);
 
                     } catch (IOException e) {
                         throw new RuntimeException(e);
@@ -206,7 +208,6 @@ public class AdminInStockController {
         deleteColumn.setPrefWidth(90.0);
         table.getColumns().add(deleteColumn);
         scrollPane.setContent(table);
-
     }
 
 }

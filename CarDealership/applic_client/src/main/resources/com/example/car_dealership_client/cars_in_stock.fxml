@@ -4,34 +4,36 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.car_dealership_client.admin_controllers.AdminInStockController">
+<AnchorPane prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/17.0.2-ea"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.example.car_dealership_client.admin_controllers.AdminInStockController">
     <children>
         <Label alignment="CENTER" layoutY="2.0" prefHeight="83.0" prefWidth="1000.0" text="Cars in stock">
             <font>
-                <Font name="System Bold" size="48.0" />
+                <Font name="System Bold" size="48.0"/>
             </font>
         </Label>
-        <ScrollPane fx:id="scrollPane" fitToWidth="true" layoutX="35.0" layoutY="94.0" prefHeight="413.0" prefWidth="930.0">
+        <ScrollPane fx:id="scrollPane" fitToWidth="true" layoutX="35.0" layoutY="94.0" prefHeight="413.0"
+                    prefWidth="930.0">
             <content>
                 <TableView fx:id="table" prefHeight="469" prefWidth="930">
                     <columns>
                         <TableColumn fx:id="idColumn"/>
-                        <TableColumn fx:id="sellerColumn" />
-                        <TableColumn fx:id="manufacturerColumn" />
-                        <TableColumn fx:id="modelColumn" />
-                        <TableColumn fx:id="colorColumn" />
-                        <TableColumn fx:id="productionYearColumn" />
+                        <TableColumn fx:id="sellerColumn"/>
+                        <TableColumn fx:id="manufacturerColumn"/>
+                        <TableColumn fx:id="modelColumn"/>
+                        <TableColumn fx:id="colorColumn"/>
+                        <TableColumn fx:id="productionYearColumn"/>
                         <TableColumn fx:id="editColumn"/>
                         <TableColumn fx:id="deleteColumn"/>
                     </columns>
                 </TableView>
             </content>
-            <!--                <AnchorPane fx:id="applics_anchor" maxHeight="1.7976931348623157E308" minHeight="0.0" minWidth="0.0"-->
-            <!--                            prefWidth="579.0"/>-->
         </ScrollPane>
-        <Button fx:id="backButton" layoutX="35.0" layoutY="524.0" mnemonicParsing="false" onAction="#switchToMainMenu" prefHeight="39.0" prefWidth="88.0" text="Back">
+        <Button fx:id="backButton" layoutX="35.0" layoutY="524.0" mnemonicParsing="false" onAction="#switchToMainMenu"
+                prefHeight="39.0" prefWidth="88.0" text="Back">
             <font>
-                <Font size="18.0" />
+                <Font size="18.0"/>
             </font>
         </Button>
     </children>
