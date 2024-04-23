@@ -3,7 +3,7 @@ module com.example.javafx_project {
     requires javafx.fxml;
     requires java.sql;
     requires org.apache.logging.log4j;
-    requires mysql.connector.java;
+    requires mysql.connector.j;
     requires com.google.gson;
 
 
