@@ -185,7 +185,7 @@ public class AdminInStockController {
                     Optional<ButtonType> result = alert.showAndWait();
                     if (result.isPresent() && result.get() == ButtonType.OK) {
                         loggerMain.info("Удаление автомобиля с ID = {}", id);
-                        DatabaseManager.deleteCar(id);
+                        DatabaseManager.deleteCar(id, tableName);
                         update_cars(scrollPane);
                     } else {
                         loggerMain.info("Отмена удаления устройства с ID = {}", id);

@@ -56,6 +56,11 @@ public class EditCar {
         tableName = _tableName;
 
         Car carFromDB = DatabaseManager.getCar(_car.getId(), tableName);
+        if (carFromDB == null) {
+            System.err.println("Ошибка при получении данных автомобиля!");
+            loggerMain.error("шибка при получении данных автомобиля");
+            return;
+        }
 
         seller.setText(Objects.requireNonNull(carFromDB).getSeller());
         if (tableName.equals("AllStockCars")) {

@@ -5,6 +5,9 @@ import org.apache.logging.log4j.Logger;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 public class DatabaseManager {
     private static final Logger loggerDB = LogManager.getLogger("DatabaseLogger");
@@ -23,7 +26,14 @@ public class DatabaseManager {
     public static ArrayList<Car> getAllCars(String tableName) {
         loggerDB.info("Вызван метод получения всех автомобилей");
         ArrayList<Car> cars = new ArrayList<>();
-        String query = "SELECT * FROM " + tableName;
+        String query;
+        if (isValidTableName(tableName)) {
+            query = "SELECT * FROM " + tableName;
+        } else {
+            System.err.println("Недопустимое имя таблицы при вызове метода getAllCars!");
+            loggerDB.error("Недопустимое имя таблицы при вызове метода getAllCars!");
+            return null;
+        }
 
         try {
             Connection connection = DriverManager.getConnection(url, login, password);
@@ -56,14 +66,21 @@ public class DatabaseManager {
 
         } catch (SQLException e) {
             System.err.println("SQLException on getting cars!");
-            e.printStackTrace();
+//            e.printStackTrace();
             return null;
         }
     }
 
-    public static void deleteCar(int id) {
+    public static void deleteCar(int id, String tableName) {
         loggerDB.info("Вызван метод удаления автомобиля");
-        String query = "DELETE FROM AllStockCars WHERE id = ?";
+        String query;
+        if (isValidTableName(tableName)) {
+            query = "DELETE FROM " + tableName + " WHERE id = ?";
+        } else {
+            System.err.println("Недопустимое имя таблицы при вызове метода deleteCar!");
+            loggerDB.error("Недопустимое имя таблицы при вызове метода deleteCar!");
+            return;
+        }
 
         try {
             Connection connection = DriverManager.getConnection(url, login, password);
@@ -80,7 +97,14 @@ public class DatabaseManager {
 
     public static Car getCar(int id, String tableName) {
         loggerDB.info("Вызван метод добавления одного автомобиля");
-        String query = "SELECT * FROM " + tableName + " WHERE id = ?";
+        String query;
+        if (isValidTableName(tableName)) {
+            query = "SELECT * FROM " + tableName + " WHERE id = ?";
+        } else {
+            System.err.println("Недопустимое имя таблицы при вызове метода getCar!");
+            loggerDB.error("Недопустимое имя таблицы при вызове метода getCar!");
+            return null;
+        }
 
         try {
             Connection connection = DriverManager.getConnection(url, login, password);
@@ -108,7 +132,14 @@ public class DatabaseManager {
 
     public static void updateCar(Car car, String tableName) {
         loggerDB.info("Вызван метод изменения автомобиля");
-        String query = "UPDATE " + tableName + " SET seller = ?, buyer = ?, manufacturer = ?, model = ?, color = ?, productionYear = ? WHERE id = ?;";
+        String query;
+        if (isValidTableName(tableName)) {
+            query = "UPDATE " + tableName + " SET seller = ?, buyer = ?, manufacturer = ?, model = ?, color = ?, productionYear = ? WHERE id = ?;";
+        } else {
+            System.err.println("Недопустимое имя таблицы при вызове метода updateCar!");
+            loggerDB.error("Недопустимое имя таблицы при вызове метода updateCar!");
+            return;
+        }
 
         try {
             Connection connection = DriverManager.getConnection(url, login, password);
@@ -128,6 +159,15 @@ public class DatabaseManager {
         } catch (SQLException ex) {
             System.err.println("SQLException on updating car!");
         }
+    }
+
+    private static final Set<String> validTableNames = new HashSet<>(Arrays.asList(
+        "AllStockCars",
+        "AllInProgressCars"
+    ));
+
+    private static boolean isValidTableName(String tableName) {
+        return validTableNames.contains(tableName);
     }
 
     enum DatabaseAttributes {
