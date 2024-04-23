@@ -57,8 +57,7 @@ public class EditCar {
 
         Car carFromDB = DatabaseManager.getCar(_car.getId(), tableName);
         if (carFromDB == null) {
-            System.err.println("Ошибка при получении данных автомобиля!");
-            loggerMain.error("шибка при получении данных автомобиля");
+            loggerMain.error("Ошибка при получении данных автомобиля");
             return;
         }
 

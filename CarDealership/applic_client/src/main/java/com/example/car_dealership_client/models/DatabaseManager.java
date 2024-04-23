@@ -30,7 +30,6 @@ public class DatabaseManager {
         if (isValidTableName(tableName)) {
             query = "SELECT * FROM " + tableName;
         } else {
-            System.err.println("Недопустимое имя таблицы при вызове метода getAllCars!");
             loggerDB.error("Недопустимое имя таблицы при вызове метода getAllCars!");
             return null;
         }
@@ -65,7 +64,7 @@ public class DatabaseManager {
             }
 
         } catch (SQLException e) {
-            System.err.println("SQLException on getting cars!");
+            System.err.println("SQLException on getting all cars!");
 //            e.printStackTrace();
             return null;
         }
@@ -77,7 +76,6 @@ public class DatabaseManager {
         if (isValidTableName(tableName)) {
             query = "DELETE FROM " + tableName + " WHERE id = ?";
         } else {
-            System.err.println("Недопустимое имя таблицы при вызове метода deleteCar!");
             loggerDB.error("Недопустимое имя таблицы при вызове метода deleteCar!");
             return;
         }
@@ -101,7 +99,6 @@ public class DatabaseManager {
         if (isValidTableName(tableName)) {
             query = "SELECT * FROM " + tableName + " WHERE id = ?";
         } else {
-            System.err.println("Недопустимое имя таблицы при вызове метода getCar!");
             loggerDB.error("Недопустимое имя таблицы при вызове метода getCar!");
             return null;
         }
@@ -136,7 +133,6 @@ public class DatabaseManager {
         if (isValidTableName(tableName)) {
             query = "UPDATE " + tableName + " SET seller = ?, buyer = ?, manufacturer = ?, model = ?, color = ?, productionYear = ? WHERE id = ?;";
         } else {
-            System.err.println("Недопустимое имя таблицы при вызове метода updateCar!");
             loggerDB.error("Недопустимое имя таблицы при вызове метода updateCar!");
             return;
         }
