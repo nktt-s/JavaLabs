@@ -21,8 +21,6 @@ public class EditCar {
     private Label errorMessage_productionYear;
     @FXML
     private Label errorMessage_Nan;
-    @FXML
-    private Label fileMessage;
 
     @FXML
     private TextField seller;
@@ -36,15 +34,11 @@ public class EditCar {
     private TextField color;
     @FXML
     private TextField productionYear;
-    @FXML
-    private TextField filename;
 
     @FXML
     private Button cancelButton;
     @FXML
     private Button applyButton;
-    @FXML
-    private Button exportButton;
 
     private Car car;
 
@@ -78,7 +72,6 @@ public class EditCar {
             case "AllInProgressCars" -> controllerName = "AdminInProgressController";
             default -> controllerName = null;
         }
-
     }
 
     @FXML
@@ -104,7 +97,6 @@ public class EditCar {
 
         } catch (Exception e) {
             loggerMain.error("Ошибка в EditCar при нажатии кнопки CancelButton");
-//                throw new RuntimeException(e);
         }
     }
 
@@ -168,46 +160,7 @@ public class EditCar {
 
             } catch (Exception e) {
                 loggerMain.error("Ошибка в EditCar при нажатии кнопки ApplyButton");
-//                throw new RuntimeException(e);
             }
-
-
-//            AdminInStockController adminInStockController = new AdminInStockController();
-//            Scene currentScene = cancelButton.getScene();
-//            Stage stage = (Stage) currentScene.getWindow();
-//            adminInStockController.start(stage);
         }
-    }
-
-    @FXML
-    public void onExportButtonClicked() {
-//        loggerMain.info("Нажата кнопка экспорта автополива");
-//        fileMessage.setText("");
-//        String filenameValue = filename.getText();
-//        switch (FileManager.getTypeOfFile(filenameValue)) {
-//            case 1:
-//                if (BinaryFileManager.writeToBinaryFile(car, filenameValue)) {
-//                    fileMessage.setText("Файл успешно записан!");
-//                    loggerMain.info("Успешный экспорт автополива");
-//                } else {
-//                    fileMessage.setText("Произошла ошибка!");
-//                    loggerMain.error("Ошибка при экспорте автополива");
-//                }
-//                break;
-//
-//            case 2:
-//                if (JsonFileManager.writeToJSON(car, filenameValue)) {
-//                    fileMessage.setText("Файл успешно записан");
-//                    loggerMain.info("Успешный экспорт автополива с ID = " + car.getId());
-//                } else {
-//                    fileMessage.setText("Произошла ошибка!");
-//                    loggerMain.error("Ошибка при экспорте автополива");
-//                }
-//                break;
-//
-//            default:
-//                fileMessage.setText("Расширение файла не соответствует .dat или .json");
-//                break;
-//        }
     }
 }
