@@ -19,20 +19,19 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class Main extends Application {
-//    System.setProperty("log4j.configurationFile","C:/Users/nktt/IdeaProjects/CarDealership/applic_client/src/main/resources/log4j2.xml");
     private static final Logger loggerMain = LogManager.getLogger("MainLogger");
 
     @Override
     public void start(Stage stage) throws IOException {
         loggerMain.info("Программа запущена");
-        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("/com/example/car_dealership_client/login_page.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("login_page.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 1000, 600);
         stage.setResizable(false);
         stage.setTitle("OCDS: Online Car Dealership System | Login page");
         Image icon = new Image(Objects.requireNonNull(getClass().getResourceAsStream("dealership.png")));
         stage.getIcons().add(icon);
         NameEnterController controller = fxmlLoader.getController();
-        controller.prepare_enter_name();
+        controller.prepareEnterName();
         stage.setScene(scene);
         stage.show();
     }

@@ -157,10 +157,7 @@ public class DatabaseManager {
         }
     }
 
-    private static final Set<String> validTableNames = new HashSet<>(Arrays.asList(
-        "AllStockCars",
-        "AllInProgressCars"
-    ));
+    private static final Set<String> validTableNames = new HashSet<>(Arrays.asList("AllStockCars", "AllInProgressCars", "AllSoldCars"));
 
     private static boolean isValidTableName(String tableName) {
         return validTableNames.contains(tableName);

@@ -159,7 +159,7 @@ public class ClientMainController {
         Parent root = loader.load();
         Scene scene = new Scene(root);
         NameEnterController controller = loader.getController();
-        controller.prepare_enter_name();
+        controller.prepareEnterName();
         stage.setScene(scene);
         stage.show();
         client.stop_connection();

@@ -9,7 +9,7 @@
 
         <Label alignment="CENTER" contentDisplay="CENTER" layoutY="5.0" prefHeight="68.0" prefWidth="1000.0" text="OCDS: Online Car Dealership System" textAlignment="CENTER">
             <font>
-                <Font name="System Bold" size="20.0" />
+                <Font name="System Bold" size="24.0" />
             </font>
         </Label>
         <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="159.0" prefWidth="1000.0" text="Choose your role" textAlignment="CENTER">

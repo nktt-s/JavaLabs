@@ -42,15 +42,6 @@ public class AdminMainController {
         }
     }
 
-
-    public void refresh() {
-        try {
-            admin.getApplicationsFromServer();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
-
     public static void clear_all_applics() {
         waiting_applics = new ArrayList<>();
         progress_applics = new ArrayList<>();
@@ -70,30 +61,6 @@ public class AdminMainController {
         workers = new_workers;
     }
 
-    //TODO Pass three lists of applications here
-    // Then make this prepare for other controllers
-//    public void connect(){
-//        try{
-//            server = new Server(new ServerSocket(1234));
-//            Thread serverThread = new Thread(server);
-//            serverThread.start();
-////            server.receiveApplicationsFromClient(waiting_applics);
-//        } catch (IOException e) {
-//            throw new RuntimeException(e);
-//        }
-//    }
-
-    public static void send(ApplicationData applic) {
-//        progress_applics.forEach(ApplicationData::print);
-//            client.sendApplicationsToServer(applic);
-//        System.out.println("Right before here");
-//        client.sendApplicationsToServer(("Pipez"));
-//        new ClientHandler().send_applications();
-    }
-
-//   public void prepare_main_menu(List<ApplicationData> waiting_applics, List<ApplicationData> rejected_applics, List<ApplicationData> finished_applics){
-//   }
-
     public void prepare_main_menu(String name, Admin admin_inp) {
         admin = admin_inp;
 //        this.name = name;
@@ -102,7 +69,7 @@ public class AdminMainController {
     }
 
     public void onInStockButtonClicked(ActionEvent inStockClicked) throws IOException {
-        loggerMain.info("Нажата кнопка получения автомобилей в наличии от имени Администратора");
+        loggerMain.info("От имени Администратора нажата кнопка получения автомобилей в наличии");
         stage = (Stage) ((Node) inStockClicked.getSource()).getScene().getWindow();
         FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("cars_in_stock.fxml"));
         fxmlLoader.load();
@@ -110,9 +77,8 @@ public class AdminMainController {
         controller.start(stage);
     }
 
-    // TODO
     public void onInProgressButtonClicked(ActionEvent inProgressClicked) throws IOException {
-        loggerMain.info("Нажата кнопка получения автомобилей в процессе продажи от имени Администратора");
+        loggerMain.info("От имени Администратора нажата кнопка получения автомобилей в процессе продажи");
         stage = (Stage) ((Node) inProgressClicked.getSource()).getScene().getWindow();
         FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("cars_in_progress.fxml"));
         fxmlLoader.load();
@@ -120,17 +86,13 @@ public class AdminMainController {
         controller.start(stage);
     }
 
-    // TODO
     public void onSoldButtonClicked(ActionEvent button_clicked) throws IOException {
+        loggerMain.info("От имени Администратора нажата кнопка получения проданных автомобилей");
         stage = (Stage) ((Node) button_clicked.getSource()).getScene().getWindow();
-        stage.setTitle("OCDS: Online Car Dealership System | Cars sold page");
-        FXMLLoader loader = new FXMLLoader(Main.class.getResource("cars_sold.fxml"));
-        Parent root = loader.load();
-        Scene scene = new Scene(root);
-        AdmClosedController controller = loader.getController();
-        controller.prepare_applications(closed_applics, admin);
-        stage.setScene(scene);
-        stage.show();
+        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("cars_sold.fxml"));
+        fxmlLoader.load();
+        AdminSoldController controller = fxmlLoader.getController();
+        controller.start(stage);
     }
 
     public void onLogOutButtonClicked(ActionEvent quit_clicked) throws IOException {
@@ -140,50 +102,10 @@ public class AdminMainController {
         Parent root = loader.load();
         Scene scene = new Scene(root);
         NameEnterController controller = loader.getController();
-        controller.prepare_enter_name();
+        controller.prepareEnterName();
         stage.setScene(scene);
         stage.show();
         admin.stop_connection();
-    }
-
-    public static void add_waiting_application(ApplicationData applic) {
-        waiting_applics.add(applic);
-    }
-
-
-    public static void add_progress_application(ApplicationData applic) {
-        progress_applics.add(applic);
-//            System.out.println("This is progress - " + progress_applics);
-    }
-
-    public static void add_closed_application(ApplicationData applic) {
-        closed_applics.add(applic);
-    }
-
-    public static void update_closed_applications(List<ApplicationData> applics) {
-        closed_applics = applics;
-    }
-
-    public static List<ApplicationData> get_all_applications() {
-        List<ApplicationData> all_applics = new ArrayList<>();
-        all_applics.addAll(waiting_applics);
-        all_applics.addAll(progress_applics);
-        all_applics.addAll(closed_applics);
-
-        return all_applics;
-    }
-
-
-    public void save() throws IOException {
-//        db_handler.update_db(get_all_applications());
-//        List<ApplicationData> all_applics = get_all_applications();
-//        FileOutputStream fos = new FileOutputStream("devs.ser");
-//        ObjectOutputStream oos = new ObjectOutputStream(fos);
-//        oos.writeObject(all_applics);
-//        oos.close();
-//        file_logger.info("Devices were serialized");
-
-
     }
 
     public void sort_users_applic(List<ApplicationData> all_applics) {
@@ -208,11 +130,5 @@ public class AdminMainController {
             throw new RuntimeException(e);
         }
     }
-
-    public static List<String> get_workers_list() {
-        return workers;
-    }
-
-
 }
 

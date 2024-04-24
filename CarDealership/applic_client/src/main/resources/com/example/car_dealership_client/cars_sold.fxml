@@ -1,23 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.text.Font?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.car_dealership_client.admin_controllers.AdmClosedController">
+<AnchorPane prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/17.0.2-ea"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.example.car_dealership_client.admin_controllers.AdminSoldController">
     <children>
-        <ScrollPane layoutX="-2.0" layoutY="57.0" prefHeight="253.0" prefWidth="600.0" AnchorPane.rightAnchor="2.0">
-            <content>
-                <AnchorPane fx:id="applics_anchor" maxHeight="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefWidth="579.0" />
-            </content>
-        </ScrollPane>
-        <Label alignment="CENTER" layoutX="170.0" layoutY="14.0" prefHeight="31.0" prefWidth="262.0" text="Closed Orders">
+        <Label alignment="CENTER" layoutY="2.0" prefHeight="83.0" prefWidth="1000.0" text="Cars sold">
             <font>
-                <Font size="19.0" />
+                <Font name="System Bold" size="48.0"/>
             </font>
         </Label>
-        <Button fx:id="g" layoutX="274.0" layoutY="357.0" mnemonicParsing="false" onAction="#switchToMainMenu" text="Go Back" />
+        <ScrollPane fx:id="scrollPane" fitToWidth="true" layoutX="35.0" layoutY="94.0" prefHeight="413.0"
+                    prefWidth="930.0">
+            <content>
+                <TableView fx:id="table" prefHeight="469" prefWidth="930">
+                    <columns>
+                        <TableColumn fx:id="idColumn"/>
+                        <TableColumn fx:id="sellerColumn"/>
+                        <TableColumn fx:id="buyerColumn"/>
+                        <TableColumn fx:id="manufacturerColumn"/>
+                        <TableColumn fx:id="modelColumn"/>
+                        <TableColumn fx:id="colorColumn"/>
+                        <TableColumn fx:id="productionYearColumn"/>
+                        <TableColumn fx:id="editColumn"/>
+                        <TableColumn fx:id="deleteColumn"/>
+                    </columns>
+                </TableView>
+            </content>
+        </ScrollPane>
+        <Button id="backButton" layoutX="35.0" layoutY="524.0" mnemonicParsing="false" onAction="#switchToMainMenu"
+                prefHeight="39.0" prefWidth="88.0" text="Back">
+            <font>
+                <Font size="18.0"/>
+            </font>
+        </Button>
     </children>
 </AnchorPane>

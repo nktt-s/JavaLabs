@@ -24,7 +24,7 @@ import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Optional;
 
-public class AdminInProgressController {
+public class AdminSoldController {
     private static final Logger loggerMain = LogManager.getLogger("MainLogger");
     @FXML
     private ScrollPane scrollPane;
@@ -49,10 +49,10 @@ public class AdminInProgressController {
     @FXML
     private TableColumn<Car, Button> deleteColumn;
 
-    String tableName = "AllInProgressCars";
+    String tableName = "AllSoldCars";
 
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("cars_in_progress.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("cars_sold.fxml"));
         Parent root = fxmlLoader.load();
 
         ScrollPane scrollPane = (ScrollPane) root.lookup("#scrollPane");
@@ -60,14 +60,14 @@ public class AdminInProgressController {
 
         Scene scene = new Scene(root, 1000, 600);
         stage.setResizable(false);
-        stage.setTitle("OCDS: Online Car Dealership System | Cars in progress page");
+        stage.setTitle("OCDS: Online Car Dealership System | Cars sold page");
         stage.setScene(scene);
         stage.show();
     }
 
-    public void switchToMainMenu(ActionEvent onBackClicked) throws IOException {
+    public void switchToMainMenu(ActionEvent go_back_clicked) throws IOException {
         loggerMain.info("Нажата кнопка возвращения в главное меню Администратора");
-        Stage stage = (Stage) ((Node) onBackClicked.getSource()).getScene().getWindow();
+        Stage stage = (Stage) ((Node) go_back_clicked.getSource()).getScene().getWindow();
         FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("admin_main.fxml"));
         Parent root = fxmlLoader.load();
         Scene scene = new Scene(root);
@@ -77,7 +77,7 @@ public class AdminInProgressController {
     }
 
     public void updateCars(ScrollPane scrollPane) {
-        loggerMain.info("Запущен метод обновления таблицы автомобилей в процессе продажи");
+        loggerMain.info("Запущен метод обновления таблицы проданных автомобилей");
         ArrayList<Car> carsFromDB = DatabaseManager.getAllCars(tableName);
 
         if (carsFromDB == null) return;

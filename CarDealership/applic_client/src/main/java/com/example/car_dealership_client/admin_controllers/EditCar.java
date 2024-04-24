@@ -70,6 +70,7 @@ public class EditCar {
         switch (tableName) {
             case "AllStockCars" -> controllerName = "AdminInStockController";
             case "AllInProgressCars" -> controllerName = "AdminInProgressController";
+            case "AllSoldCars" -> controllerName = "AdminSoldController";
             default -> controllerName = null;
         }
     }
@@ -93,6 +94,10 @@ public class EditCar {
                 Scene currentScene = cancelButton.getScene();
                 Stage stage = (Stage) currentScene.getWindow();
                 adminInProgressController.start(stage);
+            } else if (temp_object instanceof AdminSoldController adminSoldController) {
+                Scene currentScene = cancelButton.getScene();
+                Stage stage = (Stage) currentScene.getWindow();
+                adminSoldController.start(stage);
             }
 
         } catch (Exception e) {
@@ -156,6 +161,10 @@ public class EditCar {
                     Scene currentScene = cancelButton.getScene();
                     Stage stage = (Stage) currentScene.getWindow();
                     adminInProgressController.start(stage);
+                } else if (temp_object instanceof AdminSoldController adminSoldController) {
+                    Scene currentScene = cancelButton.getScene();
+                    Stage stage = (Stage) currentScene.getWindow();
+                    adminSoldController.start(stage);
                 }
 
             } catch (Exception e) {

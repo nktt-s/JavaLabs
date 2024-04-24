@@ -46,8 +46,6 @@ public class AdminInStockController {
     private TableColumn<Car, Button> editColumn;
     @FXML
     private TableColumn<Car, Button> deleteColumn;
-    @FXML
-    Button backButton;
 
     String tableName = "AllStockCars";
 
@@ -56,7 +54,7 @@ public class AdminInStockController {
         Parent root = fxmlLoader.load();
 
         ScrollPane scrollPane = (ScrollPane) root.lookup("#scrollPane");
-        update_cars(scrollPane);
+        updateCars(scrollPane);
 
         Scene scene = new Scene(root, 1000, 600);
         stage.setResizable(false);
@@ -69,18 +67,16 @@ public class AdminInStockController {
     public void switchToMainMenu(ActionEvent onBackClicked) throws IOException {
         loggerMain.info("Нажата кнопка возвращения в главное меню Администратора");
         Stage stage = (Stage) ((Node) onBackClicked.getSource()).getScene().getWindow();
-
-        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("adm_main.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("admin_main.fxml"));
         Parent root = fxmlLoader.load();
         Scene scene = new Scene(root);
         fxmlLoader.getController();
-
+        stage.setTitle("OCDS: Online Car Dealership System | Admin page");
         stage.setScene(scene);
         stage.show();
-
     }
 
-    public void update_cars(ScrollPane scrollPane) {
+    public void updateCars(ScrollPane scrollPane) {
         loggerMain.info("Запущен метод обновления таблицы автомобилей в наличии");
         ArrayList<Car> carsFromDB = DatabaseManager.getAllCars(tableName);
 
@@ -100,7 +96,7 @@ public class AdminInStockController {
 
         sellerColumn = new TableColumn<>("Seller");
         sellerColumn.setCellValueFactory(new PropertyValueFactory<>("seller"));
-        sellerColumn.setPrefWidth(110.0);
+        sellerColumn.setPrefWidth(100.0);
         table.getColumns().add(sellerColumn);
 
         manufacturerColumn = new TableColumn<>("Manufacturer");
@@ -146,7 +142,7 @@ public class AdminInStockController {
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
-                    update_cars(scrollPane);
+                    updateCars(scrollPane);
                 });
             }
 
@@ -186,9 +182,9 @@ public class AdminInStockController {
                     if (result.isPresent() && result.get() == ButtonType.OK) {
                         loggerMain.info("Удаление автомобиля с ID = {}", id);
                         DatabaseManager.deleteCar(id, tableName);
-                        update_cars(scrollPane);
+                        updateCars(scrollPane);
                     } else {
-                        loggerMain.info("Отмена удаления устройства с ID = {}", id);
+                        loggerMain.info("Отмена удаления автомобиля с ID = {}", id);
                         alert.close();
                     }
                 });
@@ -209,5 +205,4 @@ public class AdminInStockController {
         table.getColumns().add(deleteColumn);
         scrollPane.setContent(table);
     }
-
 }
