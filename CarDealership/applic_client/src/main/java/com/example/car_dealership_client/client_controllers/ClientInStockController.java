@@ -68,9 +68,9 @@ public class ClientInStockController {
         Parent root = fxmlLoader.load();
 
         ScrollPane scrollPane = (ScrollPane) root.lookup("#scrollPane");
-        updateCars(scrollPane);
         ClientInStockController.client = client;
         ClientInStockController.clientName = clientName;
+        updateCars(scrollPane);
 
         Scene scene = new Scene(root, 1000, 600);
         stage.setResizable(false);

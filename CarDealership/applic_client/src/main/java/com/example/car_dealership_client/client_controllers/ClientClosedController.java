@@ -37,18 +37,6 @@ public class ClientClosedController {
 
     }
 
-    public void update_applications(ActionEvent accept_clicked) throws IOException {
-        Stage stage = (Stage)((Node)accept_clicked.getSource()).getScene().getWindow();
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/car_dealership_client/closed.fxml"));
-        Parent root = loader.load();
-        Scene scene = new Scene(root);
-        ClientInProgressController controller = loader.getController();
-        controller.prepare_applications(client, closed_applics);
-
-        stage.setScene(scene);
-        stage.show();
-    }
-
     public void prepare_applications(Client client,List<ApplicationData> applic_data){
         this.client = client;
         closed_applics = applic_data;

@@ -54,12 +54,13 @@ public class ClientMainController {
     public void prepareMainMenu(String clientName, Client client) {
         setHeaderName(clientName);
         ClientMainController.client = client;
+        ClientMainController.clientName = clientName;
     }
 
     public void connect(Socket socket, ObjectInputStream ois, ObjectOutputStream oos) {
         try {
             client = new Client(socket, ois, oos);
-            client.sendNameToServer(clientName);
+//            client.sendNameToServer(clientName);
             Thread clientThread = new Thread(client);
             clientThread.start();
         } catch (IOException e) {
@@ -76,7 +77,6 @@ public class ClientMainController {
         controller.start(stage, client, clientName);
     }
 
-    // TODO
     public void onShowMyOrdersButtonClicked(ActionEvent button_clicked) throws IOException {
         loggerMain.info("От имени Клиента {} нажата кнопка получения автомобилей в процессе покупки", clientName);
         stage = (Stage) ((Node) button_clicked.getSource()).getScene().getWindow();
@@ -84,7 +84,6 @@ public class ClientMainController {
         fxmlLoader.load();
         ClientInProgressController controller = fxmlLoader.getController();
         controller.start(stage, client, clientName);
-//        controller.prepare_applications(client, progress_applics);
     }
 
     // TODO
@@ -131,10 +130,6 @@ public class ClientMainController {
         client.stop_connection();
     }
 
-    public static void remove_applications(List<ApplicationData> waiting_applics_in, List<ApplicationData> applics) {
-        waiting_applics.addAll(applics);
-    }
-
     public static void clearAllApplics() {
         waiting_applics = new ArrayList<>();
         progress_applics = new ArrayList<>();
@@ -160,32 +155,6 @@ public class ClientMainController {
         all_applics.addAll(finished_applics);
         all_applics.addAll(cancelled_applics);
         return all_applics;
-    }
-
-    public void save() throws IOException {
-        if (shadow_data.isEmpty()) loadShadowData();
-        List<ApplicationData> all_applics = getAllApplications();
-        all_applics.addAll(shadow_data);
-        FileOutputStream fos = new FileOutputStream("applics.ser");
-        ObjectOutputStream oos = new ObjectOutputStream(fos);
-        oos.writeObject(all_applics);
-        oos.close();
-    }
-
-    public void loadShadowData() {
-        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream("applics.ser"))) {
-            List<ApplicationData> applics = (List<ApplicationData>) ois.readObject();
-            for (ApplicationData app : applics) {
-                if (!app.get_name().equals(clientName)) {
-                    shadow_data.add(app);
-                }
-            }
-//            file_logger.info("Devices were Deserialized");
-        } catch (ClassNotFoundException | ClassCastException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     public void sortUsersApplic(List<ApplicationData> all_applics) {
@@ -218,13 +187,5 @@ public class ClientMainController {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    public static Integer get_total_id() {
-        return total_id;
-    }
-
-    public static void set_total_id(Integer new_total_id) {
-        total_id = new_total_id;
     }
 }

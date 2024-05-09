@@ -70,10 +70,16 @@ public class DatabaseManager {
         }
     }
 
-    public static ArrayList<Car> getAllCarsByClient(String clientName) {
+    public static ArrayList<Car> getAllCarsByClient(String tableName, String clientName) {
         loggerDB.info("Вызван метод получения автомобилей клиента {} в процессе покупки", clientName);
         ArrayList<Car> cars = new ArrayList<>();
-        String query = "SELECT * FROM AllInProgressCars WHERE buyer = '" + clientName + "'";
+        String query;
+        if (isValidTableName(tableName)) {
+            query = "SELECT * FROM " + tableName + " WHERE buyer = '" + clientName + "'";
+        } else {
+            loggerDB.error("Недопустимое имя таблицы при вызове метода getAllCarsByClient!");
+            return null;
+        }
 
         try {
             Connection connection = DriverManager.getConnection(url, login, password);
@@ -101,7 +107,7 @@ public class DatabaseManager {
 
         } catch (SQLException e) {
             System.err.println("SQLException on getting cars of client " + clientName + " in progress of buying!");
-//            e.printStackTrace();
+            e.printStackTrace();
             return null;
         }
     }

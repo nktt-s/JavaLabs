@@ -61,9 +61,9 @@ public class ClientInProgressController {
         Parent root = fxmlLoader.load();
 
         ScrollPane scrollPane = (ScrollPane) root.lookup("#scrollPane");
-        updateCars(scrollPane);
         ClientInProgressController.client = client;
         ClientInProgressController.clientName = clientName;
+        updateCars(scrollPane);
 
         Scene scene = new Scene(root, 1000, 600);
         stage.setResizable(false);
@@ -90,7 +90,7 @@ public class ClientInProgressController {
 
     public void updateCars(ScrollPane scrollPane) {
         loggerMain.info("Запущен метод обновления таблицы автомобилей клиента {} в процессе покупки", clientName);
-        ArrayList<Car> carsFromDB = DatabaseManager.getAllCarsByClient(clientName);
+        ArrayList<Car> carsFromDB = DatabaseManager.getAllCarsByClient(tableName, clientName);
 
         if (carsFromDB == null) return;
         ObservableList<Car> cars = FXCollections.observableArrayList(carsFromDB);
