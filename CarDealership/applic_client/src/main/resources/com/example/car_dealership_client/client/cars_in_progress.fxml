@@ -8,7 +8,7 @@
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="com.example.car_dealership_client.client_controllers.ClientInProgressController">
     <children>
-        <Label alignment="CENTER" layoutY="2.0" prefHeight="83.0" prefWidth="1000.0" text="Cars in progress">
+        <Label alignment="CENTER" layoutY="2.0" prefHeight="83.0" prefWidth="1000.0" text="Active orders">
             <font>
                 <Font name="System Bold" size="48.0"/>
             </font>

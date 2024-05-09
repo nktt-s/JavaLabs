@@ -6,9 +6,9 @@
 
 <AnchorPane prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/17.0.2-ea"
             xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.example.car_dealership_client.admin_controllers.AdminSoldController">
+            fx:controller="com.example.car_dealership_client.client_controllers.ClientSoldController">
     <children>
-        <Label alignment="CENTER" layoutY="2.0" prefHeight="83.0" prefWidth="1000.0" text="Cars sold">
+        <Label alignment="CENTER" layoutY="2.0" prefHeight="83.0" prefWidth="1000.0" text="Completed orders">
             <font>
                 <Font name="System Bold" size="48.0"/>
             </font>
@@ -20,13 +20,10 @@
                     <columns>
                         <TableColumn fx:id="idColumn"/>
                         <TableColumn fx:id="sellerColumn"/>
-                        <TableColumn fx:id="buyerColumn"/>
                         <TableColumn fx:id="manufacturerColumn"/>
                         <TableColumn fx:id="modelColumn"/>
                         <TableColumn fx:id="colorColumn"/>
                         <TableColumn fx:id="productionYearColumn"/>
-                        <TableColumn fx:id="editColumn"/>
-                        <TableColumn fx:id="deleteColumn"/>
                     </columns>
                 </TableView>
             </content>

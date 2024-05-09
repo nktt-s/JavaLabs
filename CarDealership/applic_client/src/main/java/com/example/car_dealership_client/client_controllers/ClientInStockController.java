@@ -68,6 +68,7 @@ public class ClientInStockController {
     }
 
     public void switchToMainMenu(ActionEvent onBackClicked) throws IOException {
+        loggerMain.info("Возвращение в главное меню клиента {}", clientName);
         Stage stage = (Stage) ((Node) onBackClicked.getSource()).getScene().getWindow();
 
         FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("client/client_main.fxml"));

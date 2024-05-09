@@ -1,6 +1,7 @@
 package com.example.car_dealership_client.client_controllers;
 
 import com.example.car_dealership_client.Main;
+import com.example.car_dealership_client.models.ApplicationData;
 import com.example.car_dealership_client.models.Car;
 import com.example.car_dealership_client.models.Client;
 import com.example.car_dealership_client.models.DatabaseManager;
@@ -12,16 +13,22 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.FlowPane;
 import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
-public class ClientInProgressController {
+public class ClientSoldController {
     private static final Logger loggerMain = LogManager.getLogger("MainLogger");
     @FXML
     private ScrollPane scrollPane;
@@ -43,20 +50,20 @@ public class ClientInProgressController {
     private static Client client;
     private static String clientName;
 
-    String tableName = "AllInProgressCars";
+    String tableName = "AllSoldCars";
 
     public void start(Stage stage, Client client, String clientName) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("client/cars_in_progress.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("client/cars_sold.fxml"));
         Parent root = fxmlLoader.load();
 
         ScrollPane scrollPane = (ScrollPane) root.lookup("#scrollPane");
-        ClientInProgressController.client = client;
-        ClientInProgressController.clientName = clientName;
+        ClientSoldController.client = client;
+        ClientSoldController.clientName = clientName;
         updateCars(scrollPane);
 
         Scene scene = new Scene(root, 1000, 600);
         stage.setResizable(false);
-        stage.setTitle("OCDS: Online Car Dealership System | My active orders page");
+        stage.setTitle("OCDS: Online Car Dealership System | My completed orders page");
         stage.setScene(scene);
         stage.show();
     }
@@ -69,17 +76,17 @@ public class ClientInProgressController {
         Parent root = fxmlLoader.load();
         Scene scene = new Scene(root);
         ClientMainController controller = fxmlLoader.getController();
-        controller.prepareMainMenu(clientName, client);
-        stage.setTitle("OCDS: Online Car Dealership System | Client Main page");
+        controller.prepareMainMenu(client);
 
         stage.setScene(scene);
         stage.show();
-
     }
 
     public void updateCars(ScrollPane scrollPane) {
-        loggerMain.info("Запущен метод обновления таблицы автомобилей клиента {} в процессе покупки", clientName);
+        loggerMain.info("Запущен метод обновления таблицы завершённых заказов клиента {}", clientName);
         ArrayList<Car> carsFromDB = DatabaseManager.getAllCarsByClient(tableName, clientName);
+
+        // TODO Добавить в эту таблицу статус заказа (завершён, отменён) и дату завершённого / отменённого заказа
 
         if (carsFromDB == null) return;
         ObservableList<Car> cars = FXCollections.observableArrayList(carsFromDB);
