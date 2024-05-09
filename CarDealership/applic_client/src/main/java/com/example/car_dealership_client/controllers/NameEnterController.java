@@ -143,7 +143,7 @@ public class NameEnterController {
         controller.prepareMainMenu(inp_name, admin);
         controller.connect(socket, ois, oos);
         stage.setScene(scene);
-        stage.setTitle("OCDS: Online Car Dealership System | Admin page");
+        stage.setTitle("OCDS: Online Car Dealership System | Admin Main page");
         stage.show();
     }
 
@@ -155,7 +155,7 @@ public class NameEnterController {
         controller.prepareMainMenu(clientName, client);
         controller.connect(socket, ois, oos);
         stage.setScene(scene);
-        stage.setTitle("OCDS: Online Car Dealership System | Client page");
+        stage.setTitle("OCDS: Online Car Dealership System | Client Main page");
         stage.show();
     }
 

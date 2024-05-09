@@ -17,6 +17,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.FlowPane;
 import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -27,7 +29,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-public class ClientInStockController {
+public class ClientInProgressController {
     private static final Logger loggerMain = LogManager.getLogger("MainLogger");
     @FXML
     private ScrollPane scrollPane;
@@ -45,57 +47,50 @@ public class ClientInStockController {
     private TableColumn<Car, String> colorColumn;
     @FXML
     private TableColumn<Car, Integer> productionYearColumn;
-    @FXML
-    private TableColumn<Car, Button> requestColumn;
-
-    String tableName = "AllStockCars";
 
     @FXML
-    ChoiceBox<String> type_choice;
-    @FXML
-    TextField applicant_name;
-    @FXML
-    TextField applic_text;
-    @FXML
-    Label error_label;
-    ObservableList<String> types = FXCollections.observableArrayList();
-    List<ApplicationData> waiting_applic;
+    AnchorPane applics_anchor;
+    List<ApplicationData> progress_applics;
     private static Client client;
     private static String clientName;
 
+    String tableName = "AllInProgressCars";
+
     public void start(Stage stage, Client client, String clientName) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("client/cars_in_stock.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("client/cars_in_progress.fxml"));
         Parent root = fxmlLoader.load();
 
         ScrollPane scrollPane = (ScrollPane) root.lookup("#scrollPane");
         updateCars(scrollPane);
-        ClientInStockController.client = client;
-        ClientInStockController.clientName = clientName;
+        ClientInProgressController.client = client;
+        ClientInProgressController.clientName = clientName;
 
         Scene scene = new Scene(root, 1000, 600);
         stage.setResizable(false);
-        stage.setTitle("OCDS: Online Car Dealership System | Cars in stock page");
+        stage.setTitle("OCDS: Online Car Dealership System | My active orders page");
         stage.setScene(scene);
         stage.show();
     }
 
-    public void switchToMainMenu(ActionEvent onBackClicked) throws IOException {
-        Stage stage = (Stage) ((Node) onBackClicked.getSource()).getScene().getWindow();
+    public void switchToMainMenu(ActionEvent go_back_clicked) throws IOException {
+        Stage stage = (Stage) ((Node) go_back_clicked.getSource()).getScene().getWindow();
 
         FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("client/client_main.fxml"));
-        Parent menuRoot = fxmlLoader.load();
-        Scene menuScene = new Scene(menuRoot);
+        Parent root = fxmlLoader.load();
+        Scene scene = new Scene(root);
         ClientMainController controller = fxmlLoader.getController();
+//        controller.connect();
         controller.prepareMainMenu(clientName, client);
         stage.setTitle("OCDS: Online Car Dealership System | Client Main page");
 
-        stage.setScene(menuScene);
+        stage.setScene(scene);
         stage.show();
+
     }
 
     public void updateCars(ScrollPane scrollPane) {
-        loggerMain.info("Запущен метод обновления таблицы автомобилей в наличии");
-        ArrayList<Car> carsFromDB = DatabaseManager.getAllCars(tableName);
+        loggerMain.info("Запущен метод обновления таблицы автомобилей клиента {} в процессе покупки", clientName);
+        ArrayList<Car> carsFromDB = DatabaseManager.getAllCarsByClient(clientName);
 
         if (carsFromDB == null) return;
         ObservableList<Car> cars = FXCollections.observableArrayList(carsFromDB);
@@ -136,49 +131,47 @@ public class ClientInStockController {
         productionYearColumn.setPrefWidth(150.0);
         table.getColumns().add(productionYearColumn);
 
-        requestColumn = new TableColumn<>("Request");
-        requestColumn.setCellFactory(param -> new TableCell<>() {
-            private final Button requestButton = new Button("Request");
-
-            {
-                requestButton.setOnAction(event -> {
-                    Car car = getTableView().getItems().get(getIndex());
-                    int id = car.getId();
-                    String manufacturer = car.getManufacturer();
-                    String model = car.getModel();
-
-                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                    Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
-                    stage.getIcons().add(new Image(Objects.requireNonNull(Main.class.getResourceAsStream("dealership.png"))));
-
-                    alert.setTitle("Подтверждение запроса на покупку автомобиля");
-                    alert.setHeaderText("Покупка автомобиля '" + manufacturer + " " + model + "'");
-                    alert.setContentText("Вы действительно хотите создать запрос на покупку автомобиля с ID = " + id + "?");
-                    Optional<ButtonType> result = alert.showAndWait();
-                    if (result.isPresent() && result.get() == ButtonType.OK) {
-                        loggerMain.info("Создание запроса на покупку автомобиля с ID = {}", id);
-                        DatabaseManager.moveCarFromStockToInProgress(id, clientName);
-                        updateCars(scrollPane);
-                    } else {
-                        loggerMain.info("Отмена создания запроса на покупку автомобиля с ID = {}", id);
-                        alert.close();
-                    }
-                });
-            }
-
-            @Override
-            protected void updateItem(Button item, boolean empty) {
-                super.updateItem(item, empty);
-                setAlignment(Pos.CENTER);
-                if (empty) {
-                    setGraphic(null);
-                } else {
-                    setGraphic(requestButton);
-                }
-            }
-        });
-        requestColumn.setPrefWidth(90.0);
-        table.getColumns().add(requestColumn);
         scrollPane.setContent(table);
+    }
+
+    public void prepare_applications(Client client, List<ApplicationData> applic_data) {
+        ClientInProgressController.client = client;
+        progress_applics = applic_data;
+        render_applications();
+    }
+
+    public void render_applications() {
+        render_applic_text();
+    }
+
+    public void render_applic_text() {
+        double fp_top_anchor = 10;
+        for (int i = 0; i < progress_applics.size(); i++) {
+            ApplicationData curr = progress_applics.get(i);
+            FlowPane fp = new FlowPane(0, 10);
+            fp.setPrefWidth(600);
+            List<Label> lbl_list = new ArrayList<>();
+            lbl_list.add(new Label(" " + curr.get_status()));
+            lbl_list.add(new Label(" " + curr.get_name()));
+            lbl_list.add(new Label(" " + curr.get_type()));
+            lbl_list.add(new Label(" " + curr.get_date()));
+            lbl_list.forEach(lbl -> {
+                lbl.setPrefWidth(70);
+                lbl.setStyle("-fx-border-color: grey;");
+            });
+            lbl_list.add(new Label(" " + curr.get_text()));
+            lbl_list.get(4).setPrefWidth(300);
+
+            lbl_list.forEach(lbl -> {
+                lbl.setStyle("-fx-border-color: grey;");
+                lbl.setPrefHeight(30);
+            });
+
+            fp.getChildren().addAll(lbl_list);
+            AnchorPane.setTopAnchor(fp, fp_top_anchor);
+            fp_top_anchor += 40;
+            AnchorPane.setLeftAnchor(fp, 10.0);
+            applics_anchor.getChildren().addAll(fp);
+        }
     }
 }

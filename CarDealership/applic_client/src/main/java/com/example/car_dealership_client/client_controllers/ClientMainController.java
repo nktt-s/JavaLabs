@@ -48,12 +48,12 @@ public class ClientMainController {
 
     public void prepareMainMenu(Client client) {
         setHeaderName(clientName);
-        this.client = client;
+        ClientMainController.client = client;
     }
 
     public void prepareMainMenu(String clientName, Client client) {
         setHeaderName(clientName);
-        this.client = client;
+        ClientMainController.client = client;
     }
 
     public void connect(Socket socket, ObjectInputStream ois, ObjectOutputStream oos) {
@@ -67,11 +67,9 @@ public class ClientMainController {
         }
     }
 
-    // TODO
     public void onInStockButtonClicked(ActionEvent applications_clicked) throws IOException {
         loggerMain.info("От имени Клиента {} нажата кнопка получения автомобилей в наличии", clientName);
         stage = (Stage) ((Node) applications_clicked.getSource()).getScene().getWindow();
-        stage.setTitle("OCDS: Online Car Dealership System | Cars in stock page");
         FXMLLoader fxmlloader = new FXMLLoader(Main.class.getResource("client/cars_in_stock.fxml"));
         fxmlloader.load();
         ClientInStockController controller = fxmlloader.getController();
@@ -80,15 +78,13 @@ public class ClientMainController {
 
     // TODO
     public void onShowMyOrdersButtonClicked(ActionEvent button_clicked) throws IOException {
+        loggerMain.info("От имени Клиента {} нажата кнопка получения автомобилей в процессе покупки", clientName);
         stage = (Stage) ((Node) button_clicked.getSource()).getScene().getWindow();
-        stage.setTitle("OCDS: Online Car Dealership System | My active orders page");
-        FXMLLoader loader = new FXMLLoader(Main.class.getResource("my_orders.fxml"));
-        Parent root = loader.load();
-        Scene scene = new Scene(root);
-        ClientProgressController controller = loader.getController();
-        controller.prepare_applications(client, progress_applics);
-        stage.setScene(scene);
-        stage.show();
+        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("client/cars_in_progress.fxml"));
+        fxmlLoader.load();
+        ClientInProgressController controller = fxmlLoader.getController();
+        controller.start(stage, client, clientName);
+//        controller.prepare_applications(client, progress_applics);
     }
 
     // TODO

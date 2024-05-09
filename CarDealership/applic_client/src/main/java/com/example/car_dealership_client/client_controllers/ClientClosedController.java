@@ -42,7 +42,7 @@ public class ClientClosedController {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/car_dealership_client/closed.fxml"));
         Parent root = loader.load();
         Scene scene = new Scene(root);
-        ClientProgressController controller = loader.getController();
+        ClientInProgressController controller = loader.getController();
         controller.prepare_applications(client, closed_applics);
 
         stage.setScene(scene);

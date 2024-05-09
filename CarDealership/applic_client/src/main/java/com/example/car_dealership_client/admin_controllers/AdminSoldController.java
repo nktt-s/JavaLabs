@@ -71,7 +71,7 @@ public class AdminSoldController {
         FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("admin/main.fxml"));
         Parent root = fxmlLoader.load();
         Scene scene = new Scene(root);
-        stage.setTitle("OCDS: Online Car Dealership System | Admin page");
+        stage.setTitle("OCDS: Online Car Dealership System | Admin Main page");
         stage.setScene(scene);
         stage.show();
     }

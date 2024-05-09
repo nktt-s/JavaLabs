@@ -70,6 +70,42 @@ public class DatabaseManager {
         }
     }
 
+    public static ArrayList<Car> getAllCarsByClient(String clientName) {
+        loggerDB.info("Вызван метод получения автомобилей клиента {} в процессе покупки", clientName);
+        ArrayList<Car> cars = new ArrayList<>();
+        String query = "SELECT * FROM AllInProgressCars WHERE buyer = '" + clientName + "'";
+
+        try {
+            Connection connection = DriverManager.getConnection(url, login, password);
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(query);
+
+            while (resultSet.next()) {
+                int id = resultSet.getInt("id");
+                String seller = resultSet.getString("seller");
+                String buyer = resultSet.getString("buyer");
+                String manufacturer = resultSet.getString("manufacturer");
+                String model = resultSet.getString("model");
+                String color = resultSet.getString("color");
+                int productionYear = resultSet.getInt("productionYear");
+
+                Car car = new Car(id, seller, buyer, manufacturer, model, color, productionYear);
+                cars.add(car);
+            }
+            connection.close();
+            if (cars.isEmpty()) {
+                return null;
+            } else {
+                return cars;
+            }
+
+        } catch (SQLException e) {
+            System.err.println("SQLException on getting cars of client " + clientName + " in progress of buying!");
+//            e.printStackTrace();
+            return null;
+        }
+    }
+
     public static void deleteCar(int id, String tableName) {
         loggerDB.info("Вызван метод удаления автомобиля");
         String query;
@@ -148,7 +184,7 @@ public class DatabaseManager {
             statement.setInt(DatabaseAttributes.ID.ordinal(), id);
             ResultSet resultSet = statement.executeQuery();
 
-            while (resultSet.next()) {
+            if (resultSet.next()) {
                 int idCar = resultSet.getInt("id");
                 String seller = resultSet.getString("seller");
                 String buyer = resultSet.getString("buyer");

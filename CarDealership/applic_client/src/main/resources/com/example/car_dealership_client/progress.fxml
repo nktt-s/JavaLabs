@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.car_dealership_client.client_controllers.ClientProgressController">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.car_dealership_client.client_controllers.ClientInProgressController">
     <children>
         <ScrollPane layoutX="-2.0" layoutY="57.0" prefHeight="253.0" prefWidth="600.0" AnchorPane.rightAnchor="2.0">
             <content>
