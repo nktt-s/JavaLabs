@@ -77,6 +77,7 @@ public class ClientSoldController {
         Scene scene = new Scene(root);
         ClientMainController controller = fxmlLoader.getController();
         controller.prepareMainMenu(client);
+        stage.setTitle("OCDS: Online Car Dealership System | Client Main page");
 
         stage.setScene(scene);
         stage.show();
