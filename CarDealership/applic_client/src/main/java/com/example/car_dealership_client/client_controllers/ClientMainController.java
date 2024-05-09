@@ -10,7 +10,6 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -23,10 +22,6 @@ import java.util.List;
 public class ClientMainController {
     private static final Logger loggerMain = LogManager.getLogger("MainLogger");
     @FXML
-    TextField nameTextField;
-    @FXML
-    Label enterNameLabel;
-    @FXML
     Label clientNameHeader;
     private Stage stage;
     private static String clientName;
@@ -36,9 +31,6 @@ public class ClientMainController {
     private static List<ApplicationData> finished_applics = new ArrayList<>();
     private static List<ApplicationData> cancelled_applics = new ArrayList<>();
     private static Client client;
-    private static List<ApplicationData> shadow_data = new ArrayList<>();
-    //All-time number of applications for unique applications id;
-    private static Integer total_id;
 
 
     public void setHeaderName(String clientName) {
@@ -87,16 +79,16 @@ public class ClientMainController {
     }
 
     // TODO
-    public void switchToMainMenu(ActionEvent go_back_clicked) throws IOException {
-        Stage stage = (Stage) ((Node) go_back_clicked.getSource()).getScene().getWindow();
-        stage.setTitle("OCDS: Online Car Dealership System | Client page");
-        FXMLLoader menuLoader = new FXMLLoader(Main.class.getResource("client_main.fxml"));
-        Parent menuRoot = menuLoader.load();
-        Scene menuScene = new Scene(menuRoot);
-        ClientMainController menuController = menuLoader.getController();
-        stage.setScene(menuScene);
-        stage.show();
-    }
+//    public void switchToMainMenu(ActionEvent go_back_clicked) throws IOException {
+//        Stage stage = (Stage) ((Node) go_back_clicked.getSource()).getScene().getWindow();
+//        stage.setTitle("OCDS: Online Car Dealership System | Client page");
+//        FXMLLoader menuLoader = new FXMLLoader(Main.class.getResource("client_main.fxml"));
+//        Parent menuRoot = menuLoader.load();
+//        Scene menuScene = new Scene(menuRoot);
+//        ClientMainController controller = menuLoader.getController();
+//        stage.setScene(menuScene);
+//        stage.show();
+//    }
 
     // TODO
     public void onCompletedOrdersButtonClicked(ActionEvent button_clicked) throws IOException {
@@ -107,7 +99,6 @@ public class ClientMainController {
         Scene scene = new Scene(root);
         ClientClosedController controller = loader.getController();
         List<ApplicationData> closed = new ArrayList<>();
-//        System.out.println("Here are closed: " + finished_applics + rejected_applics + cancelled_applics);
         closed.addAll(finished_applics);
         closed.addAll(rejected_applics);
         closed.addAll(cancelled_applics);
@@ -117,8 +108,8 @@ public class ClientMainController {
     }
 
 
-    public void onLogOutButtonClicked(ActionEvent quit_clicked) throws IOException {
-        stage = (Stage) ((Node) quit_clicked.getSource()).getScene().getWindow();
+    public void onLogOutButtonClicked(ActionEvent logOutClicked) throws IOException {
+        stage = (Stage) ((Node) logOutClicked.getSource()).getScene().getWindow();
         stage.setTitle("OCDS: Online Car Dealership System | Login page");
         FXMLLoader loader = new FXMLLoader(Main.class.getResource("login_page.fxml"));
         Parent root = loader.load();
@@ -147,45 +138,4 @@ public class ClientMainController {
         cancelled_applics = cancelled;
     }
 
-    public List<ApplicationData> getAllApplications() {
-        List<ApplicationData> all_applics = new ArrayList<>();
-        all_applics.addAll(waiting_applics);
-        all_applics.addAll(progress_applics);
-        all_applics.addAll(rejected_applics);
-        all_applics.addAll(finished_applics);
-        all_applics.addAll(cancelled_applics);
-        return all_applics;
-    }
-
-    public void sortUsersApplic(List<ApplicationData> all_applics) {
-        for (ApplicationData app : all_applics) {
-            if (app.get_name().equals(clientName)) {
-                switch (app.get_status()) {
-                    case "On wait" -> waiting_applics.add(app);
-                    case "In Progress" -> progress_applics.add(app);
-                    case "Finished" -> finished_applics.add(app);
-                    case "Rejected" -> rejected_applics.add(app);
-                    case "Cancelled" -> cancelled_applics.add(app);
-                    default -> throw new IllegalStateException("Unexpected value: " + app.get_status());
-                }
-            } else {
-                shadow_data.add(app);
-            }
-        }
-    }
-
-    public void load() {
-        shadow_data.clear();
-        clearAllApplics();
-        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream("applics.ser"))) {
-            List<ApplicationData> applics = (List<ApplicationData>) ois.readObject();
-//            file_logger.info("Devices were Deserialized");
-            sortUsersApplic(applics);
-        } catch (ClassNotFoundException | ClassCastException e) {
-            System.exit(228);
-            throw new RuntimeException(e);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
 }

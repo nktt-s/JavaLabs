@@ -95,8 +95,8 @@ public class AdminMainController {
         controller.start(stage);
     }
 
-    public void onLogOutButtonClicked(ActionEvent quit_clicked) throws IOException {
-        stage = (Stage) ((Node) quit_clicked.getSource()).getScene().getWindow();
+    public void onLogOutButtonClicked(ActionEvent logOutClicked) throws IOException {
+        stage = (Stage) ((Node) logOutClicked.getSource()).getScene().getWindow();
         stage.setTitle("OCDS: Online Car Dealership System | Login page");
         FXMLLoader loader = new FXMLLoader(Main.class.getResource("login_page.fxml"));
         Parent root = loader.load();

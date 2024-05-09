@@ -1,7 +1,6 @@
 package com.example.car_dealership_client.client_controllers;
 
 import com.example.car_dealership_client.Main;
-import com.example.car_dealership_client.models.ApplicationData;
 import com.example.car_dealership_client.models.Car;
 import com.example.car_dealership_client.models.Client;
 import com.example.car_dealership_client.models.DatabaseManager;
@@ -23,7 +22,6 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -48,20 +46,10 @@ public class ClientInStockController {
     @FXML
     private TableColumn<Car, Button> requestColumn;
 
-    String tableName = "AllStockCars";
-
-    @FXML
-    ChoiceBox<String> type_choice;
-    @FXML
-    TextField applicant_name;
-    @FXML
-    TextField applic_text;
-    @FXML
-    Label error_label;
-    ObservableList<String> types = FXCollections.observableArrayList();
-    List<ApplicationData> waiting_applic;
     private static Client client;
     private static String clientName;
+
+    String tableName = "AllStockCars";
 
     public void start(Stage stage, Client client, String clientName) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("client/cars_in_stock.fxml"));

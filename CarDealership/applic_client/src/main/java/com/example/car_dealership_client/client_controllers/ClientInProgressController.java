@@ -1,7 +1,6 @@
 package com.example.car_dealership_client.client_controllers;
 
 import com.example.car_dealership_client.Main;
-import com.example.car_dealership_client.models.ApplicationData;
 import com.example.car_dealership_client.models.Car;
 import com.example.car_dealership_client.models.Client;
 import com.example.car_dealership_client.models.DatabaseManager;
@@ -10,24 +9,17 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.image.Image;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.FlowPane;
 import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
 
 public class ClientInProgressController {
     private static final Logger loggerMain = LogManager.getLogger("MainLogger");
@@ -48,9 +40,6 @@ public class ClientInProgressController {
     @FXML
     private TableColumn<Car, Integer> productionYearColumn;
 
-    @FXML
-    AnchorPane applics_anchor;
-    List<ApplicationData> progress_applics;
     private static Client client;
     private static String clientName;
 
@@ -79,7 +68,6 @@ public class ClientInProgressController {
         Parent root = fxmlLoader.load();
         Scene scene = new Scene(root);
         ClientMainController controller = fxmlLoader.getController();
-//        controller.connect();
         controller.prepareMainMenu(clientName, client);
         stage.setTitle("OCDS: Online Car Dealership System | Client Main page");
 
@@ -132,46 +120,5 @@ public class ClientInProgressController {
         table.getColumns().add(productionYearColumn);
 
         scrollPane.setContent(table);
-    }
-
-    public void prepare_applications(Client client, List<ApplicationData> applic_data) {
-        ClientInProgressController.client = client;
-        progress_applics = applic_data;
-        render_applications();
-    }
-
-    public void render_applications() {
-        render_applic_text();
-    }
-
-    public void render_applic_text() {
-        double fp_top_anchor = 10;
-        for (int i = 0; i < progress_applics.size(); i++) {
-            ApplicationData curr = progress_applics.get(i);
-            FlowPane fp = new FlowPane(0, 10);
-            fp.setPrefWidth(600);
-            List<Label> lbl_list = new ArrayList<>();
-            lbl_list.add(new Label(" " + curr.get_status()));
-            lbl_list.add(new Label(" " + curr.get_name()));
-            lbl_list.add(new Label(" " + curr.get_type()));
-            lbl_list.add(new Label(" " + curr.get_date()));
-            lbl_list.forEach(lbl -> {
-                lbl.setPrefWidth(70);
-                lbl.setStyle("-fx-border-color: grey;");
-            });
-            lbl_list.add(new Label(" " + curr.get_text()));
-            lbl_list.get(4).setPrefWidth(300);
-
-            lbl_list.forEach(lbl -> {
-                lbl.setStyle("-fx-border-color: grey;");
-                lbl.setPrefHeight(30);
-            });
-
-            fp.getChildren().addAll(lbl_list);
-            AnchorPane.setTopAnchor(fp, fp_top_anchor);
-            fp_top_anchor += 40;
-            AnchorPane.setLeftAnchor(fp, 10.0);
-            applics_anchor.getChildren().addAll(fp);
-        }
     }
 }
