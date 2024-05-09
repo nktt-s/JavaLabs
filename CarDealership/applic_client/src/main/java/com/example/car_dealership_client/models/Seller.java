@@ -1,6 +1,7 @@
 package com.example.car_dealership_client.models;
 
 //import com.example.applic_client.admin_controllers.AdminMainController;
+
 import com.example.car_dealership_client.seller_controllers.SellerMainController;
 
 import java.io.IOException;
@@ -9,7 +10,7 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.List;
 
-public class Seller extends User{
+public class Seller extends User {
     Integer total_id;
 
 
@@ -19,8 +20,8 @@ public class Seller extends User{
 
 
     @Override
-    public void run(){
-        while(socket.isConnected()){
+    public void run() {
+        while (socket.isConnected()) {
             List<ApplicationData> applicationsFromServer;
             try {
 //                System.out.println("At least I was in run()");
@@ -29,7 +30,7 @@ public class Seller extends User{
 //                sortIncomingApplications(applicationsFromServer);
                 SellerMainController.update_all_applications(applicationsFromServer);
             } catch (IOException e) {
-                close_everything(socket,oos,ois);
+                close_everything(socket, oos, ois);
                 break;
             } catch (ClassNotFoundException e) {
                 throw new RuntimeException(e);
@@ -51,7 +52,7 @@ public class Seller extends User{
         }
     }
 
-    public void getApplicationsFromServer(){
+    public void getApplicationsFromServer() {
         try {
             Object b = ois.readObject();
             oos.writeObject("Gimme");
@@ -61,14 +62,14 @@ public class Seller extends User{
 //            System.out.println("***********************Ultimate applications shower: ");
             incoming_applics.forEach(ApplicationData::print);
 //            System.out.println("***********************End of Ultimate applications shower: ");
-        }
-        catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
-            close_everything(socket,oos,ois);
+            close_everything(socket, oos, ois);
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
     }
+
     public void sendNameToServer(String name) throws IOException {
         try {
             oos.writeObject(name);

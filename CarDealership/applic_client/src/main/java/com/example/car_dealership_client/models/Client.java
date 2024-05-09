@@ -12,7 +12,6 @@ import java.util.List;
 public class Client extends User {
     Integer total_id;
 
-
     public Client(Socket socket, ObjectInputStream ois, ObjectOutputStream oos) throws IOException {
         super(socket, "Client", ois, oos);
     }
@@ -22,19 +21,26 @@ public class Client extends User {
         while (socket.isConnected()) {
             List<ApplicationData> applicationsFromServer;
             try {
-                List<String> applicationsString = (List<String>) ois.readObject();
-//                   System.out.println("Before converter:" + applicationsString);
-                applicationsFromServer = converter.list_to_application(applicationsString);
-                sortIncomingApplications(applicationsFromServer);
+                if (!socket.isClosed()) {
+//                    System.out.println("Socket is not closed!!!");
+                    List<String> applicationsString = (List<String>) ois.readObject();
+                    applicationsFromServer = converter.list_to_application(applicationsString);
+                    sortIncomingApplications(applicationsFromServer);
+                } else {
+//                    System.out.println("Socket is closed!!!");
+                    close_everything(socket, oos, ois);
+                    break;
+                }
+//                List<String> applicationsString = (List<String>) ois.readObject();
+//                applicationsFromServer = converter.list_to_application(applicationsString);
+//                sortIncomingApplications(applicationsFromServer);
             } catch (IOException e) {
-//                   System.out.println("In run");
                 e.printStackTrace();
                 close_everything(socket, oos, ois);
                 break;
             } catch (ClassNotFoundException e) {
                 throw new RuntimeException(e);
             }
-
         }
     }
 
@@ -74,7 +80,6 @@ public class Client extends User {
         try {
             oos.writeObject(name);
             oos.flush();
-
         } catch (IOException e) {
             e.printStackTrace();
 //           System.out.println("Error sending name to server");
@@ -99,7 +104,7 @@ public class Client extends User {
             }
         }
 //            System.out.println("In sort incoming_applic = " + wait);
-        AdminMainController.update_all_applics(wait, progress, rejected, finished, cancelled);
-        ClientMainController.update_all_applics(wait, progress, rejected, finished, cancelled);
+        AdminMainController.updateAllApplics(wait, progress, rejected, finished, cancelled);
+        ClientMainController.updateAllApplics(wait, progress, rejected, finished, cancelled);
     }
 }

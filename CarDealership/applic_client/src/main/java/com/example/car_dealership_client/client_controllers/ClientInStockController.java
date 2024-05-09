@@ -1,7 +1,9 @@
-package com.example.car_dealership_client.admin_controllers;
+package com.example.car_dealership_client.client_controllers;
 
 import com.example.car_dealership_client.Main;
+import com.example.car_dealership_client.models.ApplicationData;
 import com.example.car_dealership_client.models.Car;
+import com.example.car_dealership_client.models.Client;
 import com.example.car_dealership_client.models.DatabaseManager;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -21,10 +23,11 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-public class AdminSoldController {
+public class ClientInStockController {
     private static final Logger loggerMain = LogManager.getLogger("MainLogger");
     @FXML
     private ScrollPane scrollPane;
@@ -35,8 +38,6 @@ public class AdminSoldController {
     @FXML
     private TableColumn<Car, String> sellerColumn;
     @FXML
-    private TableColumn<Car, String> buyerColumn;
-    @FXML
     private TableColumn<Car, String> manufacturerColumn;
     @FXML
     private TableColumn<Car, String> modelColumn;
@@ -45,39 +46,54 @@ public class AdminSoldController {
     @FXML
     private TableColumn<Car, Integer> productionYearColumn;
     @FXML
-    private TableColumn<Car, Button> editColumn;
+    private TableColumn<Car, Button> requestColumn;
+
+    String tableName = "AllStockCars";
+
     @FXML
-    private TableColumn<Car, Button> deleteColumn;
+    ChoiceBox<String> type_choice;
+    @FXML
+    TextField applicant_name;
+    @FXML
+    TextField applic_text;
+    @FXML
+    Label error_label;
+    ObservableList<String> types = FXCollections.observableArrayList();
+    List<ApplicationData> waiting_applic;
+    private static Client client;
+    private static String clientName;
 
-    String tableName = "AllSoldCars";
-
-    public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("admin/cars_sold.fxml"));
+    public void start(Stage stage, Client client, String clientName) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("client/cars_in_stock.fxml"));
         Parent root = fxmlLoader.load();
 
         ScrollPane scrollPane = (ScrollPane) root.lookup("#scrollPane");
         updateCars(scrollPane);
+        ClientInStockController.client = client;
+        ClientInStockController.clientName = clientName;
 
         Scene scene = new Scene(root, 1000, 600);
         stage.setResizable(false);
-        stage.setTitle("OCDS: Online Car Dealership System | Cars sold page");
+        stage.setTitle("OCDS: Online Car Dealership System | Cars in stock page");
         stage.setScene(scene);
         stage.show();
     }
 
-    public void switchToMainMenu(ActionEvent go_back_clicked) throws IOException {
-        loggerMain.info("Нажата кнопка возвращения в главное меню Администратора");
-        Stage stage = (Stage) ((Node) go_back_clicked.getSource()).getScene().getWindow();
-        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("admin/main.fxml"));
-        Parent root = fxmlLoader.load();
-        Scene scene = new Scene(root);
-        stage.setTitle("OCDS: Online Car Dealership System | Admin page");
-        stage.setScene(scene);
+    public void switchToMainMenu(ActionEvent onBackClicked) throws IOException {
+        Stage stage = (Stage) ((Node) onBackClicked.getSource()).getScene().getWindow();
+
+        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("client/client_main.fxml"));
+        Parent menuRoot = fxmlLoader.load();
+        Scene menuScene = new Scene(menuRoot);
+        ClientMainController controller = fxmlLoader.getController();
+        controller.prepareMainMenu(clientName, client);
+
+        stage.setScene(menuScene);
         stage.show();
     }
 
     public void updateCars(ScrollPane scrollPane) {
-        loggerMain.info("Запущен метод обновления таблицы проданных автомобилей");
+        loggerMain.info("Запущен метод обновления таблицы автомобилей в наличии");
         ArrayList<Car> carsFromDB = DatabaseManager.getAllCars(tableName);
 
         if (carsFromDB == null) return;
@@ -99,11 +115,6 @@ public class AdminSoldController {
         sellerColumn.setPrefWidth(100.0);
         table.getColumns().add(sellerColumn);
 
-        buyerColumn = new TableColumn<>("Buyer");
-        buyerColumn.setCellValueFactory(new PropertyValueFactory<>("buyer"));
-        buyerColumn.setPrefWidth(100.0);
-        table.getColumns().add(buyerColumn);
-
         manufacturerColumn = new TableColumn<>("Manufacturer");
         manufacturerColumn.setCellValueFactory(new PropertyValueFactory<>("manufacturer"));
         manufacturerColumn.setPrefWidth(140.0);
@@ -124,53 +135,12 @@ public class AdminSoldController {
         productionYearColumn.setPrefWidth(150.0);
         table.getColumns().add(productionYearColumn);
 
-        editColumn = new TableColumn<>("Edit");
-        editColumn.setCellFactory(tc -> new TableCell<>() {
-            private final Button editButton = new Button("Edit");
+        requestColumn = new TableColumn<>("Request");
+        requestColumn.setCellFactory(param -> new TableCell<>() {
+            private final Button requestButton = new Button("Request");
 
             {
-                editButton.setOnAction(event -> {
-                    Car car = getTableView().getItems().get(getIndex());
-                    Scene currentScene = editButton.getScene();
-                    Stage stage = (Stage) currentScene.getWindow();
-
-                    try {
-                        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("admin/edit_car.fxml"));
-                        Scene scene = new Scene(fxmlLoader.load(), 1000, 600);
-                        stage.setResizable(false);
-                        stage.setTitle("OCDS: Online Car Dealership System | Edit car page");
-                        stage.setScene(scene);
-                        EditCar controller = fxmlLoader.getController();
-                        loggerMain.info("Нажата кнопка изменения автомобиля с ID = {}", car.getId());
-                        controller.start(stage, car, tableName);
-
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
-                    updateCars(scrollPane);
-                });
-            }
-
-            @Override
-            protected void updateItem(Button item, boolean empty) {
-                super.updateItem(item, empty);
-                setAlignment(Pos.CENTER);
-                if (empty) {
-                    setGraphic(null);
-                } else {
-                    setGraphic(editButton);
-                }
-            }
-        });
-        editColumn.setPrefWidth(70.0);
-        table.getColumns().add(editColumn);
-
-        deleteColumn = new TableColumn<>("Delete");
-        deleteColumn.setCellFactory(param -> new TableCell<>() {
-            private final Button deleteButton = new Button("Delete");
-
-            {
-                deleteButton.setOnAction(event -> {
+                requestButton.setOnAction(event -> {
                     Car car = getTableView().getItems().get(getIndex());
                     int id = car.getId();
                     String manufacturer = car.getManufacturer();
@@ -180,16 +150,16 @@ public class AdminSoldController {
                     Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
                     stage.getIcons().add(new Image(Objects.requireNonNull(Main.class.getResourceAsStream("dealership.png"))));
 
-                    alert.setTitle("Подтверждение удаления автомобиля");
-                    alert.setHeaderText("Удаление автомобиля '" + manufacturer + " " + model + "'");
-                    alert.setContentText("Вы действительно хотите безвозвратно удалить автомобиль с ID = " + id + "?");
+                    alert.setTitle("Подтверждение запроса на покупку автомобиля");
+                    alert.setHeaderText("Покупка автомобиля '" + manufacturer + " " + model + "'");
+                    alert.setContentText("Вы действительно хотите создать запрос на покупку автомобиля с ID = " + id + "?");
                     Optional<ButtonType> result = alert.showAndWait();
                     if (result.isPresent() && result.get() == ButtonType.OK) {
-                        loggerMain.info("Удаление автомобиля с ID = {}", id);
-                        DatabaseManager.deleteCar(id, tableName);
+                        loggerMain.info("Создание запроса на покупку автомобиля с ID = {}", id);
+                        DatabaseManager.moveCarFromStockToInProgress(id, clientName);
                         updateCars(scrollPane);
                     } else {
-                        loggerMain.info("Отмена удаления автомобиля с ID = {}", id);
+                        loggerMain.info("Отмена создания запроса на покупку автомобиля с ID = {}", id);
                         alert.close();
                     }
                 });
@@ -202,12 +172,41 @@ public class AdminSoldController {
                 if (empty) {
                     setGraphic(null);
                 } else {
-                    setGraphic(deleteButton);
+                    setGraphic(requestButton);
                 }
             }
         });
-        deleteColumn.setPrefWidth(90.0);
-        table.getColumns().add(deleteColumn);
+        requestColumn.setPrefWidth(90.0);
+        table.getColumns().add(requestColumn);
         scrollPane.setContent(table);
     }
+
+    public void onSubmitClicked(ActionEvent onsubmcliked) throws IOException {
+
+        if (type_choice.getValue() == null) {
+            error_label.setText("Choose the type");
+        } else if (applic_text.getText().isEmpty()) {
+            error_label.setText("Enter application itself");
+        } else if (applic_text.getText().length() > 38) {
+            error_label.setText("Be concise - enter shorter text");
+        } else {
+            ApplicationData submitted_application = new ApplicationData(-1, "On Wait", clientName,
+                type_choice.getValue(), "Today", applic_text.getText(), null);
+            client.sendApplicationToServer(submitted_application);
+            switchToMainMenu(onsubmcliked);
+
+        }
+
+    }
+
+//    public void prepare_applications(Client client, String name) {
+//        this.client = client;
+//        this.name = name;
+//        types.addAll("ResidentialConstruction", "CommercialConstruction", "Renovation", "InteriorDesign", "Landscaping", "ElectricalWork", "Plumbing", "Roofing", "Painting", "FoundationRepair", "Materials");
+//        type_choice.setItems(types);
+//        type_choice.setValue("Other");
+//        applic_text.requestFocus();
+//    }
+
+
 }

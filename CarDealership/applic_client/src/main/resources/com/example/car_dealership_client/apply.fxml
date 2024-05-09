@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.car_dealership_client.client_controllers.ClientApplyController">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.car_dealership_client.client_controllers.ClientInStockController">
    <children>
       <Label alignment="CENTER" layoutX="185.0" layoutY="14.0" prefHeight="39.0" prefWidth="230.0" text="Fill the form">
          <font>

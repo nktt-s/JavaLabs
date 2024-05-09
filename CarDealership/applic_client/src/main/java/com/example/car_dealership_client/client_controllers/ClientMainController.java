@@ -12,6 +12,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.*;
 import java.net.Socket;
@@ -19,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ClientMainController {
+    private static final Logger loggerMain = LogManager.getLogger("MainLogger");
     @FXML
     TextField nameTextField;
     @FXML
@@ -26,85 +29,53 @@ public class ClientMainController {
     @FXML
     Label clientNameHeader;
     private Stage stage;
-    private static String name;
+    private static String clientName;
     private static List<ApplicationData> waiting_applics = new ArrayList<>();
     private static List<ApplicationData> progress_applics = new ArrayList<>();
     private static List<ApplicationData> rejected_applics = new ArrayList<>();
     private static List<ApplicationData> finished_applics = new ArrayList<>();
     private static List<ApplicationData> cancelled_applics = new ArrayList<>();
-    private Client client;
+    private static Client client;
     private static List<ApplicationData> shadow_data = new ArrayList<>();
     //All-time number of applications for unique applications id;
     private static Integer total_id;
 
 
-    public void set_header_name(String name) {
-        ClientMainController.name = name;
-        clientNameHeader.setText("Welcome, client, " + name + "!");
+    public void setHeaderName(String clientName) {
+        ClientMainController.clientName = clientName;
+        clientNameHeader.setText("Welcome, " + clientName + "!");
     }
 
-    public void prepare_main_menu(Client client_inp) {
-        set_header_name(name);
-        client = client_inp;
+    public void prepareMainMenu(Client client) {
+        setHeaderName(clientName);
+        this.client = client;
     }
 
-    public void prepare_main_menu(String inp_name, Client client_inp) {
-        set_header_name(inp_name);
-        client = client_inp;
-
+    public void prepareMainMenu(String clientName, Client client) {
+        setHeaderName(clientName);
+        this.client = client;
     }
 
     public void connect(Socket socket, ObjectInputStream ois, ObjectOutputStream oos) {
-
         try {
             client = new Client(socket, ois, oos);
-            client.sendNameToServer(name);
+            client.sendNameToServer(clientName);
             Thread clientThread = new Thread(client);
             clientThread.start();
-//            client.receiveApplicationsFromServer();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
-
-    public void refresh() {
-        try {
-            client.getApplicationsFromServer();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    public void get() {
-        for (ApplicationData app : waiting_applics) {
-//            System.out.println(app.get_name());
-        }
-//       set_header_name();
-    }
-
-    public void switchToApplications(ActionEvent applications_clicked) throws IOException {
-        stage = (Stage) ((Node) applications_clicked.getSource()).getScene().getWindow();
-        FXMLLoader loader = new FXMLLoader(Main.class.getResource("apply.fxml"));
-        Parent root = loader.load();
-        Scene scene = new Scene(root);
-        ClientApplyController controller = loader.getController();
-        controller.prepare_applications(client, name);
-        stage.setScene(scene);
-        stage.show();
-    }
-
     // TODO
     public void onInStockButtonClicked(ActionEvent applications_clicked) throws IOException {
+        loggerMain.info("От имени Клиента {} нажата кнопка получения автомобилей в наличии", clientName);
         stage = (Stage) ((Node) applications_clicked.getSource()).getScene().getWindow();
         stage.setTitle("OCDS: Online Car Dealership System | Cars in stock page");
-        FXMLLoader loader = new FXMLLoader(Main.class.getResource("cars_in_stock.fxml"));
-        Parent root = loader.load();
-        Scene scene = new Scene(root);
-        ClientApplyController controller = loader.getController();
-        controller.prepare_applications(client, name);
-        stage.setScene(scene);
-        stage.show();
+        FXMLLoader fxmlloader = new FXMLLoader(Main.class.getResource("client/cars_in_stock.fxml"));
+        fxmlloader.load();
+        ClientInStockController controller = fxmlloader.getController();
+        controller.start(stage, client, clientName);
     }
 
     // TODO
@@ -130,7 +101,6 @@ public class ClientMainController {
         ClientMainController menuController = menuLoader.getController();
         stage.setScene(menuScene);
         stage.show();
-
     }
 
     // TODO
@@ -169,7 +139,7 @@ public class ClientMainController {
         waiting_applics.addAll(applics);
     }
 
-    public static void clear_all_applics() {
+    public static void clearAllApplics() {
         waiting_applics = new ArrayList<>();
         progress_applics = new ArrayList<>();
         rejected_applics = new ArrayList<>();
@@ -177,8 +147,8 @@ public class ClientMainController {
         cancelled_applics = new ArrayList<>();
     }
 
-    public static void update_all_applics(List<ApplicationData> wait, List<ApplicationData> progress, List<ApplicationData> rejected, List<ApplicationData> finished, List<ApplicationData> cancelled) {
-        clear_all_applics();
+    public static void updateAllApplics(List<ApplicationData> wait, List<ApplicationData> progress, List<ApplicationData> rejected, List<ApplicationData> finished, List<ApplicationData> cancelled) {
+        clearAllApplics();
         waiting_applics = wait;
         progress_applics = progress;
         rejected_applics = rejected;
@@ -186,7 +156,7 @@ public class ClientMainController {
         cancelled_applics = cancelled;
     }
 
-    public List<ApplicationData> get_all_applications() {
+    public List<ApplicationData> getAllApplications() {
         List<ApplicationData> all_applics = new ArrayList<>();
         all_applics.addAll(waiting_applics);
         all_applics.addAll(progress_applics);
@@ -197,8 +167,8 @@ public class ClientMainController {
     }
 
     public void save() throws IOException {
-        if (shadow_data.isEmpty()) load_shadow_data();
-        List<ApplicationData> all_applics = get_all_applications();
+        if (shadow_data.isEmpty()) loadShadowData();
+        List<ApplicationData> all_applics = getAllApplications();
         all_applics.addAll(shadow_data);
         FileOutputStream fos = new FileOutputStream("applics.ser");
         ObjectOutputStream oos = new ObjectOutputStream(fos);
@@ -206,11 +176,11 @@ public class ClientMainController {
         oos.close();
     }
 
-    public void load_shadow_data() {
+    public void loadShadowData() {
         try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream("applics.ser"))) {
             List<ApplicationData> applics = (List<ApplicationData>) ois.readObject();
             for (ApplicationData app : applics) {
-                if (!app.get_name().equals(name)) {
+                if (!app.get_name().equals(clientName)) {
                     shadow_data.add(app);
                 }
             }
@@ -222,9 +192,9 @@ public class ClientMainController {
         }
     }
 
-    public void sort_users_applic(List<ApplicationData> all_applics) {
+    public void sortUsersApplic(List<ApplicationData> all_applics) {
         for (ApplicationData app : all_applics) {
-            if (app.get_name().equals(name)) {
+            if (app.get_name().equals(clientName)) {
                 switch (app.get_status()) {
                     case "On wait" -> waiting_applics.add(app);
                     case "In Progress" -> progress_applics.add(app);
@@ -241,11 +211,11 @@ public class ClientMainController {
 
     public void load() {
         shadow_data.clear();
-        clear_all_applics();
+        clearAllApplics();
         try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream("applics.ser"))) {
             List<ApplicationData> applics = (List<ApplicationData>) ois.readObject();
 //            file_logger.info("Devices were Deserialized");
-            sort_users_applic(applics);
+            sortUsersApplic(applics);
         } catch (ClassNotFoundException | ClassCastException e) {
             System.exit(228);
             throw new RuntimeException(e);

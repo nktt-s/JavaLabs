@@ -25,7 +25,7 @@ public class Admin extends User {
                 List<String> applicationsString = (List<String>) ois.readObject();
                 applicationsFromServer = converter.list_to_application(applicationsString);
                 sortIncomingApplications(applicationsFromServer);
-                AdminMainController.update_workers(workersFromServer);
+                AdminMainController.updateWorkers(workersFromServer);
             } catch (IOException e) {
                 close_everything(socket, oos, ois);
                 break;
@@ -96,7 +96,7 @@ public class Admin extends User {
             }
         }
 //            System.out.println("In sort incoming_applic = " + wait);
-        AdminMainController.update_all_applics(wait, progress, rejected, finished, cancelled);
+        AdminMainController.updateAllApplics(wait, progress, rejected, finished, cancelled);
 
 
     }

@@ -83,7 +83,7 @@ public class DatabaseManager {
         try {
             Connection connection = DriverManager.getConnection(url, login, password);
             PreparedStatement statement = connection.prepareStatement(query);
-            statement.setInt(1, id);
+            statement.setInt(DatabaseAttributes.ID.ordinal(), id);
             statement.execute();
             connection.close();
 
@@ -93,8 +93,47 @@ public class DatabaseManager {
         }
     }
 
+    public static void moveCarFromStockToInProgress(int id, String clientName) {
+        loggerDB.info("Вызван метод перемещения автомобиля c ID = {} из Stock в InProgress", id);
+        String query = "SELECT * FROM AllStockCars WHERE id = ?";
+        try {
+            Connection connection = DriverManager.getConnection(url, login, password);
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setInt(DatabaseAttributes.ID.ordinal(), id);
+            ResultSet resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                Statement idStatement = connection.createStatement();
+                ResultSet idResultSet = idStatement.executeQuery("SELECT MAX(id) FROM AllInProgressCars");
+
+                int nextId = 0;
+                if (idResultSet.next()) {
+                    nextId = idResultSet.getInt(DatabaseAttributes.ID.ordinal()) + 1;
+                }
+
+                PreparedStatement insertStatement = connection.prepareStatement("INSERT INTO AllInProgressCars (id, seller, buyer, manufacturer, model, color, productionYear) VALUES (?, ?, ?, ?, ?, ?, ?)");
+                insertStatement.setInt(DatabaseAttributes.ID.ordinal(), nextId);
+                insertStatement.setString(DatabaseAttributes.SELLER.ordinal(), resultSet.getString("seller"));
+                insertStatement.setString(DatabaseAttributes.BUYER.ordinal(), clientName);
+                insertStatement.setString(DatabaseAttributes.MANUFACTURER.ordinal(), resultSet.getString("manufacturer"));
+                insertStatement.setString(DatabaseAttributes.MODEL.ordinal(), resultSet.getString("model"));
+                insertStatement.setString(DatabaseAttributes.COLOR.ordinal(), resultSet.getString("color"));
+                insertStatement.setInt(DatabaseAttributes.PRODUCTION_YEAR.ordinal(), resultSet.getInt("productionYear"));
+                insertStatement.executeUpdate();
+            }
+
+            deleteCar(id, "AllStockCars");
+
+            connection.close();
+        } catch (SQLException e) {
+            System.err.println("SQLException on moving car to InProgress!");
+//            e.printStackTrace();
+        }
+
+    }
+
     public static Car getCar(int id, String tableName) {
-        loggerDB.info("Вызван метод добавления одного автомобиля");
+        loggerDB.info("Вызван метод получения автомобиля");
         String query;
         if (isValidTableName(tableName)) {
             query = "SELECT * FROM " + tableName + " WHERE id = ?";
@@ -139,17 +178,17 @@ public class DatabaseManager {
 
         try {
             Connection connection = DriverManager.getConnection(url, login, password);
-            PreparedStatement prepStatement = connection.prepareStatement(query);
+            PreparedStatement statement = connection.prepareStatement(query);
 
-            prepStatement.setString(1, car.getSeller());
-            prepStatement.setString(2, car.getBuyer());
-            prepStatement.setString(3, car.getManufacturer());
-            prepStatement.setString(4, car.getModel());
-            prepStatement.setString(5, car.getColor());
-            prepStatement.setInt(6, car.getProductionYear());
-            prepStatement.setInt(7, car.getId());
+            statement.setString(1, car.getSeller());
+            statement.setString(2, car.getBuyer());
+            statement.setString(3, car.getManufacturer());
+            statement.setString(4, car.getModel());
+            statement.setString(5, car.getColor());
+            statement.setInt(6, car.getProductionYear());
+            statement.setInt(7, car.getId());
 
-            prepStatement.execute();
+            statement.execute();
             connection.close();
 
         } catch (SQLException ex) {
@@ -164,7 +203,7 @@ public class DatabaseManager {
     }
 
     enum DatabaseAttributes {
-        NONE, ID, SELLER, MANUFACTURER, MODEL, COLOR, PRODUCTION_YEAR
+        NONE, ID, SELLER, BUYER, MANUFACTURER, MODEL, COLOR, PRODUCTION_YEAR
     }
 
 

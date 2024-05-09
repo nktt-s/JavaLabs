@@ -42,14 +42,14 @@ public class AdminMainController {
         }
     }
 
-    public static void clear_all_applics() {
+    public static void clearAllApplics() {
         waiting_applics = new ArrayList<>();
         progress_applics = new ArrayList<>();
         closed_applics = new ArrayList<>();
     }
 
-    public static void update_all_applics(List<ApplicationData> wait, List<ApplicationData> progress, List<ApplicationData> rejected, List<ApplicationData> finished, List<ApplicationData> cancelled) {
-        clear_all_applics();
+    public static void updateAllApplics(List<ApplicationData> wait, List<ApplicationData> progress, List<ApplicationData> rejected, List<ApplicationData> finished, List<ApplicationData> cancelled) {
+        clearAllApplics();
         waiting_applics = wait;
         progress_applics = progress;
         closed_applics.addAll(rejected);
@@ -57,11 +57,11 @@ public class AdminMainController {
         closed_applics.addAll(cancelled);
     }
 
-    public static void update_workers(List<String> new_workers) {
+    public static void updateWorkers(List<String> new_workers) {
         workers = new_workers;
     }
 
-    public void prepare_main_menu(String name, Admin admin_inp) {
+    public void prepareMainMenu(String name, Admin admin_inp) {
         admin = admin_inp;
 //        this.name = name;
         AdminMainController.name = name;
@@ -71,7 +71,7 @@ public class AdminMainController {
     public void onInStockButtonClicked(ActionEvent inStockClicked) throws IOException {
         loggerMain.info("От имени Администратора нажата кнопка получения автомобилей в наличии");
         stage = (Stage) ((Node) inStockClicked.getSource()).getScene().getWindow();
-        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("cars_in_stock.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("admin/cars_in_stock.fxml"));
         fxmlLoader.load();
         AdminInStockController controller = fxmlLoader.getController();
         controller.start(stage);
@@ -80,7 +80,7 @@ public class AdminMainController {
     public void onInProgressButtonClicked(ActionEvent inProgressClicked) throws IOException {
         loggerMain.info("От имени Администратора нажата кнопка получения автомобилей в процессе продажи");
         stage = (Stage) ((Node) inProgressClicked.getSource()).getScene().getWindow();
-        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("cars_in_progress.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("admin/cars_in_progress.fxml"));
         fxmlLoader.load();
         AdminInProgressController controller = fxmlLoader.getController();
         controller.start(stage);
@@ -89,7 +89,7 @@ public class AdminMainController {
     public void onSoldButtonClicked(ActionEvent button_clicked) throws IOException {
         loggerMain.info("От имени Администратора нажата кнопка получения проданных автомобилей");
         stage = (Stage) ((Node) button_clicked.getSource()).getScene().getWindow();
-        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("cars_sold.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("admin/cars_sold.fxml"));
         fxmlLoader.load();
         AdminSoldController controller = fxmlLoader.getController();
         controller.start(stage);
@@ -108,7 +108,7 @@ public class AdminMainController {
         admin.stop_connection();
     }
 
-    public void sort_users_applic(List<ApplicationData> all_applics) {
+    public void sortUsersApplic(List<ApplicationData> all_applics) {
         for (ApplicationData app : all_applics) {
             switch (app.get_status()) {
                 case "On wait" -> waiting_applics.add(app);
@@ -122,7 +122,7 @@ public class AdminMainController {
     public void load() {
         try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream("devs.ser"))) {
             List<ApplicationData> applics = (List<ApplicationData>) ois.readObject();
-            sort_users_applic(applics);
+            sortUsersApplic(applics);
         } catch (ClassNotFoundException | ClassCastException e) {
             System.exit(228);
             throw new RuntimeException(e);

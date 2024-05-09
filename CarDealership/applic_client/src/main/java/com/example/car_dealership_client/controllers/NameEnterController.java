@@ -135,27 +135,27 @@ public class NameEnterController {
         }
     }
 
-    public void loadClient(ActionEvent enterNameClicked, String inp_name, Socket socket, ObjectInputStream ois, ObjectOutputStream oos) throws IOException {
-        stage = (Stage) ((Node) enterNameClicked.getSource()).getScene().getWindow();
-        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("client_main.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 1000, 600);
-        ClientMainController menuController = fxmlLoader.getController();
-        menuController.prepare_main_menu(inp_name, client);
-        menuController.connect(socket, ois, oos);
-        stage.setScene(scene);
-        stage.setTitle("OCDS: Online Car Dealership System | Client page");
-        stage.show();
-    }
-
     public void loadAdmin(ActionEvent enterNameClicked, String inp_name, Socket socket, ObjectInputStream ois, ObjectOutputStream oos) throws IOException {
         stage = (Stage) ((Node) enterNameClicked.getSource()).getScene().getWindow();
-        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("admin_main.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("admin/main.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 1000, 600);
         AdminMainController controller = fxmlLoader.getController();
-        controller.prepare_main_menu(inp_name, admin);
+        controller.prepareMainMenu(inp_name, admin);
         controller.connect(socket, ois, oos);
         stage.setScene(scene);
         stage.setTitle("OCDS: Online Car Dealership System | Admin page");
+        stage.show();
+    }
+
+    public void loadClient(ActionEvent enterNameClicked, String clientName, Socket socket, ObjectInputStream ois, ObjectOutputStream oos) throws IOException {
+        stage = (Stage) ((Node) enterNameClicked.getSource()).getScene().getWindow();
+        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("client/client_main.fxml"));
+        Scene scene = new Scene(fxmlLoader.load(), 1000, 600);
+        ClientMainController controller = fxmlLoader.getController();
+        controller.prepareMainMenu(clientName, client);
+        controller.connect(socket, ois, oos);
+        stage.setScene(scene);
+        stage.setTitle("OCDS: Online Car Dealership System | Client page");
         stage.show();
     }
 

@@ -50,7 +50,7 @@ public class AdminInStockController {
     String tableName = "AllStockCars";
 
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("cars_in_stock.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("admin/cars_in_stock.fxml"));
         Parent root = fxmlLoader.load();
 
         ScrollPane scrollPane = (ScrollPane) root.lookup("#scrollPane");
@@ -63,15 +63,16 @@ public class AdminInStockController {
         stage.show();
     }
 
-
     public void switchToMainMenu(ActionEvent onBackClicked) throws IOException {
         loggerMain.info("Нажата кнопка возвращения в главное меню Администратора");
         Stage stage = (Stage) ((Node) onBackClicked.getSource()).getScene().getWindow();
-        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("admin_main.fxml"));
+
+        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("admin/main.fxml"));
         Parent root = fxmlLoader.load();
         Scene scene = new Scene(root);
         fxmlLoader.getController();
         stage.setTitle("OCDS: Online Car Dealership System | Admin page");
+
         stage.setScene(scene);
         stage.show();
     }
@@ -130,7 +131,7 @@ public class AdminInStockController {
                     Stage stage = (Stage) currentScene.getWindow();
 
                     try {
-                        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("admin_edit_car.fxml"));
+                        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("admin/edit_car.fxml"));
                         Scene scene = new Scene(fxmlLoader.load(), 1000, 600);
                         stage.setResizable(false);
                         stage.setTitle("OCDS: Online Car Dealership System | Edit car page");

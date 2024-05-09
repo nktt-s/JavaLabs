@@ -6,7 +6,7 @@
 
 <AnchorPane prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.car_dealership_client.client_controllers.ClientMainController">
     <children>
-        <GridPane alignment="CENTER" layoutX="158.0" layoutY="135.0" prefHeight="365.0" prefWidth="752.0">
+        <GridPane alignment="CENTER" layoutX="150.0" layoutY="164.0" prefHeight="280.0" prefWidth="780.0">
             <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
