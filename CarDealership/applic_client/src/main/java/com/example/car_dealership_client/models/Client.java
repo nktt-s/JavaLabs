@@ -105,6 +105,6 @@ public class Client extends User {
         }
 //            System.out.println("In sort incoming_applic = " + wait);
         AdminMainController.updateAllApplics(wait, progress, rejected, finished, cancelled);
-        ClientMainController.updateAllApplics(wait, progress, rejected, finished, cancelled);
+//        ClientMainController.updateAllApplics(wait, progress, rejected, finished, cancelled);
     }
 }
