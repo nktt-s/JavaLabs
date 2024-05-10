@@ -22,12 +22,12 @@
                         <Font name="System Bold" size="18.0" />
                     </font>
                 </Button>
-                <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#onInProgressButtonClicked" prefHeight="80.0" prefWidth="200.0" text="В процессе продажи" textAlignment="CENTER" wrapText="true" GridPane.columnIndex="1">
+                <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#onInProgressButtonClicked" prefHeight="80.0" prefWidth="200.0" text="Активные заказы" textAlignment="CENTER" wrapText="true" GridPane.columnIndex="1">
                     <font>
                         <Font name="System Bold" size="18.0" />
                     </font>
                 </Button>
-                <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#onSoldButtonClicked" prefHeight="80.0" prefWidth="200.0" text="Продано" textAlignment="CENTER" wrapText="true" GridPane.columnIndex="2">
+                <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#onSoldButtonClicked" prefHeight="80.0" prefWidth="200.0" text="Завершённые заказы" textAlignment="CENTER" wrapText="true" GridPane.columnIndex="2">
                     <font>
                         <Font name="System Bold" size="18.0" />
                     </font>
