@@ -93,8 +93,8 @@ public class SellerMainController {
         stage = (Stage) ((Node) buttonClicked.getSource()).getScene().getWindow();
         FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("seller/cars_sold.fxml"));
         fxmlLoader.load();
-//        SellerSoldController controller = fxmlLoader.getController();
-//        controller.start(stage, seller, sellerName);
+        SellerSoldController controller = fxmlLoader.getController();
+        controller.start(stage, seller, sellerName);
     }
 
     public void onLogOutButtonClicked(ActionEvent logOutClicked) throws IOException {

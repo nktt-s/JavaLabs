@@ -330,7 +330,7 @@ public class DatabaseManager {
                 PreparedStatement insertStatement = connection.prepareStatement("INSERT INTO AllSoldCars (id, seller, buyer, manufacturer, model, color, productionYear) VALUES (?, ?, ?, ?, ?, ?, ?)");
                 insertStatement.setInt(DatabaseAttributes.ID.ordinal(), nextId);
                 insertStatement.setString(DatabaseAttributes.SELLER.ordinal(), resultSet.getString("seller"));
-                insertStatement.setString(DatabaseAttributes.BUYER.ordinal(), "buyer");
+                insertStatement.setString(DatabaseAttributes.BUYER.ordinal(), resultSet.getString("buyer"));
                 insertStatement.setString(DatabaseAttributes.MANUFACTURER.ordinal(), resultSet.getString("manufacturer"));
                 insertStatement.setString(DatabaseAttributes.MODEL.ordinal(), resultSet.getString("model"));
                 insertStatement.setString(DatabaseAttributes.COLOR.ordinal(), resultSet.getString("color"));
