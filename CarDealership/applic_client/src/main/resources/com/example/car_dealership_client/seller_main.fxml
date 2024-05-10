@@ -27,7 +27,7 @@
                 </Button>
             </children>
         </GridPane>
-        <Label fx:id="workerNameHeader" alignment="CENTER" layoutX="-1.0" prefHeight="72.0" prefWidth="1000.0" text="Seller">
+        <Label fx:id="sellerNameHeader" alignment="CENTER" layoutX="-1.0" prefHeight="72.0" prefWidth="1000.0" text="Seller">
             <font>
                 <Font name="System Bold" size="40.0" />
             </font>

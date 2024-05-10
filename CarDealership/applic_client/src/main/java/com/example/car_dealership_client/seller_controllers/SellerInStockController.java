@@ -1,8 +1,9 @@
-package com.example.car_dealership_client.admin_controllers;
+package com.example.car_dealership_client.seller_controllers;
 
 import com.example.car_dealership_client.Main;
 import com.example.car_dealership_client.models.Car;
 import com.example.car_dealership_client.models.DatabaseManager;
+import com.example.car_dealership_client.models.Seller;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -14,8 +15,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.stage.Stage;
 import javafx.scene.image.Image;
+import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -24,16 +25,16 @@ import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Optional;
 
-public class AdminInStockController {
+public class SellerInStockController {
     private static final Logger loggerMain = LogManager.getLogger("MainLogger");
+    @FXML
+    private Button addButton;
     @FXML
     private ScrollPane scrollPane;
     @FXML
     private TableView<Car> table;
     @FXML
     private TableColumn<Car, Integer> idColumn;
-    @FXML
-    private TableColumn<Car, String> sellerColumn;
     @FXML
     private TableColumn<Car, String> manufacturerColumn;
     @FXML
@@ -47,13 +48,18 @@ public class AdminInStockController {
     @FXML
     private TableColumn<Car, Button> deleteColumn;
 
+    private static Seller seller;
+    private static String sellerName;
+
     String tableName = "AllStockCars";
 
-    public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("admin/cars_in_stock.fxml"));
+    public void start(Stage stage, Seller seller, String sellerName) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("seller/cars_in_stock.fxml"));
         Parent root = fxmlLoader.load();
 
         ScrollPane scrollPane = (ScrollPane) root.lookup("#scrollPane");
+        SellerInStockController.seller = seller;
+        SellerInStockController.sellerName = sellerName;
         updateCars(scrollPane);
 
         Scene scene = new Scene(root, 1000, 600);
@@ -64,22 +70,38 @@ public class AdminInStockController {
     }
 
     public void switchToMainMenu(ActionEvent onBackClicked) throws IOException {
-        loggerMain.info("Нажата кнопка возвращения в главное меню Администратора");
+        loggerMain.info("Возвращение в главное меню продавца {}", sellerName);
         Stage stage = (Stage) ((Node) onBackClicked.getSource()).getScene().getWindow();
 
-        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("admin/main.fxml"));
-        Parent root = fxmlLoader.load();
-        Scene scene = new Scene(root);
-        fxmlLoader.getController();
-        stage.setTitle("OCDS: Online Car Dealership System | Admin Main page");
+        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("seller/seller_main.fxml"));
+        Parent menuRoot = fxmlLoader.load();
+        Scene menuScene = new Scene(menuRoot);
+        SellerMainController controller = fxmlLoader.getController();
+        controller.prepareMainMenu(sellerName, seller);
+        stage.setTitle("OCDS: Online Car Dealership System | Seller Main page");
 
-        stage.setScene(scene);
+        stage.setScene(menuScene);
         stage.show();
+    }
+
+    @FXML
+    private void addButtonClicked(ActionEvent event) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("seller/add_car.fxml"));
+        Scene scene = new Scene(fxmlLoader.load(), 1000, 600);
+        Scene currentScene = addButton.getScene();
+        Stage stage = (Stage) currentScene.getWindow();
+
+        stage.setResizable(false);
+        stage.setTitle("OCDS: Online Car Dealership System | Add car page");
+        stage.setScene(scene);
+        AddCar controller = fxmlLoader.getController();
+        loggerMain.info("Нажата кнопка добавления автомобиля");
+        controller.start(stage, seller, sellerName);
     }
 
     public void updateCars(ScrollPane scrollPane) {
         loggerMain.info("Запущен метод обновления таблицы автомобилей в наличии");
-        ArrayList<Car> carsFromDB = DatabaseManager.getAllCars(tableName);
+        ArrayList<Car> carsFromDB = DatabaseManager.getAllCarsBySeller(tableName, sellerName);
 
         if (carsFromDB == null) return;
         ObservableList<Car> cars = FXCollections.observableArrayList(carsFromDB);
@@ -94,11 +116,6 @@ public class AdminInStockController {
         idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
         idColumn.setPrefWidth(30.0);
         table.getColumns().add(idColumn);
-
-        sellerColumn = new TableColumn<>("Seller");
-        sellerColumn.setCellValueFactory(new PropertyValueFactory<>("seller"));
-        sellerColumn.setPrefWidth(100.0);
-        table.getColumns().add(sellerColumn);
 
         manufacturerColumn = new TableColumn<>("Manufacturer");
         manufacturerColumn.setCellValueFactory(new PropertyValueFactory<>("manufacturer"));
@@ -131,14 +148,14 @@ public class AdminInStockController {
                     Stage stage = (Stage) currentScene.getWindow();
 
                     try {
-                        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("admin/edit_car.fxml"));
+                        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("seller/edit_car.fxml"));
                         Scene scene = new Scene(fxmlLoader.load(), 1000, 600);
                         stage.setResizable(false);
                         stage.setTitle("OCDS: Online Car Dealership System | Edit car page");
                         stage.setScene(scene);
                         EditCar controller = fxmlLoader.getController();
                         loggerMain.info("Нажата кнопка изменения автомобиля с ID = {}", car.getId());
-                        controller.start(stage, car, tableName);
+                        controller.start(stage, car, seller, sellerName);
 
                     } catch (IOException e) {
                         throw new RuntimeException(e);

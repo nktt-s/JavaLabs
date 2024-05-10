@@ -52,7 +52,7 @@ public class ClientMainController {
     }
 
     public void onInStockButtonClicked(ActionEvent inStockClicked) throws IOException {
-        loggerMain.info("От имени Клиента {} нажата кнопка получения автомобилей в наличии", clientName);
+        loggerMain.info("От имени клиента {} нажата кнопка получения автомобилей в наличии", clientName);
         stage = (Stage) ((Node) inStockClicked.getSource()).getScene().getWindow();
         FXMLLoader fxmlloader = new FXMLLoader(Main.class.getResource("client/cars_in_stock.fxml"));
         fxmlloader.load();
@@ -61,7 +61,7 @@ public class ClientMainController {
     }
 
     public void onMyActiveOrdersButtonClicked(ActionEvent buttonClicked) throws IOException {
-        loggerMain.info("От имени Клиента {} нажата кнопка получения автомобилей в процессе покупки", clientName);
+        loggerMain.info("От имени клиента {} нажата кнопка получения автомобилей в процессе покупки", clientName);
         stage = (Stage) ((Node) buttonClicked.getSource()).getScene().getWindow();
         FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("client/cars_in_progress.fxml"));
         fxmlLoader.load();
@@ -70,7 +70,7 @@ public class ClientMainController {
     }
 
     public void onMyCompletedOrdersButtonClicked(ActionEvent buttonClicked) throws IOException {
-        loggerMain.info("От имени Клиента {} нажата кнопка получения завершённых заказов автомобилей", clientName);
+        loggerMain.info("От имени клиента {} нажата кнопка получения завершённых заказов автомобилей", clientName);
         stage = (Stage) ((Node) buttonClicked.getSource()).getScene().getWindow();
         FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("client/cars_sold.fxml"));
         fxmlLoader.load();

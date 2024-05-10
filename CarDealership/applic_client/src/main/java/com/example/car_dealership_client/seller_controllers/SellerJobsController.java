@@ -35,7 +35,7 @@ public class SellerJobsController {
         Scene menuScene = new Scene(menuRoot);
         SellerMainController menuController = menuLoader.getController();
 //        menuController.connect();
-        menuController.prepare_main_menu(seller, jobs_applics);
+        menuController.prepareMainMenu(seller, jobs_applics);
 
         stage.setScene(menuScene);
         stage.show();

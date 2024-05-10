@@ -11,13 +11,10 @@ import java.net.Socket;
 import java.util.List;
 
 public class Seller extends User {
-    Integer total_id;
-
 
     public Seller(Socket socket, ObjectInputStream ois, ObjectOutputStream oos) throws IOException {
         super(socket, "Seller", ois, oos);
     }
-
 
     @Override
     public void run() {
@@ -38,7 +35,6 @@ public class Seller extends User {
 
         }
     }
-
 
     public void sendApplicationToServer(ApplicationData applic) {
         try {

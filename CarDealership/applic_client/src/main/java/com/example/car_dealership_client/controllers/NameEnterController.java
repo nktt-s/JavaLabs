@@ -158,16 +158,16 @@ public class NameEnterController {
         stage.show();
     }
 
-
+    // TODO
     public void loadSeller(ActionEvent enterNameClicked, String sellerName, Socket socket, ObjectInputStream ois, ObjectOutputStream oos) throws IOException {
         stage = (Stage) ((Node) enterNameClicked.getSource()).getScene().getWindow();
-        stage.setTitle("OCDS: Online Car Dealership System | Seller page");
-        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("seller_main.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("seller/seller_main.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 1000, 600);
         SellerMainController controller = fxmlLoader.getController();
-        controller.prepare_main_menu(sellerName, seller);
+        controller.prepareMainMenu(sellerName, seller);
         controller.connect(socket, ois, oos);
         stage.setScene(scene);
+        stage.setTitle("OCDS: Online Car Dealership System | Seller Main page");
         stage.show();
     }
 

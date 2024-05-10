@@ -106,9 +106,107 @@ public class DatabaseManager {
             }
 
         } catch (SQLException e) {
-            System.err.println("SQLException on getting cars of client " + clientName + " in progress of buying!");
-            e.printStackTrace();
+            System.err.println("SQLException on getting cars of client " + clientName + "!");
+//            e.printStackTrace();
             return null;
+        }
+    }
+
+    public static ArrayList<Car> getAllCarsBySeller(String tableName, String sellerName) {
+        loggerDB.info("Вызван метод получения автомобилей продавца {} в процессе покупки", sellerName);
+        ArrayList<Car> cars = new ArrayList<>();
+        String query;
+        if (isValidTableName(tableName)) {
+            query = "SELECT * FROM " + tableName + " WHERE seller = '" + sellerName + "'";
+        } else {
+            loggerDB.error("Недопустимое имя таблицы при вызове метода getAllCarsBySeller!");
+            return null;
+        }
+
+        try {
+            Connection connection = DriverManager.getConnection(url, login, password);
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(query);
+
+            while (resultSet.next()) {
+                int id = resultSet.getInt("id");
+                String seller = resultSet.getString("seller");
+                String buyer = resultSet.getString("buyer");
+                String manufacturer = resultSet.getString("manufacturer");
+                String model = resultSet.getString("model");
+                String color = resultSet.getString("color");
+                int productionYear = resultSet.getInt("productionYear");
+
+                Car car = new Car(id, seller, buyer, manufacturer, model, color, productionYear);
+                cars.add(car);
+            }
+            connection.close();
+            if (cars.isEmpty()) {
+                return null;
+            } else {
+                return cars;
+            }
+
+        } catch (SQLException e) {
+            System.err.println("SQLException on getting cars of seller " + sellerName + "!");
+//            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public static int getNextId(String tableName) {
+        loggerDB.info("Вызван метод получения свободного ID");
+        String query;
+        if (isValidTableName(tableName)) {
+            query = "SELECT MAX(id) FROM " + tableName;
+        } else {
+            loggerDB.error("Недопустимое имя таблицы при вызове метода getAllCarsBySeller!");
+            return 0;
+        }
+
+        int nextId = 0;
+        try {
+            Connection connection = DriverManager.getConnection(url, login, password);
+            Statement idStatement = connection.createStatement();
+            ResultSet idResultSet = idStatement.executeQuery(query);
+
+            if (idResultSet.next()) {
+                nextId = idResultSet.getInt(DatabaseAttributes.ID.ordinal()) + 1;
+            }
+
+        } catch (SQLException e) {
+            System.err.println("SQLException on getting next id!");
+        }
+        return nextId;
+    }
+
+    public static void addCar(Car car) {
+        loggerDB.info("Вызван метод добавления автомобиля");
+        String query = "INSERT INTO AllStockCars (id, seller, buyer, manufacturer, model, color, productionYear) VALUES (?, ?, ?, ?, ?, ?, ?)";
+
+        try {
+            Connection connection = DriverManager.getConnection(url, login, password);
+            Statement idStatement = connection.createStatement();
+            ResultSet idResultSet = idStatement.executeQuery("SELECT MAX(id) FROM AllStockCars");
+
+            int nextId = 0;
+            if (idResultSet.next()) {
+                nextId = idResultSet.getInt(DatabaseAttributes.ID.ordinal()) + 1;
+            }
+
+            PreparedStatement prepStatement = connection.prepareStatement(query);
+
+            prepStatement.setInt(DatabaseAttributes.ID.ordinal(), nextId);
+            prepStatement.setString(DatabaseAttributes.SELLER.ordinal(), car.getSeller());
+            prepStatement.setString(DatabaseAttributes.BUYER.ordinal(), car.getBuyer());
+            prepStatement.setString(DatabaseAttributes.MANUFACTURER.ordinal(), car.getManufacturer());
+            prepStatement.setString(DatabaseAttributes.MODEL.ordinal(), car.getModel());
+            prepStatement.setString(DatabaseAttributes.COLOR.ordinal(), car.getColor());
+            prepStatement.setInt(DatabaseAttributes.PRODUCTION_YEAR.ordinal(), car.getProductionYear());
+            prepStatement.executeUpdate();
+
+        } catch (SQLException e) {
+            System.err.println("SQLException on adding car!");
         }
     }
 

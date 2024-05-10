@@ -6,9 +6,9 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0"
             prefWidth="1000.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.example.car_dealership_client.admin_controllers.EditCar">
+            fx:controller="com.example.car_dealership_client.seller_controllers.AddCar">
     <children>
-        <Label id="windowName" layoutX="227.0" layoutY="60.0" text="Изменение автомобиля">
+        <Label id="windowName" layoutX="227.0" layoutY="60.0" text="Добавление автомобиля">
             <font>
                 <Font name="System Bold" size="48.0"/>
             </font>
@@ -59,7 +59,7 @@
                         <Font size="15.0"/>
                     </font>
                 </Label>
-                <TextField fx:id="seller" GridPane.columnIndex="1">
+                <TextField fx:id="sellerField" GridPane.columnIndex="1">
                     <font>
                         <Font size="15.0"/>
                     </font>
