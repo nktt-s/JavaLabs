@@ -23,35 +23,35 @@
                 <Font size="18.0" />
             </font>
         </TextField>
-        <ChoiceBox fx:id="user_type_choice" layoutX="355.0" layoutY="110.0" prefHeight="39.0" prefWidth="284.0" style="-fx-font-size: 16;" />
+        <ChoiceBox fx:id="userTypeChoice" layoutX="355.0" layoutY="110.0" prefHeight="39.0" prefWidth="284.0" style="-fx-font-size: 16;" />
         <Label fx:id="enterNameLabel" alignment="CENTER" layoutX="312.0" layoutY="146.0" prefHeight="60.0" prefWidth="371.0" text="Enter your login">
             <font>
              <Font size="18.0" />
          </font></Label>
-        <Label fx:id="pass_label" alignment="CENTER" layoutX="319.0" layoutY="268.0" prefHeight="39.0" prefWidth="364.0" text="Enter your password">
+        <Label fx:id="passwordLabel" alignment="CENTER" layoutX="319.0" layoutY="268.0" prefHeight="39.0" prefWidth="364.0" text="Enter your password">
          <font>
             <Font size="18.0" />
          </font></Label>
-        <PasswordField fx:id="user_password" alignment="CENTER" layoutX="322" layoutY="309.0" prefHeight="39.0" prefWidth="364">
+        <PasswordField fx:id="userPassword" alignment="CENTER" layoutX="322" layoutY="309.0" prefHeight="39.0" prefWidth="364">
             <font>
                 <Font size="18.0" />
             </font>
         </PasswordField>
-        <Label fx:id="pass_label_auth" alignment="CENTER" layoutX="319.0" layoutY="376.0" prefHeight="39.0" prefWidth="364.0" text="Confirm your password" visible="false">
+        <Label fx:id="passwordLabelAuth" alignment="CENTER" layoutX="319.0" layoutY="376.0" prefHeight="39.0" prefWidth="364.0" text="Confirm your password" visible="false">
          <font>
             <Font size="18.0" />
          </font></Label>
-        <PasswordField fx:id="user_password_confirmation" alignment="CENTER" layoutX="322" layoutY="414.0" prefHeight="39.0" prefWidth="364" visible="false">
+        <PasswordField fx:id="userPasswordConfirmation" alignment="CENTER" layoutX="322" layoutY="414.0" prefHeight="39.0" prefWidth="364" visible="false">
             <font>
                 <Font size="18.0" />
             </font>
         </PasswordField>
-        <Button fx:id="login_button" alignment="CENTER" layoutX="608.0" layoutY="500.0" prefHeight="40.0" prefWidth="118.0" text="Login">
+        <Button fx:id="loginButton" alignment="CENTER" layoutX="608.0" layoutY="500.0" prefHeight="40.0" prefWidth="118.0" text="Login">
             <font>
                 <Font size="18.0" />
             </font>
         </Button>
-        <Button fx:id="signup_button" alignment="CENTER" layoutX="270.0" layoutY="500.0" prefHeight="31.0" prefWidth="118.0" text="Sign up">
+        <Button fx:id="signUpButton" alignment="CENTER" layoutX="270.0" layoutY="500.0" prefHeight="31.0" prefWidth="118.0" text="Sign up">
             <font>
                 <Font size="18.0" />
             </font>

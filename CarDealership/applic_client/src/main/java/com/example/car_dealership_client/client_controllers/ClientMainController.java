@@ -78,7 +78,6 @@ public class ClientMainController {
         controller.start(stage, client, clientName);
     }
 
-
     public void onLogOutButtonClicked(ActionEvent logOutClicked) throws IOException {
         stage = (Stage) ((Node) logOutClicked.getSource()).getScene().getWindow();
         stage.setTitle("OCDS: Online Car Dealership System | Login page");

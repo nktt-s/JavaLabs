@@ -28,7 +28,7 @@ import java.net.Socket;
 
 public class NameEnterController {
     @FXML
-    ChoiceBox<String> user_type_choice;
+    ChoiceBox<String> userTypeChoice;
     @FXML
     TextField nameTextField;
     @FXML
@@ -41,23 +41,22 @@ public class NameEnterController {
     private Admin admin;
     private Seller seller;
     @FXML
-    Label pass_label;
+    Label passwordLabel;
     @FXML
-    Label pass_label_auth;
+    Label passwordLabelAuth;
     @FXML
-    PasswordField user_password;
+    PasswordField userPassword;
     @FXML
-    PasswordField user_password_confirmation;
+    PasswordField userPasswordConfirmation;
     @FXML
-    Button login_button;
+    Button loginButton;
     @FXML
-    Button signup_button;
-    Button back_button = new Button();
-    Boolean signing_up = false;
+    Button signUpButton;
+    Button backButton = new Button();
+    Boolean signingUp = false;
     Socket createSocket;
     ObjectOutputStream oos;
     ObjectInputStream ois;
-
 
     public void prepareEnterName() throws IOException {
         createSocket = new Socket("localhost", 3308);
@@ -78,19 +77,19 @@ public class NameEnterController {
         } else if (name.isEmpty()) {
             enterNameLabel.setText("Your name cannot be empty!");
             enterNameLabel.setTextFill(Paint.valueOf("red"));
-        } else if (user_type_choice.getValue() == null) {
+        } else if (userTypeChoice.getValue() == null) {
             enterNameLabel.setText("You didn't choose your role!");
             enterNameLabel.setTextFill(Paint.valueOf("red"));
-        } else if (!user_password.getText().equals(user_password_confirmation.getText())) {
+        } else if (!userPassword.getText().equals(userPasswordConfirmation.getText())) {
             enterNameLabel.setText("Passwords are not equal!");
             enterNameLabel.setTextFill(Paint.valueOf("red"));
-        } else if (user_password.getText().isEmpty()) {
+        } else if (userPassword.getText().isEmpty()) {
             enterNameLabel.setText("Your name cannot be empty!");
             enterNameLabel.setTextFill(Paint.valueOf("red"));
-        } else if (user_type_choice.getValue().equals("Client")) {
-            registerClient(signUpClicked, name, user_password.getText());
-        } else if (user_type_choice.getValue().equals("Seller")) {
-            registerSeller(signUpClicked, name, user_password.getText());
+        } else if (userTypeChoice.getValue().equals("Client")) {
+            registerClient(signUpClicked, name, userPassword.getText());
+        } else if (userTypeChoice.getValue().equals("Seller")) {
+            registerSeller(signUpClicked, name, userPassword.getText());
         }
     }
 
@@ -111,18 +110,18 @@ public class NameEnterController {
         } else if (name.isEmpty()) {
             enterNameLabel.setText("Your name cannot be empty!");
             enterNameLabel.setTextFill(Paint.valueOf("red"));
-        } else if (user_type_choice.getValue() == null) {
+        } else if (userTypeChoice.getValue() == null) {
             enterNameLabel.setText("You didn't choose your role!");
             enterNameLabel.setTextFill(Paint.valueOf("red"));
-        } else if (user_type_choice.getValue().equals("Admin")) {
-            checkWithServer("Login", "Admin", user_password.getText(), enterNameClicked);
+        } else if (userTypeChoice.getValue().equals("Admin")) {
+            checkWithServer("Login", "Admin", userPassword.getText(), enterNameClicked);
         } else {
-            checkWithServer("Login", name, user_password.getText(), enterNameClicked);
+            checkWithServer("Login", name, userPassword.getText(), enterNameClicked);
         }
     }
 
     public void loadUser(ActionEvent event, String name, Socket socket, ObjectInputStream ois, ObjectOutputStream oos) throws IOException {
-        switch (user_type_choice.getValue()) {
+        switch (userTypeChoice.getValue()) {
             case "Client":
                 loadClient(event, name, socket, ois, oos);
                 break;
@@ -135,12 +134,12 @@ public class NameEnterController {
         }
     }
 
-    public void loadAdmin(ActionEvent enterNameClicked, String inp_name, Socket socket, ObjectInputStream ois, ObjectOutputStream oos) throws IOException {
+    public void loadAdmin(ActionEvent enterNameClicked, String adminName, Socket socket, ObjectInputStream ois, ObjectOutputStream oos) throws IOException {
         stage = (Stage) ((Node) enterNameClicked.getSource()).getScene().getWindow();
         FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("admin/main.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 1000, 600);
         AdminMainController controller = fxmlLoader.getController();
-        controller.prepareMainMenu(inp_name, admin);
+        controller.prepareMainMenu(adminName, admin);
         controller.connect(socket, ois, oos);
         stage.setScene(scene);
         stage.setTitle("OCDS: Online Car Dealership System | Admin Main page");
@@ -160,27 +159,27 @@ public class NameEnterController {
     }
 
 
-    public void loadSeller(ActionEvent enterNameClicked, String inp_name, Socket socket, ObjectInputStream ois, ObjectOutputStream oos) throws IOException {
+    public void loadSeller(ActionEvent enterNameClicked, String sellerName, Socket socket, ObjectInputStream ois, ObjectOutputStream oos) throws IOException {
         stage = (Stage) ((Node) enterNameClicked.getSource()).getScene().getWindow();
         stage.setTitle("OCDS: Online Car Dealership System | Seller page");
         FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("seller_main.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 1000, 600);
         SellerMainController controller = fxmlLoader.getController();
-        controller.prepare_main_menu(inp_name, seller);
+        controller.prepare_main_menu(sellerName, seller);
         controller.connect(socket, ois, oos);
         stage.setScene(scene);
         stage.show();
     }
 
     public void prepareFormElements() {
-        login_button.setOnAction(event -> {
+        loginButton.setOnAction(event -> {
             try {
                 loginEnter(event);
             } catch (IOException | ClassNotFoundException e) {
                 throw new RuntimeException(e);
             }
         });
-        signup_button.setOnAction(event -> {
+        signUpButton.setOnAction(event -> {
             try {
                 signUpButtonClicked(event);
             } catch (IOException | ClassNotFoundException e) {
@@ -188,21 +187,21 @@ public class NameEnterController {
             }
         });
 
-        back_button.setPrefWidth(80);
-        back_button.setText("Go back");
-        back_button.setOnAction(event -> loadUserLoginForm());
+        backButton.setPrefWidth(80);
+        backButton.setText("Go back");
+        backButton.setOnAction(event -> loadUserLoginForm());
     }
 
 
     public void clearForm() {
-        nameEnterAnchor.getChildren().removeAll(user_password, user_password_confirmation, login_button, signup_button, pass_label, pass_label_auth);
+        nameEnterAnchor.getChildren().removeAll(userPassword, userPasswordConfirmation, loginButton, signUpButton, passwordLabel, passwordLabelAuth);
     }
 
     public void prepareTypeChoice() {
         user_types.addAll("Admin", "Client", "Seller");
-        user_type_choice.setItems(user_types);
-        user_type_choice.setValue("Client");
-        user_type_choice.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<>() {
+        userTypeChoice.setItems(user_types);
+        userTypeChoice.setValue("Client");
+        userTypeChoice.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
                 // Action to be taken when choice box value changes
@@ -219,15 +218,15 @@ public class NameEnterController {
     }
 
     public void loadUserLoginForm() {
-        signing_up = false;
+        signingUp = false;
         clearForm();
 
         nameEnterAnchor.setCenterShape(true);
-        nameEnterAnchor.getChildren().addAll(user_password, login_button, signup_button, pass_label);
+        nameEnterAnchor.getChildren().addAll(userPassword, loginButton, signUpButton, passwordLabel);
     }
 
     public void signUpButtonClicked(ActionEvent event) throws IOException, ClassNotFoundException {
-        if (signing_up) {
+        if (signingUp) {
             signUpEnter(event);
         } else {
             loadSignUpForm();
@@ -236,24 +235,24 @@ public class NameEnterController {
 
     public void loadSignUpForm() {
         clearForm();
-        signing_up = true;
-        pass_label_auth.setVisible(true);
-        user_password_confirmation.setVisible(true);
+        signingUp = true;
+        passwordLabelAuth.setVisible(true);
+        userPasswordConfirmation.setVisible(true);
 
         nameEnterAnchor.setCenterShape(true);
-        nameEnterAnchor.getChildren().addAll(pass_label, user_password, pass_label_auth, user_password_confirmation, signup_button);
+        nameEnterAnchor.getChildren().addAll(passwordLabel, userPassword, passwordLabelAuth, userPasswordConfirmation, signUpButton);
     }
 
     public void loadAdminLoginForm() {
-        signing_up = false;
+        signingUp = false;
         clearForm();
-        nameEnterAnchor.getChildren().addAll(pass_label, user_password, login_button);
+        nameEnterAnchor.getChildren().addAll(passwordLabel, userPassword, loginButton);
     }
 
     public void checkWithServer(String desire, String name, String password, ActionEvent event) throws IOException, ClassNotFoundException {
         oos.writeObject(desire);
         oos.writeObject(name);
-        oos.writeObject(user_type_choice.getValue());
+        oos.writeObject(userTypeChoice.getValue());
         oos.writeObject(password);
         switch ((String) ois.readObject()) {
             case "Correct":
