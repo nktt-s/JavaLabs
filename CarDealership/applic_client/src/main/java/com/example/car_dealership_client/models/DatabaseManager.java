@@ -160,7 +160,7 @@ public class DatabaseManager {
         if (isValidTableName(tableName)) {
             query = "SELECT MAX(id) FROM " + tableName;
         } else {
-            loggerDB.error("Недопустимое имя таблицы при вызове метода getAllCarsBySeller!");
+            loggerDB.error("Недопустимое имя таблицы при вызове метода getNextId!");
             return 0;
         }
 
@@ -266,10 +266,85 @@ public class DatabaseManager {
 
             connection.close();
         } catch (SQLException e) {
-            System.err.println("SQLException on moving car to InProgress!");
+            System.err.println("SQLException on moving car from Stock to InProgress!");
 //            e.printStackTrace();
         }
+    }
 
+    public static void moveCarFromInProgressToStock(int id) {
+        loggerDB.info("Вызван метод перемещения автомобиля c ID = {} из InProgress в Stock", id);
+        String query = "SELECT * FROM AllInProgressCars WHERE id = ?";
+        try {
+            Connection connection = DriverManager.getConnection(url, login, password);
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setInt(DatabaseAttributes.ID.ordinal(), id);
+            ResultSet resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                Statement idStatement = connection.createStatement();
+                ResultSet idResultSet = idStatement.executeQuery("SELECT MAX(id) FROM AllStockCars");
+
+                int nextId = 0;
+                if (idResultSet.next()) {
+                    nextId = idResultSet.getInt(DatabaseAttributes.ID.ordinal()) + 1;
+                }
+
+                PreparedStatement insertStatement = connection.prepareStatement("INSERT INTO AllStockCars (id, seller, buyer, manufacturer, model, color, productionYear) VALUES (?, ?, ?, ?, ?, ?, ?)");
+                insertStatement.setInt(DatabaseAttributes.ID.ordinal(), nextId);
+                insertStatement.setString(DatabaseAttributes.SELLER.ordinal(), resultSet.getString("seller"));
+                insertStatement.setString(DatabaseAttributes.BUYER.ordinal(), null);
+                insertStatement.setString(DatabaseAttributes.MANUFACTURER.ordinal(), resultSet.getString("manufacturer"));
+                insertStatement.setString(DatabaseAttributes.MODEL.ordinal(), resultSet.getString("model"));
+                insertStatement.setString(DatabaseAttributes.COLOR.ordinal(), resultSet.getString("color"));
+                insertStatement.setInt(DatabaseAttributes.PRODUCTION_YEAR.ordinal(), resultSet.getInt("productionYear"));
+                insertStatement.executeUpdate();
+            }
+
+            deleteCar(id, "AllInProgressCars");
+
+            connection.close();
+        } catch (SQLException e) {
+            System.err.println("SQLException on moving car from InProgress to Stock!");
+//            e.printStackTrace();
+        }
+    }
+
+    public static void moveCarFromInProgressToSold(int id) {
+        loggerDB.info("Вызван метод перемещения автомобиля c ID = {} из InProgress в Sold", id);
+        String query = "SELECT * FROM AllInProgressCars WHERE id = ?";
+        try {
+            Connection connection = DriverManager.getConnection(url, login, password);
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setInt(DatabaseAttributes.ID.ordinal(), id);
+            ResultSet resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                Statement idStatement = connection.createStatement();
+                ResultSet idResultSet = idStatement.executeQuery("SELECT MAX(id) FROM AllSoldCars");
+
+                int nextId = 0;
+                if (idResultSet.next()) {
+                    nextId = idResultSet.getInt(DatabaseAttributes.ID.ordinal()) + 1;
+                }
+
+                PreparedStatement insertStatement = connection.prepareStatement("INSERT INTO AllSoldCars (id, seller, buyer, manufacturer, model, color, productionYear) VALUES (?, ?, ?, ?, ?, ?, ?)");
+                insertStatement.setInt(DatabaseAttributes.ID.ordinal(), nextId);
+                insertStatement.setString(DatabaseAttributes.SELLER.ordinal(), resultSet.getString("seller"));
+                insertStatement.setString(DatabaseAttributes.BUYER.ordinal(), "buyer");
+                insertStatement.setString(DatabaseAttributes.MANUFACTURER.ordinal(), resultSet.getString("manufacturer"));
+                insertStatement.setString(DatabaseAttributes.MODEL.ordinal(), resultSet.getString("model"));
+                insertStatement.setString(DatabaseAttributes.COLOR.ordinal(), resultSet.getString("color"));
+                insertStatement.setInt(DatabaseAttributes.PRODUCTION_YEAR.ordinal(), resultSet.getInt("productionYear"));
+                insertStatement.executeUpdate();
+            }
+
+            deleteCar(id, "AllInProgressCars");
+
+            connection.close();
+        } catch (SQLException e) {
+            System.err.println("SQLException on moving car from InProgress to Sold!");
+//            e.printStackTrace();
+        }
     }
 
     public static Car getCar(int id, String tableName) {

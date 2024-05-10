@@ -84,8 +84,8 @@ public class SellerMainController {
         stage = (Stage) ((Node) buttonClicked.getSource()).getScene().getWindow();
         FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("seller/cars_in_progress.fxml"));
         fxmlLoader.load();
-//        SellerInProgressController controller = fxmlLoader.getController();
-//        controller.start(stage, seller, sellerName);
+        SellerInProgressController controller = fxmlLoader.getController();
+        controller.start(stage, seller, sellerName);
     }
 
     public void onMyCompletedOrdersButtonClicked(ActionEvent buttonClicked) throws IOException {
