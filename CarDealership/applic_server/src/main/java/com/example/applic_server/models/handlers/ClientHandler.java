@@ -33,6 +33,7 @@ public class ClientHandler extends UserHandler {
                     name = (String) ois.readObject();
                     server_logger.info("New client's name was received");
                 }
+                send_applications();
                 Object messgFromClient = ois.readObject();
                 applicationFromClient = converter.list_to_application((List<String>) messgFromClient);
                 applicationFromClient.set_id(SerMainController.get_total_id());
