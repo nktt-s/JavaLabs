@@ -32,7 +32,6 @@ public class Seller extends User {
             } catch (ClassNotFoundException e) {
                 throw new RuntimeException(e);
             }
-
         }
     }
 

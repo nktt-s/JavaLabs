@@ -158,7 +158,6 @@ public class NameEnterController {
         stage.show();
     }
 
-    // TODO
     public void loadSeller(ActionEvent enterNameClicked, String sellerName, Socket socket, ObjectInputStream ois, ObjectOutputStream oos) throws IOException {
         stage = (Stage) ((Node) enterNameClicked.getSource()).getScene().getWindow();
         FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("seller/seller_main.fxml"));

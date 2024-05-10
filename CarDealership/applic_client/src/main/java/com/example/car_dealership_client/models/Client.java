@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Client extends User {
-    Integer total_id;
 
     public Client(Socket socket, ObjectInputStream ois, ObjectOutputStream oos) throws IOException {
         super(socket, "Client", ois, oos);
@@ -21,16 +20,9 @@ public class Client extends User {
         while (socket.isConnected()) {
             List<ApplicationData> applicationsFromServer;
             try {
-                if (!socket.isClosed()) {
-//                    System.out.println("Socket is not closed!!!");
-                    List<String> applicationsString = (List<String>) ois.readObject();
-                    applicationsFromServer = converter.list_to_application(applicationsString);
-                    sortIncomingApplications(applicationsFromServer);
-                } else {
-//                    System.out.println("Socket is closed!!!");
-                    close_everything(socket, oos, ois);
-                    break;
-                }
+                List<String> applicationsString = (List<String>) ois.readObject();
+                applicationsFromServer = converter.list_to_application(applicationsString);
+//                sortIncomingApplications(applicationsFromServer);
 //                List<String> applicationsString = (List<String>) ois.readObject();
 //                applicationsFromServer = converter.list_to_application(applicationsString);
 //                sortIncomingApplications(applicationsFromServer);
